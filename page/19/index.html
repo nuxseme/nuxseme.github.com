@@ -1,0 +1,985 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Nuxseme" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Coding ...">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Nuxseme">
+<meta property="og:url" content="http://nuxseme.github.io/page/19/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="Coding ...">
+<meta property="og:locale" content="zh-Hans">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nuxseme">
+<meta name="twitter:description" content="Coding ...">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/page/19/"/>
+
+  <title> Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left 
+   page-home 
+ ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/debug/xdebug原理/" itemprop="url">
+                  xdebug原理
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-10T19:41:54+00:00" content="2016-11-10">
+              2016-11-10
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><img src="/img/xdebug.gif" alt="xdebug示意图"></p>
+<blockquote>
+<p>xdebug 是php下的一个扩展，首先需要编译安装xdebug.xdebug分为server和client。server指的就是运行环境的xdebug扩展，client这里可以看成是IDE。在本地开发，代码同步到运行环境，假定请求服务器的地址，请求到达nginx,nginx转给php-fpm.php拿到请求，一看XDEBUG_SESSION_START，告诉xdebug,开发者要调式代码。xdebug接到命令，看看自己的配置，是否指定了IDE KEY 是否指定了IDE的ip。xdebug用自己的协议发送远端，询问是不是需要代码调试。php运行一行指令，就询问xdebug，接下来是否需要调试，xdebug跑去开发者哪里看了一下，设置了断点，就将运行环境数据发给client展示给开发者。</p>
+</blockquote>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/debug/xdebug原理/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/php/curl/" itemprop="url">
+                  curl
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-01T19:49:41+00:00" content="2016-11-01">
+              2016-11-01
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <pre><code>CURLOPT_USERAGENT #设置客户端的代理名称
+CURLOPT_TIMEOUT   #请求超时时间 60
+CURLOPT_CONNECTTIMEOUT #链接超时时间 60
+CURLOPT_RETURNTRANSFER # true 是否以返回值的形式接受数据
+CURLINFO_HEADER_OUT    # true  开启头部详情 默认false
+
+#设置true之后可以debug请求头的信息
+curl_getinfo($curlResource, CURLINFO_HEADER_OUT);
+
+CURLOPT_HEADER         #  true 是否接受响应头部 默认false
+CURLOPT_HTTPHEADER    # array(&apos;Expect:&apos;) 避免客户端发送一个大的数据包时，
+先询问服务端是否接受，服务端返回响应头部后才发送数据
+CURLOPT_POSTFIELDS  #设置post数据
+CURLOPT_HTTPHEADER  #设置头部数据
+CURLOPT_URL # 设置请求curl
+CURLOPT_CUSTOMREQUEST #设置请求方式
+</code></pre>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/linux/设置主机虚拟机文件共享/" itemprop="url">
+                  设置主机虚拟机文件共享
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-01T11:29:59+00:00" content="2016-11-01">
+              2016-11-01
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>centos手动安装VMware-tools</p>
+<blockquote>
+<p>希望开发环境在windows，运行环境跑在虚拟机的centos上,主机和虚拟机实现文件共享<br> 编辑虚拟机设置，开启 共享文件夹 设置 发现需要安装vm-tools点击虚拟机，安装vm-tools  </p>
+<p>按正常操作安装vm-tools 可能会出现错误</p>
+<blockquote>
+<p>客户机操作系统已将 CD-ROM 门锁定，并且可能正在使用 CD-ROM，这可能会导致客户机无法识别介质的更改。如果可能，请在断开连接之前从客户机内部弹出 CD-ROM。确实要断开连接并覆盖锁定设置吗?<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/linux/设置主机虚拟机文件共享/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/yii/Yii-sa-路由解析/" itemprop="url">
+                  Yii-sa-路由解析
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-01T11:29:23+00:00" content="2016-11-01">
+              2016-11-01
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>Yii2 从接受请求到响应</p>
+</blockquote>
+<pre><code>1.web/index.php
+(new yii\web\Application($config))-&gt;run();
+2.vendor/yiisoft/yii2/web/Application.php
+class Application extends \yii\base\Application
+3.vendor/yiisoft/yii2/base/Application.php
+public function __construct($config = [])
+{
+    Yii::$app = $this;
+    static::setInstance($this);
+    $this-&gt;state = self::STATE_BEGIN;
+    $this-&gt;preInit($config);
+    $this-&gt;registerErrorHandler($config);
+    Component::__construct($config);
+}
+4.vendor/yiisoft/yii2/base/Component.php
+class Component extends Object
+
+5.vendor/yiisoft/yii2/base/Object.php
+public function __construct($config = [])
+{
+    if (!empty($config)) {
+        Yii::configure($this, $config);
+    }
+    $this-&gt;init();
+}
+
+6.vendor/yiisoft/yii2/base/Application.php
+public function init()
+{
+    $this-&gt;state = self::STATE_INIT;
+    $this-&gt;bootstrap();
+}
+
+public function run()
+{
+    try {
+
+        $this-&gt;state = self::STATE_BEFORE_REQUEST;
+        $this-&gt;trigger(self::EVENT_BEFORE_REQUEST);
+
+        $this-&gt;state = self::STATE_HANDLING_REQUEST;
+        $response = $this-&gt;handleRequest($this-&gt;getRequest());
+
+        $this-&gt;state = self::STATE_AFTER_REQUEST;
+        $this-&gt;trigger(self::EVENT_AFTER_REQUEST);
+
+        $this-&gt;state = self::STATE_SENDING_RESPONSE;
+        $response-&gt;send();
+
+        $this-&gt;state = self::STATE_END;
+
+        return $response-&gt;exitStatus;
+
+    } catch (ExitException $e) {
+
+        $this-&gt;end($e-&gt;statusCode, isset($response) ? $response : null);
+        return $e-&gt;statusCode;
+
+    }
+}
+
+7.vendor/yiisoft/yii2/web/Application.php
+
+public function handleRequest($request)
+{
+    if (empty($this-&gt;catchAll)) {
+        list ($route, $params) = $request-&gt;resolve();
+    } else {
+        $route = $this-&gt;catchAll[0];
+        $params = $this-&gt;catchAll;
+        unset($params[0]);
+    }
+
+    try {
+        Yii::trace(&quot;Route requested: &apos;$route&apos;&quot;, __METHOD__);
+        $this-&gt;requestedRoute = $route;
+        $result = $this-&gt;runAction($route, $params);
+        if ($result instanceof Response) {
+            return $result;
+        } else {
+            $response = $this-&gt;getResponse();
+            if ($result !== null) {
+                $response-&gt;data = $result;
+            }
+
+            return $response;
+        }
+    } catch (InvalidRouteException $e) {
+        throw new NotFoundHttpException(Yii::t(&apos;yii&apos;, &apos;Page not found.&apos;), $e-&gt;getCode(), $e);
+    }
+}
+</code></pre>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/ci/travis-hexo/" itemprop="url">
+                  travis-hexo
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-01T11:28:18+00:00" content="2016-11-01">
+              2016-11-01
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="持续集成"><a href="#持续集成" class="headerlink" title="持续集成"></a>持续集成</h3><blockquote>
+<p>在用hexo 或者 jekyll 搭建个人博客。在平时会不定期发布文章，然后重新生成文档部署到线上。这就是一个典型的不断开发，不断测试，不断部署的例子。持续集成简单讲，就是一个不断开发，不断测试，不断部署的流程，为了方便，就出现了自动持续集成</p>
+</blockquote>
+<h3 id="travis-ci"><a href="#travis-ci" class="headerlink" title="travis-ci"></a>travis-ci</h3><blockquote>
+<p>免费开源，结合github非常方便。<br>1 travis 会在收到你的push之后自动建立一个虚拟环境，执行.travis.yml指令<br>2 你的github项目中包含正确配置的.travis.yml文件<br>3 在travis.org中，将你的github项目同步过去，并开启配置</p>
+</blockquote>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/ci/travis-hexo/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/18/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><span class="page-number current">19</span><a class="page-number" href="/page/20/">20</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><a class="extend next" rel="next" href="/page/20/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/img/avatar.png"
+               alt="Nuxseme" />
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

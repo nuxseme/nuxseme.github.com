@@ -1,0 +1,537 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Nuxseme" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="概述 需要周期性执行某项任务，可以用定时器，定时器里面不能用异步任务  HttpServer work进程开启之后会实现on_work_start的插件 12345678910111213141516171819202122232425262728293031323334353637namespace SysPlugin;add_action(&amp;apos;on_worker_start&amp;apos;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cxsv源码分析系列（九）定时器">
+<meta property="og:url" content="http://nuxseme.github.io/cxsv/cxsv源码分析系列（九）定时器cron/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="概述 需要周期性执行某项任务，可以用定时器，定时器里面不能用异步任务  HttpServer work进程开启之后会实现on_work_start的插件 12345678910111213141516171819202122232425262728293031323334353637namespace SysPlugin;add_action(&amp;apos;on_worker_start&amp;apos;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-05-06T21:54:26.981Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cxsv源码分析系列（九）定时器">
+<meta name="twitter:description" content="概述 需要周期性执行某项任务，可以用定时器，定时器里面不能用异步任务  HttpServer work进程开启之后会实现on_work_start的插件 12345678910111213141516171819202122232425262728293031323334353637namespace SysPlugin;add_action(&amp;apos;on_worker_start&amp;apos;">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/cxsv/cxsv源码分析系列（九）定时器cron/"/>
+
+  <title> cxsv源码分析系列（九）定时器 | Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                cxsv源码分析系列（九）定时器
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-29T00:35:33+00:00" content="2016-06-29">
+              2016-06-29
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
+<p>需要周期性执行某项任务，可以用定时器，定时器里面不能用异步任务</p>
+</blockquote>
+<h3 id="HttpServer"><a href="#HttpServer" class="headerlink" title="HttpServer"></a>HttpServer</h3><blockquote>
+<p>work进程开启之后会实现on_work_start的插件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">namespace SysPlugin;</div><div class="line">add_action(&apos;on_worker_start&apos;,array(&apos;\\SysPlugin\\StartTimer&apos;,&apos;init&apos;));</div><div class="line">class StartTimer&#123;</div><div class="line">	/**</div><div class="line">	* 初始化</div><div class="line">	* @access public</div><div class="line">	* @param \swoole_server $serv</div><div class="line">	* @param int $worker_id</div><div class="line">	* @return void</div><div class="line">	*/</div><div class="line">	public static function init($serv,$worker_id)&#123;</div><div class="line">		global $php;</div><div class="line">		//只有当开启定时器　或　worker_id等于１，才执行，以保证只有一个进程启动定时器</div><div class="line">		//编号为0的work开启定时器</div><div class="line">		if(!$php-&gt;c(&apos;server.enable_timer&apos;) || $worker_id&gt;0)&#123;</div><div class="line">			return;</div><div class="line">		&#125;</div><div class="line">		//载入定时任务脚本</div><div class="line">		if(!is_dir(CRON_PATH))&#123;</div><div class="line">			return;</div><div class="line">		&#125;</div><div class="line">		$odir = opendir(CRON_PATH);</div><div class="line">		//执行所有Cron空间下的定时器脚本</div><div class="line">		while($file = readdir($odir))&#123;</div><div class="line">			if($file&#123;0&#125;!=&apos;.&apos; &amp;&amp; ($task_file = CRON_PATH.$file) &amp;&amp; file_exists($task_file))&#123;</div><div class="line">				$cron_name = ucwords(explode(&apos;.&apos;,$file,2)[0]);</div><div class="line">				$errmsg = &apos;&apos;;</div><div class="line">				\Lib\Timer::run($cron_name,$errmsg);</div><div class="line">				if(!empty($errmsg))&#123;</div><div class="line">					em_log(__METHOD__.&apos; &apos;.$errmsg);</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		closedir($odir);</div><div class="line">		return;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</blockquote>
+<a id="more"></a>
+<h3 id="Timer"><a href="#Timer" class="headerlink" title="Timer"></a>Timer</h3><blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div><div class="line">255</div><div class="line">256</div><div class="line">257</div><div class="line">258</div><div class="line">259</div><div class="line">260</div><div class="line">261</div><div class="line">262</div><div class="line">263</div><div class="line">264</div><div class="line">265</div><div class="line">266</div><div class="line">267</div><div class="line">268</div><div class="line">269</div><div class="line">270</div><div class="line">271</div><div class="line">272</div><div class="line">273</div><div class="line">274</div><div class="line">275</div><div class="line">276</div><div class="line">277</div><div class="line">278</div><div class="line">279</div><div class="line">280</div><div class="line">281</div><div class="line">282</div><div class="line">283</div><div class="line">284</div><div class="line">285</div><div class="line">286</div><div class="line">287</div><div class="line">288</div><div class="line">289</div><div class="line">290</div><div class="line">291</div><div class="line">292</div><div class="line">293</div><div class="line">294</div><div class="line">295</div><div class="line">296</div><div class="line">297</div><div class="line">298</div><div class="line">299</div><div class="line">300</div><div class="line">301</div><div class="line">302</div><div class="line">303</div><div class="line">304</div><div class="line">305</div><div class="line">306</div><div class="line">307</div><div class="line">308</div><div class="line">309</div><div class="line">310</div><div class="line">311</div><div class="line">312</div><div class="line">313</div><div class="line">314</div><div class="line">315</div><div class="line">316</div><div class="line">317</div><div class="line">318</div><div class="line">319</div><div class="line">320</div><div class="line">321</div><div class="line">322</div><div class="line">323</div><div class="line">324</div><div class="line">325</div><div class="line">326</div><div class="line">327</div><div class="line">328</div><div class="line">329</div><div class="line">330</div><div class="line">331</div><div class="line">332</div><div class="line">333</div><div class="line">334</div><div class="line">335</div><div class="line">336</div><div class="line">337</div><div class="line">338</div><div class="line">339</div><div class="line">340</div><div class="line">341</div><div class="line">342</div><div class="line">343</div><div class="line">344</div><div class="line">345</div><div class="line">346</div><div class="line">347</div><div class="line">348</div><div class="line">349</div><div class="line">350</div><div class="line">351</div><div class="line">352</div><div class="line">353</div><div class="line">354</div><div class="line">355</div><div class="line">356</div><div class="line">357</div><div class="line">358</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line">* 添加并运行一个定时器</div><div class="line">* @access public</div><div class="line">* @param string $cron_name</div><div class="line">* @return bool</div><div class="line">*/</div><div class="line">public static function run($cron_name,&amp;$errmsg=&apos;&apos;)&#123;</div><div class="line">	if(self::isRuning($cron_name))&#123;</div><div class="line">		$errmsg = &quot;the cron &#123;$cron_name&#125; is runing!&quot;;</div><div class="line">		return false;</div><div class="line">	&#125;</div><div class="line">	$cron_class_name = &apos;\\Cron\\&apos;.$cron_name;</div><div class="line">	if(!class_exists($cron_class_name))&#123;</div><div class="line">		$errmsg = &apos;the cron: &apos;.$cron_name.&apos; does not exists!&apos;;</div><div class="line">		return false;</div><div class="line">	&#125;</div><div class="line">	if(!isset($cron_class_name::$time) || (!empty($cron_class_name::$time) &amp;&amp; !self::checkTime($cron_class_name::$time)))&#123;</div><div class="line">		$errmsg = &apos;invalid time format on cron &apos;.$cron_name;</div><div class="line">		return false;</div><div class="line">	&#125;</div><div class="line">	if(empty($cron_class_name::$time))&#123;</div><div class="line">		return false;</div><div class="line">	&#125;</div><div class="line">	if(method_exists($cron_class_name, &apos;_init&apos;))&#123;</div><div class="line">		$cron_class_name::_init(time());</div><div class="line">	&#125;</div><div class="line">	//开启新的进程运行定时器</div><div class="line">	$process = new \swoole_process(function($worker) use($cron_name,$cron_class_name)&#123;</div><div class="line">		$worker-&gt;name(&apos;php_cron_worker:&apos;.$cron_name.&apos; from &apos;.APP_NAME);</div><div class="line">		//每秒触发一次</div><div class="line">		swoole_timer_tick(1000,[&apos;\Lib\Timer&apos;,&apos;onTimer&apos;],$cron_class_name);</div><div class="line">		$worker-&gt;daemon();</div><div class="line">	&#125;);</div><div class="line">	$process-&gt;start();</div><div class="line">	\swoole_process::wait();</div><div class="line">	return true;</div><div class="line">&#125;</div><div class="line">/**</div><div class="line">* 停止一个定时器</div><div class="line">* @access public</div><div class="line">* @param string $cron_name</div><div class="line">* @return mix</div><div class="line">*/</div><div class="line">public static function stop($cron_name)&#123;</div><div class="line">	$result = system(&quot;ps aux|grep php_cron_worker:&#123;$cron_name&#125;|grep -w &quot;.APP_NAME.&quot;|grep -v grep|awk &apos;&#123;print $2&#125;&apos;|xargs kill -15&quot;);</div><div class="line">	global $php;</div><div class="line">	$php-&gt;serv-&gt;reload();</div><div class="line">	return $result ? $result : true;</div><div class="line">&#125;</div><div class="line">/**</div><div class="line">* 列出当前正在运行的所有定时器，并返回PID和进程名称</div><div class="line">* @access public</div><div class="line">* @return array</div><div class="line">*/</div><div class="line">public static function getCrons()&#123;</div><div class="line">	exec(&quot;ps aux|grep php_cron_worker:|grep -v grep|awk &apos;&#123;print \$2 \&quot; \&quot; \$11 \&quot; \&quot;&#125;&apos;&quot;,$out);</div><div class="line">	if(empty($out))&#123;</div><div class="line">		return [];</div><div class="line">	&#125;</div><div class="line">	$status = [];</div><div class="line">	foreach ($out as $key =&gt; $item) &#123;</div><div class="line">		list($pid,$pname) = explode(&apos; &apos;,$item,2);</div><div class="line">		list($_,$name) = explode(&apos;:&apos;,$pname);</div><div class="line">		$status[$name][] = [</div><div class="line">			&apos;pid&apos; =&gt;$pid,</div><div class="line">			&apos;pname&apos; =&gt; $pname,</div><div class="line">		];</div><div class="line">	&#125;</div><div class="line">	return $status;</div><div class="line">&#125;</div><div class="line">/**</div><div class="line">* 检测一个定时器是否在运行</div><div class="line">* @access public</div><div class="line">* @param string $cron_name</div><div class="line">* @return bool</div><div class="line">*/</div><div class="line">public static function isRuning($cron_name)&#123;</div><div class="line">	$result = system(&quot;ps aux|grep php_cron_worker|grep -v grep|grep &#123;$cron_name&#125;|grep -w &quot;.APP_NAME);</div><div class="line">	return !empty($result);</div><div class="line">&#125;</div><div class="line">/**</div><div class="line">* 定时器</div><div class="line">* @access public</div><div class="line">* @param \swoole_server $serv</div><div class="line">* @param int $interval</div><div class="line">* @return void</div><div class="line">*/</div><div class="line">public static function onTimer($timer_id,$task=null)&#123;		</div><div class="line">	// 每60秒，秒归0，分进1</div><div class="line">	if(++self::$second==60)&#123;</div><div class="line">		self::$minute++;</div><div class="line">		self::$second=0;</div><div class="line">	&#125;</div><div class="line">	// 每60分，分归0，时进1</div><div class="line">	if(self::$minute==60)&#123;</div><div class="line">		self::$hour++;</div><div class="line">		self::$minute=0;</div><div class="line">	&#125;</div><div class="line">	// 每24时，时归0，日进1</div><div class="line">	if(self::$hour==24)&#123;</div><div class="line">		self::$day++;</div><div class="line">		self::$hour=0;</div><div class="line">	&#125;</div><div class="line">	// 每7天，周进1</div><div class="line">	self::$day%7==0 &amp;&amp; self::$week++;</div><div class="line">	// 每个月，天归0，月进1</div><div class="line">	if(self::$day==[31,date(&apos;Y&apos;)%4==0?29:28,31,30,31,30,31,31,30,31,30,31][date(&apos;m&apos;)-1])&#123;</div><div class="line">		self::$month++;</div><div class="line">		self::$day=0;</div><div class="line">	&#125;</div><div class="line">	// // 当前月日时分秒周</div><div class="line">	list(self::$now_m,self::$now_d,self::$now_h,self::$now_i,self::$now_s,self::$now_w) = explode(&apos;-&apos;,date(&apos;m-d-H-i-s-w&apos;));</div><div class="line">	$fmt = self::parseTime($task::$time);</div><div class="line">	$task_name = self::getTaskName($task);</div><div class="line">	if(self::inSecond($fmt[&apos;second&apos;]) &amp;&amp; self::inMinute($fmt[&apos;minute&apos;]) &amp;&amp; self::inHour($fmt[&apos;hour&apos;]) &amp;&amp; self::inDay($fmt[&apos;day&apos;]) &amp;&amp; self::inMonth($fmt[&apos;month&apos;]) &amp;&amp; self::inWeek($fmt[&apos;week&apos;]))&#123;</div><div class="line">		$task_name = self::getTaskName($task);</div><div class="line">		try&#123;</div><div class="line">			$task::run();</div><div class="line">		&#125;catch(\Exception $e)&#123;</div><div class="line">			em_log(__METHOD__.&apos; cron_name:&apos;.$task.&apos; &apos;.$e-&gt;getMessage());</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">/**</div><div class="line">* 获取任务名称</div><div class="line">* @access private</div><div class="line">* @param object $task</div><div class="line">* @return string</div><div class="line">*/</div><div class="line">private static function getTaskName($task)&#123;</div><div class="line">	return explode(&apos;\\&apos;,$task)[2];</div><div class="line">&#125;</div><div class="line">/**</div><div class="line">* 获取运行中锁文件</div><div class="line">* @access private</div><div class="line">* @param string $task_name</div><div class="line">* @return string</div><div class="line">*/</div><div class="line">private static function getLockFileName($task_name)&#123;</div><div class="line">	return &apos;/tmp/swcron_&apos;.$task_name.&apos;.lock&apos;;</div><div class="line">&#125;</div><div class="line">/**</div><div class="line">* 锁定</div><div class="line">* @access private</div><div class="line">* @param string $task_name</div><div class="line">* @return void</div><div class="line">*/</div><div class="line">private static function lock($task_name)&#123;</div><div class="line">	touch(self::getLockFileName($task_name));</div><div class="line">&#125;</div><div class="line">/**</div><div class="line">* 解锁</div><div class="line">* @access private</div><div class="line">* @param string $task_name</div><div class="line">* @return void</div><div class="line">*/</div><div class="line">private static function unlock($task_name)&#123;</div><div class="line">	$lock_file = self::getLockFileName($task_name);</div><div class="line">	if(is_file($lock_file))&#123;</div><div class="line">		unlink($lock_file);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">/**</div><div class="line">* 解锁全部</div><div class="line">* @access private</div><div class="line">* @param string $var</div><div class="line">* @return void</div><div class="line">*/</div><div class="line">private static function unlockAll()&#123;</div><div class="line">	@exec(&apos;rm -f /tmp/swcron_*&apos;);</div><div class="line">&#125;</div><div class="line">/**</div><div class="line">* 是否锁定</div><div class="line">* @access private</div><div class="line">* @param string $task_name</div><div class="line">* @return bool</div><div class="line">*/</div><div class="line">private static function islock($task_name)&#123;</div><div class="line">	return file_exists(self::getLockFileName($task_name));</div><div class="line">&#125;</div><div class="line">/**</div><div class="line">* 解析时间格式为数组</div><div class="line">* @access private</div><div class="line">* @param string $time</div><div class="line">* @return array</div><div class="line">*/</div><div class="line">private static function parseTime($time)&#123;</div><div class="line">	$arr = preg_split(&apos;/\s+/&apos;, $time);</div><div class="line">	// 秒，分，时，日，月，周</div><div class="line">	return array_combine([&apos;second&apos;,&apos;minute&apos;,&apos;hour&apos;,&apos;day&apos;,&apos;month&apos;,&apos;week&apos;], $arr);</div><div class="line">&#125;</div><div class="line">/**</div><div class="line"> * @access private</div><div class="line"> * @param string $time</div><div class="line"> * @return bool</div><div class="line"> */</div><div class="line">private static function checkTime($time)&#123;</div><div class="line">	return preg_match(&apos;/^((\*(\/[0-9]+)?)|[0-9\-\,\/]+)\s+((\*(\/[0-9]+)?)|[0-9\-\,\/]+)\s+((\*(\/[0-9]+)?)|[0-9\-\,\/]+)\s+((\*(\/[0-9]+)?)|[0-9\-\,\/]+)\s+((\*(\/[0-9]+)?)|[0-9\-\,\/]+)\s+((\*(\/[0-9]+)?)|[0-9\-\,\/]+)$/i&apos;,$time);</div><div class="line">&#125;</div><div class="line">/**</div><div class="line">* 比较当前时间是否符合时间条件， *\/1   1,2,3   1,2,3/1   1   1-5    1-5/1，</div><div class="line">* 分别代表：每1秒/分/时/天/月/周，在第1,2,3秒/分/时/天/月/周，在1,2,3秒/分/时/天/月/周内每1秒/分/时/天/月/周， 在第1秒/分/时/天/月/周，1-5秒/分/时/天/月/周，1-5秒/分/时/天/月/周内每1秒/分/时/天/月/周</div><div class="line">* @access public</div><div class="line">* @param string $var</div><div class="line">* @return void</div><div class="line">*/</div><div class="line">private static function compare($now,$step,$fmt)&#123;</div><div class="line">	switch(true)&#123;</div><div class="line">		case preg_match(&apos;/^\*\/\d+$/&apos;,$fmt):</div><div class="line">			// echo &apos;fmt1&apos;;</div><div class="line">			return self::compareFmt_1($now,$step,$fmt);</div><div class="line">		break;</div><div class="line">		case preg_match(&apos;/^\d+(,\d)+\/\d+$/&apos;,$fmt):</div><div class="line">			// echo &apos;fmt3&apos;;</div><div class="line">			return self::compareFmt_3($now,$step,$fmt);</div><div class="line">		break;</div><div class="line">		case preg_match(&apos;/^\d+(,\d)+$/&apos;,$fmt):</div><div class="line">			// echo &apos;fmt2&apos;;</div><div class="line">			return self::compareFmt_2($now,$step,$fmt);</div><div class="line">		break;</div><div class="line">		case preg_match(&apos;/^\d+$/&apos;,$fmt):</div><div class="line">			// echo &apos;fmt4&apos;;</div><div class="line">			return self::compareFmt_4($now,$step,$fmt);</div><div class="line">		break;</div><div class="line">		case preg_match(&apos;/^\d+\-\d+\/\d+$/&apos;,$fmt):</div><div class="line">			// echo &apos;fmt6&apos;;</div><div class="line">			return self::compareFmt_5($now,$step,$fmt);</div><div class="line">		case preg_match(&apos;/^\d+\-\d+$/&apos;,$fmt):</div><div class="line">			// echo &apos;fmt5&apos;;</div><div class="line">			return self::compareFmt_6($now,$step,$fmt);</div><div class="line">		break;</div><div class="line">		default:</div><div class="line">			return true;</div><div class="line">		break;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">/**</div><div class="line">* 比较格式1 *\/1</div><div class="line">* @access public</div><div class="line">* @param int $time</div><div class="line">* @param string $fmt</div><div class="line">* @return bool</div><div class="line">*/</div><div class="line">private static function compareFmt_1($now,$step,$fmt)&#123;</div><div class="line">	list($_,$int) = explode(&apos;/&apos;,$fmt,2);</div><div class="line">	return $step % $int==0;</div><div class="line">&#125;</div><div class="line">/**</div><div class="line">* 比较格式2   1,2,3</div><div class="line">* @access public</div><div class="line">* @param int $time</div><div class="line">* @param string $fmt</div><div class="line">* @return bool</div><div class="line">*/</div><div class="line">private static function compareFmt_2($now,$step,$fmt)&#123;</div><div class="line">	$in = explode(&apos;,&apos;,$fmt);</div><div class="line">	return in_array($now , $in);</div><div class="line">&#125;</div><div class="line">/**</div><div class="line">* 比较格式3   1,2,3/1</div><div class="line">* @access public</div><div class="line">* @param int $time</div><div class="line">* @param string $fmt</div><div class="line">* @return bool</div><div class="line">*/</div><div class="line">private static function compareFmt_3($now,$step,$fmt)&#123;</div><div class="line">	list($in,$int) = explode(&apos;/&apos;,$fmt);</div><div class="line">	$in = explode(&apos;,&apos;,$in);</div><div class="line">	return in_array($now, $in) &amp;&amp; $step%$int==0;</div><div class="line">&#125;</div><div class="line">/**</div><div class="line">* 比较格式4   1</div><div class="line">* @access public</div><div class="line">* @param int $time</div><div class="line">* @param string $fmt</div><div class="line">* @return bool</div><div class="line">*/</div><div class="line">private static function compareFmt_4($now,$step,$fmt)&#123;</div><div class="line">	return $now==$fmt;</div><div class="line">&#125;</div><div class="line">/**</div><div class="line">* 比较格式5    1-5</div><div class="line">* @access public</div><div class="line">* @param int $time</div><div class="line">* @param string $fmt</div><div class="line">* @return bool</div><div class="line">*/</div><div class="line">private static function compareFmt_5($now,$step,$fmt)&#123;</div><div class="line">	list($start,$end) = explode(&apos;-&apos;,$fmt);</div><div class="line">	return in_array($now, range($start, $end));</div><div class="line">&#125;</div><div class="line">/**</div><div class="line">* 比较格式6    1-5/1</div><div class="line">* @access public</div><div class="line">* @param int $time</div><div class="line">* @param string $fmt</div><div class="line">* @return bool</div><div class="line">*/</div><div class="line">private static function compareFmt_6($now,$step,$fmt)&#123;</div><div class="line">	list($in,$int) = explode(&apos;/&apos;,$fmt);</div><div class="line">	list($start,$end) = explode(&apos;-&apos;,$in);</div><div class="line">	return in_array($now, range($start, $end)) &amp;&amp; $step%$int==0;</div><div class="line">&#125;</div><div class="line">/**</div><div class="line">* 每秒执行</div><div class="line">* @access public</div><div class="line">* @param int $secondFmt</div><div class="line">* @return bool</div><div class="line">*/</div><div class="line">private static function inSecond($secondFmt)&#123;</div><div class="line">	return self::compare(self::$now_s,self::$second,$secondFmt) || $secondFmt==&apos;*&apos;;</div><div class="line">&#125;</div><div class="line">/**</div><div class="line">* 每分执行</div><div class="line">* @access private</div><div class="line">* @param string $minuteFmt</div><div class="line">* @return bool</div><div class="line">*/</div><div class="line">private static function inMinute($minuteFmt)&#123;</div><div class="line">	return self::compare(self::$now_i,self::$minute,$minuteFmt) &amp;&amp; (self::$minute&gt;0 || self::$hour&gt;0) || $minuteFmt==&apos;*&apos;;</div><div class="line">&#125;</div><div class="line">/**</div><div class="line">* 每小时执行</div><div class="line">* @access private</div><div class="line">* @param string $hourFmt</div><div class="line">* @return bool</div><div class="line">*/</div><div class="line">private static function inHour($hourFmt)&#123;</div><div class="line">	return self::compare(self::$now_h,self::$hour,$hourFmt) &amp;&amp; (self::$hour&gt;0 || self::$day&gt;0) || $hourFmt==&apos;*&apos;;</div><div class="line">&#125;</div><div class="line">/**</div><div class="line">* 每日执行</div><div class="line">* @access private</div><div class="line">* @param string $dayFmt</div><div class="line">* @return bool</div><div class="line">*/</div><div class="line">private static function inDay($dayFmt)&#123;</div><div class="line">	return self::compare(self::$now_d,self::$day,$dayFmt) &amp;&amp; (self::$day&gt;0 || self::$month&gt;0) || $dayFmt==&apos;*&apos;;</div><div class="line">&#125;</div><div class="line">/**</div><div class="line">* 每月执行</div><div class="line">* @access private</div><div class="line">* @param string $monthFmt</div><div class="line">* @return bool</div><div class="line">*/</div><div class="line">private static function inMonth($monthFmt)&#123;</div><div class="line">	return self::compare(self::$now_m,self::$month,$monthFmt) &amp;&amp; self::$month&gt;0 || $monthFmt==&apos;*&apos;;</div><div class="line">&#125;</div><div class="line">/**</div><div class="line">* 每周执行</div><div class="line">* @access private</div><div class="line">* @param string $weekFmt</div><div class="line">* @return bool</div><div class="line">*/</div><div class="line">private static function inWeek($weekFmt)&#123;</div><div class="line">	return self::compare(self::$now_w,self::$week,$weekFmt) &amp;&amp; (self::$week&gt;0) || $weekFmt==&apos;*&apos;;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/cxsv/cxsv源码分析系列（八）任务task/" rel="next" title="cxsv源码分析系列（八）任务">
+                <i class="fa fa-chevron-left"></i> cxsv源码分析系列（八）任务
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/cxsv/cxsv源码分析系列（十）日志/" rel="prev" title="cxsv源码分析系列（十）日志">
+                cxsv源码分析系列（十）日志 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/img/avatar.png"
+               alt="Nuxseme" />
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HttpServer"><span class="nav-number">2.</span> <span class="nav-text">HttpServer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Timer"><span class="nav-number">3.</span> <span class="nav-text">Timer</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

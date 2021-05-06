@@ -1,0 +1,960 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Nuxseme" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Coding ...">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Nuxseme">
+<meta property="og:url" content="http://nuxseme.github.io/page/16/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="Coding ...">
+<meta property="og:locale" content="zh-Hans">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nuxseme">
+<meta name="twitter:description" content="Coding ...">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/page/16/"/>
+
+  <title> Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left 
+   page-home 
+ ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/php/php-encrypt/" itemprop="url">
+                  encrypt
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-02-22T09:53:11+00:00" content="2017-02-22">
+              2017-02-22
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="内置加密函数"><a href="#内置加密函数" class="headerlink" title="内置加密函数"></a>内置加密函数</h4><pre><code>$plaintext = &apos;123456&apos;;
+$ciphertext = password_hash($plaintext,PASSWORD_DEFAULT);
+echo $ciphertext,PHP_EOL;
+
+$ciphertext = &apos;$2y$10$0nEIpqfr5pfBlKeCt6ak1O33X.BFURM9WZ8QtAazz83xwLd0ggH8.&apos;;
+$verify = password_verify($plaintext,$ciphertext);
+echo $verify,PHP_EOL;//true
+
+$password_info = password_get_info($ciphertext);
+print_r($password_info)；
+</code></pre><blockquote>
+<p>1 默认采用 bcrypt 加密<br>  2 自动添加盐值，同一明文，hash之密文不相同。建议采用默认随机盐值<br>  3 password_verify 自动解析盐值，校验密文<br>  在实际运用中 密文可能需要跟其他系统配合，其他语言框架不支持password_hash,需要根据实际情况而定</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/web/RESTful/" itemprop="url">
+                  RESTful
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-02-18T09:21:54+00:00" content="2017-02-18">
+              2017-02-18
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="理解"><a href="#理解" class="headerlink" title="理解"></a>理解</h4><blockquote>
+<p>RESTful 表现层状态转移。sc架构下，server保存数据状态，client发送查询，修改，删除，添加等请求。这里的表现层状态指服务器资源在client的展现状态。转移是指我们通过http请求修改服务资源后，表现层的状态改变</p>
+</blockquote>
+<h4 id="要点"><a href="#要点" class="headerlink" title="要点"></a>要点</h4><blockquote>
+<p>1 避免url包含动词，有些需求可以用服务代替，比如转账，transaction<br>2 考虑api.example.com vs example.com/api<br>3 api版本 example.com/api/v1/user/1</p>
+</blockquote>
+<h4 id="幂等性"><a href="#幂等性" class="headerlink" title="幂等性"></a>幂等性</h4><blockquote>
+<p>1 get  多次查询同一资源 服务器资源状态不会改变<br>2 delete 重复删除同一资源，服务器最终资源结果一样<br>3 put 重复提交同一个修改请求，服务器资源状态不会改变<br>4 post  非幂等，服务器多次创建新的资源</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/ddd/通用语言/" itemprop="url">
+                  通用语言
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-02-13T11:56:15+00:00" content="2017-02-13">
+              2017-02-13
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h4><blockquote>
+<p>软件系统是有边界的，通常来说我们实现的系统是为某一领域设计的。例如：电子商务系统包含物流，订单，支付，用户中心，数据分析，商品系统等等，它(通常)不会包含航班预定系统，银行转账系统等。在此之上，通用语言的适用性就是在软件系统的边界内，同一通用语言在不同的边界上下文也可能表示不同的意思，通用语言应该具体到界限上下文中。通用语言用描述界限上下文的业务逻辑，包括名词，形容词，动词。名词通常抽象成实体，值对象，形容词通常表示对象的属性，动词往往可以结合领域服务考虑。通用语言是一个迭代完善的过程，由领域专家，开发人员，产品经理共同交流，理解，修改，完善。通用语言承载着业务知识，由通用语言翻译的程序代码能跟业务知识相契合，构建的程序能充分的反应需求，构建过程中也能不断的反馈。</p>
+</blockquote>
+<h5 id="什么是通用语言？"><a href="#什么是通用语言？" class="headerlink" title="什么是通用语言？"></a>什么是通用语言？</h5><ul>
+<li>是领域专家，开发工程师，产品经理对项目业务逻辑的共同描述，不是需求文档，不是代码注释，不是产品原型</li>
+</ul>
+<h5 id="使用通用语言能有什么收益？"><a href="#使用通用语言能有什么收益？" class="headerlink" title="使用通用语言能有什么收益？"></a>使用通用语言能有什么收益？</h5><ul>
+<li>通用语言不是文档性的东西（肯定需要文档辅助），通用语言用来描述业务逻辑，业务逻辑沉淀到整个团队中，对知识的传承有极大的容错性</li>
+<li>通用语言反应真实的及时的业务需求，根据通用语言构建的项目很好的契合业务需求</li>
+<li>通用语言能沟通项目中不同的角色，领域专家不一定明白UML图，开发人员不一定能明白专用词汇</li>
+</ul>
+<h5 id="通用语言例子"><a href="#通用语言例子" class="headerlink" title="通用语言例子"></a>通用语言例子</h5><ul>
+<li>满100送100</li>
+<li>用户下订单时，锁定对应商品库存</li>
+<li>用户提现金额必须大于100积分</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/ddd/实体和值对象/" itemprop="url">
+                  实体(引用对象)和值对象
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-02-13T11:47:03+00:00" content="2017-02-13">
+              2017-02-13
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h4><blockquote>
+<p>实体和值对象是对通用语言中名词的抽象。对现实世界中物体(虚拟)的抽象</p>
+</blockquote>
+<h4 id="实体"><a href="#实体" class="headerlink" title="实体"></a>实体</h4><ul>
+<li>实体具有唯一标示。比如每个人有身份证，且身份证号码是唯一的。</li>
+<li>实体具有状态，是会随着时间变化改变的（非连续性）。人在成长变化，订单在不同状态之间变化</li>
+<li>实体往往具有自己的行为属性。用户可以获取自己的地址，可以查询自己的余额</li>
+</ul>
+<h4 id="值对象"><a href="#值对象" class="headerlink" title="值对象"></a>值对象</h4><ul>
+<li>值对象具有替换性。比如地址，当你修改地址往往是重置地址即可。你2份订单上相同的地址被认为没有区别</li>
+<li>值对象具有非破坏性。基于值对象的替换性，在值对象内部没有（通常）行为去改变值对象的属性</li>
+<li>值对象可以理解成数据持有器，属性容器（不确定正确）。通常不会设置方法行为去修改对象内部的属性</li>
+<li>值对象可以用来描述实体的属性。比如，地址，电话</li>
+</ul>
+<h4 id="实体和值对象的区别"><a href="#实体和值对象的区别" class="headerlink" title="实体和值对象的区别"></a>实体和值对象的区别</h4><ul>
+<li>是否具有唯一标示</li>
+<li>是否具有状态迁移</li>
+</ul>
+<h4 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h4><ul>
+<li>在对模型抽象的时候仔细考虑合适的领域对象，不要滥用实体，也不要滥用值对象</li>
+<li>实体对象”涉及”到的属性可能很多。user包含，手机email等属性，还跟订单，登录记录，余额账户，信用度….有关。这里的有关往往涉及很广，因为系统是由核心对象在”操作”的。在抽象实体时，一定要确定属性是否真的属于这个实体，是不是可以转移到属性值对象中，是不是属于别的实体…..</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/sso/sso/" itemprop="url">
+                  sso
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-01-25T11:18:24+00:00" content="2017-01-25">
+              2017-01-25
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Jasny SSO 流程解析</p>
+<pre><code>1.client访问a.com,a.com校验client cookie是否含有token
+2.没有token,a.com生成token(建立局部会话)，让client重定向到sso server,url携带token,a.com的站点信息，校验码去建立全局会话
+3.server 校验参数，确认a.com是认证的站点，开启全局会话。开启session,sso_broker_token_sha1=&gt;session_id
+4.client持有a.com cookie.token,持有server cookie.PHPSESSION。client重定向到a.com
+5.a.com获取到token,向server请求用户数据。携带参数sso_broker_token_sha1
+6.server收到请求，根据sso_broker_token在文件系统中获取session_id
+7.server根据session_id重建session,并获取sso_user对应的username
+8.未找到username,重定向到登录页面
+9.a.com 收到token,局部会话已存在。获取username,password请求登录，携带参数sso_broker_token_sha1
+10.server校验username,password。根据sso_broker_token_sha1还原session,设置sso_user=&gt;username。返回用户信息
+11.再次访问a.com，a.com校验token,携带sso_broker_token_sha1获取用户数据，还原session，获取sso_user
+
+12.client访问b.com,b.com建立局部会话，设置token
+13.client重定向到server,server 校验b.com信息，确认b.com可信
+14.server建立全局会话，sso_broker_token_sha1=&gt;session_id，这个session_id来自浏览器phpsession
+如果出现登录了a.com，关闭浏览器之后在重新登录a.com,a.com处于登录状态，因为a.com会将sso_broker_token_sha1拿到server还原session,
+而这个时候登录b.com，由于浏览器PHPSESSION已经消息，server会对b.com建立新的全局session
+15.client重定向到b.com，b.com校验token,携带sso_broker_token_sha1获取用户数据
+16.server用sso_broker_token_sha1重建session环境，获取sso_user 返回用户数据
+
+client&lt;-&gt;broker : 局部会话
+client&lt;-&gt;server: 全局会话
+
+client 保留局部会话的token 可能保留全局的PHPSESSION
+broker 生成局部会话的token 生成sso_broker_token_sha1 用这个到server换取全局的session_id,获取用户数据
+server 在绑定client访问broker事件，生成新的或者采用PHPSESSION 获得sso_broker_token_sha1=&gt;session_id。登录的时候，写入sso_user=&gt;username
+        获取用户信息的时候，根据传入的sso_broker_token_sha1,获取session_id 重建session,获取sso_user
+
+
+生活实例：
+
+ 你 动物园  海洋馆   售票中心
+
+1 你到了动物园，想进动物园。动物园的管理员发现你没有他给你的动物园的票据，就发你一张动物的门票，叫你到售票处给钱登记
+2 你跑到售票处，售票处的管理员，看你的动物园票据和动物的信息，先确定是本园区的动物园
+3 然后你付完钱，管理员记录下你有权限进入动物园，记录下你的身份证号码，然后让你去动物
+4 你又到了动物园，动物园的管理员看你有他发的动物园票据，然后打电话问询售票处管理你是否给钱，以及你登记的姓名
+5 售票处管理员拿到动物园报的身份证号码，发现你没有录你的个人信息。回复动物园管理员，找不到你的信息
+6 动物园管理员让你提交信息去登陆
+7 售票处管理员验证username password。返回动物园管理员你的信息。
+8 你拿着动物票据现在可以随意进入动物园了，必要的时候动物园管理员会把你的身份证号拿去售票处换取你的个人信息
+
+9 现在你想去海洋馆，馆长发现你没有海洋馆的票据，先发你一张海洋馆的票据。让你到售票处给钱
+10  你又到了售票处 拿出你的身份证，售票员你看 ，你已经买了通票，记录下你有权限进入海洋馆，让你去海洋馆
+11 你到了海洋馆，馆长发现你有海洋馆的票据，就将你的要去海洋馆这件事去问售票处你是否有权限，售票处返回的个人信息
+12 这个时候你就可以拿着海洋馆的票据随意进入海洋馆了
+</code></pre>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><a class="extend next" rel="next" href="/page/17/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/img/avatar.png"
+               alt="Nuxseme" />
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

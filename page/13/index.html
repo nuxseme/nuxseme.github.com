@@ -1,0 +1,998 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Nuxseme" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Coding ...">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Nuxseme">
+<meta property="og:url" content="http://nuxseme.github.io/page/13/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="Coding ...">
+<meta property="og:locale" content="zh-Hans">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nuxseme">
+<meta name="twitter:description" content="Coding ...">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/page/13/"/>
+
+  <title> Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left 
+   page-home 
+ ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/nginx/nginx负载均衡/" itemprop="url">
+                  nginx负载均衡
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-28T10:57:51+00:00" content="2017-03-28">
+              2017-03-28
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="vhost"><a href="#vhost" class="headerlink" title="vhost"></a>vhost</h3><pre><code>upstream loadbalance{  
+#设定负载均衡配置名称
+server 127.0.0.1:8081;  //设定主机1 ip+端口
+server 127.0.0.1:8082;  //设定主机2 ip+端口
+}  
+server {
+listen       80;
+server_name  load-balance.com;
+location / {     
+        proxy_pass  http://loadbalance;     
+    }     
+access_log  /opt/software/nginx/logs/load-balance.access;
+error_log  /opt/software/nginx/logs/load-balance.error;
+}
+server {
+    listen 8081;
+    server_name 127.0.0.1;
+    index index.html;
+    location /{
+        root /opt/work/load-balance1.com;
+    }
+}
+server {
+    listen 8082;
+    server_name 127.0.0.1;
+    index index.html;
+    location /{
+        root /opt/work/load-balance2.com;
+    }
+}
+</code></pre><h3 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h3><ul>
+<li>交替显示load-balance1 load-balance2下的index.html</li>
+<li>可以设置权重，是否参与负载</li>
+</ul>
+<h3 id="104-Connection-reset-by-peer"><a href="#104-Connection-reset-by-peer" class="headerlink" title="104: Connection reset by peer"></a>104: Connection reset by peer</h3><blockquote>
+<p>这种错误大抵会出现在本地测试过程中，如果你用了host映射</p>
+</blockquote>
+<pre><code>upstream loadbalance{  
+    #设定负载均衡配置名称
+    server load-balance1.com;  //设定主机1 ip+端口
+    server load-balance2.com;  //设定主机2 ip+端口
+}
+
+hosts
+127.0.0.1 load-balance1.com
+127.0.0.1 load-balance2.com
+</code></pre><p>这里建议指定ip+port</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/http/https/" itemprop="url">
+                  https
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-25T09:40:15+00:00" content="2017-03-25">
+              2017-03-25
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="letsencrypt"><a href="#letsencrypt" class="headerlink" title="letsencrypt"></a>letsencrypt</h3><pre><code>//git下载letencrypt 源码
+$git clone https://github.com/certbot/certbot.git
+$cd letencrypt/
+$sudo ./letsencrypt-auto --help all//安装依赖
+$./letsencrypt-auto certonly --standalone
+//填写 email  domain 多个域名 空格隔开
+
+/etc/letsencrypt ]$ ll
+total 40K
+drwxr-xr-x   8 root root 4.0K Mar 25 03:05 .
+drwxr-xr-x. 92 root root  12K Mar 25 04:51 ..
+drwx------   3 root root 4.0K Mar 25 02:36 accounts
+drwx------   3 root root 4.0K Mar 25 03:05 archive
+drwxr-xr-x   2 root root 4.0K Mar 25 03:05 csr
+drwx------   2 root root 4.0K Mar 25 03:05 keys
+drwx------   3 root root 4.0K Mar 25 03:05 live
+drwxr-xr-x   2 root root 4.0K Mar 25 03:05 renewal
+
+tips:
+1 确保域名能被解析到
+2 关闭80 443端口
+3 关闭防火墙(如遇到问题)
+4 腾讯云需要在安全组添加443端口权限
+</code></pre><h3 id="nginx-conf"><a href="#nginx-conf" class="headerlink" title="nginx.conf"></a>nginx.conf</h3><pre><code>#http 自动重定向到https
+server {
+        listen 80;
+        server_name nuxse.com www.nuxse.com;
+        return 301 https://$host$request_uri;
+        }
+
+listen 443 ssl;
+ssl on;
+#域名下的证书文件
+ssl_certificate /etc/letsencrypt/live/nuxse.com/fullchain.pem;
+ssl_certificate_key /etc/letsencrypt/live/nuxse.com/privkey.pem;
+ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+ssl_prefer_server_ciphers on;
+
+//重启nginx
+</code></pre><blockquote>
+<p>letsencrypt可以设置自动续签</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/http/http2/" itemprop="url">
+                  http2.0
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-25T09:40:08+00:00" content="2017-03-25">
+              2017-03-25
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="nginx-编译安转"><a href="#nginx-编译安转" class="headerlink" title="nginx 编译安转"></a>nginx 编译安转</h3><pre><code>/opt/software/nginx1.11.12/conf/nginxconf.d ]$ nginx -V
+nginx version: nginx/1.11.12
+built by gcc 4.8.5 20150623 (Red Hat 4.8.5-11) (GCC) 
+//确保OpenSSL 版本&gt;1.0.1，否则请求http2无效
+built with OpenSSL 1.1.0e  16 Feb 2017
+TLS SNI support enabled
+configure arguments: --prefix=/opt/software/nginx1.11.12 --with-openssl=../openssl-1.1.0e --with-pcre --with-zlib=../zlib-1.2.11 --with-stream --with-stream_ssl_module --with-http_ssl_module --with-http_v2_module --with-threads
+
+#修改配置文件
+listen 443 ssl http2;
+</code></pre><h3 id="查看http2"><a href="#查看http2" class="headerlink" title="查看http2"></a>查看http2</h3><pre><code>chrome://net-internals/#http2
+</code></pre><p><img src="/img/chrome-http2.png" alt="chrome"></p>
+<pre><code>$tail -f access
+[25/Mar/2017:11:28:34 +0800] &quot;GET / HTTP/2.0&quot; 200 445
+</code></pre><h3 id="效果比对"><a href="#效果比对" class="headerlink" title="效果比对"></a>效果比对</h3><p>http1.1<br><img src="/img/http1.1.png" alt="http1.1"><br>http2.0<br><img src="/img/http2.0.png" alt="http2.0"></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/image/webp/" itemprop="url">
+                  webp
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-18T18:58:08+00:00" content="2017-03-18">
+              2017-03-18
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="webp简介"><a href="#webp简介" class="headerlink" title="webp简介"></a>webp简介</h3><p>google开发的一种新的web图片格式，在保证清晰度的前提下非常有效减少图片的大小，降低请求响应时间，减少带宽</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><h4 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h4><ul>
+<li>os: CentOS Linux release 7.2.1511 (Core)  </li>
+<li>webp<a href="https://developers.google.com/speed/webp/" target="_blank" rel="noopener">官网</a></li>
+<li>webp<a href="https://storage.googleapis.com/downloads.webmproject.org/releases/webp/index.html" target="_blank" rel="noopener">下载</a> </li>
+<li><a href="https://isux.tencent.com/introduction-of-webp.html" target="_blank" rel="noopener">WebP 探寻之路</a> </li>
+</ul>
+<h4 id="安装流程"><a href="#安装流程" class="headerlink" title="安装流程"></a>安装流程</h4><pre><code>$yum install libjpeg libpng libtiff libgif
+tar xvzf libwebp-0.6.0.tar.gz
+//解压完成之后不需要编译安装  复制目录到指定位置即可
+libwebp-0.6.0-linux-x86-64 ]$ ll
+total 56K
+drwxr-xr-x  6  100 users 4.0K Jan 31 04:42 .
+drwxr-xr-x 17 root root  4.0K Mar 18 19:38 ..
+drwxr-xr-x  2  100 users 4.0K Jan 31 04:42 bin
+drwxr-xr-x  2  100 users 4.0K Jan 31 04:42 doc
+drwxr-xr-x  3  100 users 4.0K Jan 31 04:42 include
+drwxr-xr-x  2  100 users 4.0K Jan 31 04:42 lib
+-rw-r--r--  1  100 users  22K Jan 31 04:42 README
+-rw-r--r--  1  100 users 7.6K Jan 31 04:42 README.mux
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/image/webp/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/gitlab/gitlab-install/" itemprop="url">
+                  gitlab-install
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-18T18:06:04+00:00" content="2017-03-18">
+              2017-03-18
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><blockquote>
+<p>os : CentOS Linux release 7.2.1511 (Core)<br>gitlab: 10.5.4<br>gitlab <a href="https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/yum/el7/" target="_blank" rel="noopener">down-page</a></p>
+</blockquote>
+<h3 id="安装流程"><a href="#安装流程" class="headerlink" title="安装流程"></a>安装流程</h3><h4 id="下载文件"><a href="#下载文件" class="headerlink" title="下载文件"></a>下载文件</h4><pre><code>gitlab-ce-10.5.4-ce.0.el7.x86_64.rpm
+</code></pre><h4 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h4><pre><code>yum install -y curl openssh-server openssh-clients postfix cronie policycoreutils-python
+</code></pre><h4 id="rpm-安装"><a href="#rpm-安装" class="headerlink" title="rpm 安装"></a>rpm 安装</h4><pre><code>$rpm -ivh gitlab-ce-10.5.4-ce.0.el7.x86_64.rpm
+//通常gitlab将会安装到/opt/gitlab目录下
+///var/log/gitlab  日志文件
+///etc/gitlab/gitlab.rb 配置文件
+
+//rpm
+rpm -ivh xxx 安装
+rpm -e xxx     移除
+rpm -qa 列出所有安装的包
+rpm -q xxx  查询是否安装了包
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/gitlab/gitlab-install/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><a class="extend next" rel="next" href="/page/14/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/img/avatar.png"
+               alt="Nuxseme" />
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

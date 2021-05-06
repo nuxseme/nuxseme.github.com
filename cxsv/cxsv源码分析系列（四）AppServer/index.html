@@ -1,0 +1,533 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Nuxseme" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="概述 在appServer.php中实例化应用服务器的阶段设置了HttpServer中的回调函数。HttpServer启动之后，触发onRequest事件之后会回调到AppServer.php中的start函数 1234// 创建服务器实例$server = new \Lib\AppServer($config);// 设置请求回调$server-&amp;gt;setProcReqFun(array($">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cxsv源码分析系列（四）AppServer">
+<meta property="og:url" content="http://nuxseme.github.io/cxsv/cxsv源码分析系列（四）AppServer/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="概述 在appServer.php中实例化应用服务器的阶段设置了HttpServer中的回调函数。HttpServer启动之后，触发onRequest事件之后会回调到AppServer.php中的start函数 1234// 创建服务器实例$server = new \Lib\AppServer($config);// 设置请求回调$server-&amp;gt;setProcReqFun(array($">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-05-06T21:54:26.981Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cxsv源码分析系列（四）AppServer">
+<meta name="twitter:description" content="概述 在appServer.php中实例化应用服务器的阶段设置了HttpServer中的回调函数。HttpServer启动之后，触发onRequest事件之后会回调到AppServer.php中的start函数 1234// 创建服务器实例$server = new \Lib\AppServer($config);// 设置请求回调$server-&amp;gt;setProcReqFun(array($">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/cxsv/cxsv源码分析系列（四）AppServer/"/>
+
+  <title> cxsv源码分析系列（四）AppServer | Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                cxsv源码分析系列（四）AppServer
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-26T23:49:54+00:00" content="2016-06-26">
+              2016-06-26
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
+<p>在appServer.php中实例化应用服务器的阶段设置了HttpServer中的回调函数。HttpServer启动之后，触发onRequest事件之后会回调到AppServer.php中的start函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// 创建服务器实例</div><div class="line">$server = new \Lib\AppServer($config);</div><div class="line">// 设置请求回调</div><div class="line">$server-&gt;setProcReqFun(array($server,&apos;start&apos;));</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">#function onRequest</div><div class="line">call_user_func($this-&gt;_onRequest,$rq,$rs);</div></pre></td></tr></table></figure>
+</blockquote>
+<a id="more"></a>
+<h3 id="AppServer-php"><a href="#AppServer-php" class="headerlink" title="AppServer.php"></a>AppServer.php</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">namespace Lib;</div><div class="line">class AppServer extends HttpServer&#123;</div><div class="line"></div><div class="line">    #自动加载类 设定全局挂载树上框架的模型类</div><div class="line">    private $auto_load = array(&apos;cache&apos;,&apos;session&apos;,&apos;db&apos;,&apos;storage&apos;,&apos;mongodb&apos;,&apos;mongodb7&apos;,&apos;redis&apos;);  </div><div class="line">    private $in_request = false;</div><div class="line">    public function __construct($config)&#123;</div><div class="line">        //显示调用上级构造函数</div><div class="line">        parent::__construct($config);</div><div class="line">        //注册命名空间</div><div class="line">        Loader::setRootNS(&apos;App&apos;,DOCUMENT_ROOT);</div><div class="line">        Loader::setRootNS(&apos;Act&apos;,APP_PATH.&apos;Act/&apos;);</div><div class="line">        Loader::setRootNS(&apos;Widget&apos;,WIDGET_PATH);</div><div class="line">        Loader::setRootNS(&apos;Task&apos;,DOCUMENT_ROOT.&apos;/Task/&apos;);</div><div class="line">        Loader::setRootNS(&apos;Cron&apos;,CRON_PATH);</div><div class="line">        Loader::setRootNS(&apos;AppMod&apos;,APP_PATH.&apos;Mod/&apos;);</div><div class="line">        Loader::setRootNS(&apos;Plugin&apos;,APP_PATH.&apos;Plugin/&apos;);</div><div class="line">        $_SERVER[&apos;DOCUMENT_ROOT&apos;] = DOCUMENT_ROOT;</div><div class="line">        if(!empty($this-&gt;c(&apos;app.charset&apos;)))&#123;</div><div class="line">            $this-&gt;charset = $this-&gt;c(&apos;app.charset&apos;);</div><div class="line">        &#125;</div><div class="line">        \Lib\Error::$echo_html = true;</div><div class="line">        //设定错误句柄 接管php报错</div><div class="line">        set_error_handler(array($this,&apos;errorHandler&apos;));</div><div class="line">    &#125;</div><div class="line">    //魔术方法 实现类似$php-&gt;mongodb的调用</div><div class="line">    public function __get($name)&#123;</div><div class="line">        if(empty($this-&gt;$name) &amp;&amp; in_array($name,$this-&gt;auto_load))&#123;</div><div class="line">            $class = &apos;\\Lib\\&apos;.ucwords($name);</div><div class="line">            $conf_name = $name;</div><div class="line">            $conf_name == &apos;mongodb7&apos; &amp;&amp; $conf_name = &apos;mongodb&apos;;</div><div class="line">            $this-&gt;$name = new $class(isset($this-&gt;config[$conf_name]) ? $this-&gt;config[$conf_name] : array());</div><div class="line">        &#125;else&#123;</div><div class="line">            $this-&gt;$name = null;</div><div class="line">        &#125;</div><div class="line">        return $this-&gt;$name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public function __set($name,$val)&#123;</div><div class="line">        $this-&gt;$name = $val;</div><div class="line">    &#125;</div><div class="line">    public function __isset($name)&#123;</div><div class="line">        return isset($this-&gt;$name);</div><div class="line">    &#125;</div><div class="line">     </div><div class="line">   //AppServer.php执行函数 解析act method</div><div class="line">   //获取执行的结果数据回传客户端</div><div class="line">      </div><div class="line">	public function start($serv)&#123;</div><div class="line">        try&#123;</div><div class="line">            $this-&gt;in_request = true;</div><div class="line">            $path_info = Common::getActionUrl();</div><div class="line">            $request_methods = array(&apos;get&apos;=&gt;&apos;doGet&apos;,&apos;post&apos;=&gt;&apos;doPost&apos;,&apos;add&apos;=&gt;&apos;doAdd&apos;,&apos;update&apos;=&gt;&apos;doUpdate&apos;,&apos;put&apos;=&gt;&apos;doUpdate&apos;,&apos;delete&apos;=&gt;&apos;doDelete&apos;);</div><div class="line">            $method = &apos;get&apos;;</div><div class="line">            $path_info = trim($path_info,&apos;/&apos;);</div><div class="line">            $reqs = explode(&apos;/&apos;,$path_info);</div><div class="line">            if(!empty($path_info) &amp;&amp; count($reqs)==1)&#123;</div><div class="line">                $act = $reqs[0];</div><div class="line">                if(is_post())&#123;</div><div class="line">                    $method = &apos;post&apos;;</div><div class="line">                &#125;elseif(is_put())&#123;</div><div class="line">                    $method = &apos;put&apos;;</div><div class="line">                &#125;elseif(is_delete())&#123;</div><div class="line">                    $method = &apos;delete&apos;;</div><div class="line">                &#125;</div><div class="line">            &#125;elseif(count($reqs)&gt;1)&#123;</div><div class="line">                $m = array_pop($reqs);</div><div class="line">                if(in_array($m,array_keys($request_methods)))&#123;</div><div class="line">                    $method = $m;</div><div class="line">                &#125;else&#123;</div><div class="line">                    $reqs[] = $m;</div><div class="line">                    if(is_post())&#123;</div><div class="line">                        $method = &apos;post&apos;;</div><div class="line">                    &#125;elseif(is_put())&#123;</div><div class="line">                        $method = &apos;put&apos;;</div><div class="line">                    &#125;elseif(is_delete())&#123;</div><div class="line">                        $method = &apos;delete&apos;;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">                array_walk($reqs,function(&amp;$v,$k)&#123;$v = ucwords($v);&#125;);</div><div class="line">                $act = join(&apos;\\&apos;,$reqs);</div><div class="line">            &#125;else&#123;</div><div class="line">                $act = &apos;index&apos;;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            $act = ucwords($act);</div><div class="line">            $act_class = &apos;\\Act\\&apos;.$act;</div><div class="line">            $act_file = APP_PATH.&apos;Act/&apos;.str_replace(&apos;\\&apos;,&apos;/&apos;,$act).&apos;.php&apos;;</div><div class="line">            if(!in_array($method,array_keys($request_methods)) || !is_file($act_file) || !class_exists($act_class))&#123;</div><div class="line">            	return $this-&gt;http404();</div><div class="line">            &#125;</div><div class="line">            ob_start();</div><div class="line">            apply_action(&apos;app_start&apos;,$act_file);</div><div class="line">            $this-&gt;session-&gt;start();</div><div class="line">            $act_obj = new $act_class($this,$method);</div><div class="line">            $handler = $request_methods[$method];</div><div class="line">            $data = $act_obj-&gt;$handler();</div><div class="line">            $data_type = gettype($data);</div><div class="line">            if($data_type==&apos;array&apos; || $data_type == &apos;object&apos;)&#123;</div><div class="line">                $data = var_export($data,true);</div><div class="line">            &#125;</div><div class="line">            if(($obcache = ob_get_contents())!==false)&#123;</div><div class="line">                $data = $obcache . $data;</div><div class="line">                ob_end_clean();</div><div class="line">            &#125;</div><div class="line">            apply_action(&apos;on_response&apos;,$data);</div><div class="line">            $this-&gt;response($data);</div><div class="line">        &#125;catch(\Exception $e)&#123;</div><div class="line">            // 因为start方法开启了缓冲区，这里要关闭它。否则会导致日志不输出</div><div class="line">            if(($data = ob_get_contents())!==false)&#123;</div><div class="line">                ob_end_clean();</div><div class="line">            &#125;</div><div class="line">            $error_msg = $e-&gt;getMessage();</div><div class="line"></div><div class="line">            $code = $e-&gt;getCode();</div><div class="line"></div><div class="line">            // 调用_die()函数时退出</div><div class="line">            if($code == PHP_INT_MAX)&#123;</div><div class="line">                $this-&gt;response(&apos;&apos;);</div><div class="line">                return;</div><div class="line">            &#125;</div><div class="line">            // 当错误代码为0时，表示是人为抛出错误，此时模仿PHP原生EXIT函数，退出并输出信息  调用_exit($msg)函数时产生</div><div class="line">            if($code==0)&#123;</div><div class="line">                $this-&gt;response($data.$error_msg);</div><div class="line">                return;</div><div class="line">            &#125;else&#123;</div><div class="line">                $info = &apos;Code:&apos;.$code.&apos; &apos;.$error_msg;</div><div class="line">                $file = str_replace(&apos;.php&apos;,&apos;&apos;,$e-&gt;getFile());</div><div class="line">                $more = &apos; in &apos;.str_replace([SHM_PATH,APP_PATH,FRAME_ROOT],&apos;&apos;,$file).&apos; line:&apos;.$e-&gt;getLine().\Lib\Error::trace();</div><div class="line">                em_log(&apos;Runtime Exception : &apos;.$info.$more.&apos; . [URL]:&apos;.cur_url());</div><div class="line">                if(defined(&apos;DEBUG&apos;))&#123;</div><div class="line">                    // 当错误代码大于1时，输出出错的文件和行号，否则只输出出错信息</div><div class="line">                    if($e-&gt;getCode()&gt;1)&#123;</div><div class="line">                        $info .= $more;</div><div class="line">                    &#125;</div><div class="line">                    $error = \Lib\Error::info(&apos;Runtime Exception:&apos;,$info,$code&gt;1?$code:500);</div><div class="line">                &#125;else&#123;</div><div class="line">                    $error = \Lib\Error::info(&apos;&apos;,&apos;页面发生错误&apos;,500);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            $this-&gt;response($error,500);</div><div class="line">        &#125;finally&#123;</div><div class="line">            $this-&gt;in_request = false;</div><div class="line">            unset($data,$act_obj);</div><div class="line">            apply_action(&apos;app_end&apos;,$act,$method);</div><div class="line">            //自动保存session</div><div class="line">            $this-&gt;session-&gt;save();</div><div class="line">            //当内存占用率过大时，自动退出重启</div><div class="line">            $memory_used = memory_get_usage();</div><div class="line">            if($memory_used/1024/1024 &gt; 100)&#123;</div><div class="line">                em_log(&apos;memory_used soo large! worker process exited! memory_used:&apos;.$memory_used);</div><div class="line">                exit;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">    public function errorHandler($errno, $errstr, $errfile, $errline)&#123;</div><div class="line">        $errfile = str_replace(&apos;.php&apos;,&apos;&apos;,$errfile);</div><div class="line">        $errorMsg = &quot;&#123;$errstr&#125; (&quot;.str_replace(array(SHM_PATH.&apos;tpls/&apos;,SHM_PATH.&apos;widget/tpl/&apos;,APP_PATH,FRAME_ROOT,DOCUMENT_ROOT),array(&apos;tpl:&apos;,&apos;widget_tpl:&apos;,&apos;app:&apos;,&apos;root:&apos;,&apos;app:&apos;),$errfile).&quot;:&#123;$errline&#125;)&quot;;</div><div class="line">        em_log(&apos;Runtime Error : &apos;.$errorMsg.\Lib\Error::trace().&apos; . [URL]:&apos;.cur_url());</div><div class="line">        // 如果错误级别为E_NOTICE，则不退出，只记录到日志</div><div class="line">        if($errno == E_NOTICE)&#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        if(ob_get_contents() !== false)&#123;</div><div class="line">            ob_end_clean();</div><div class="line">        &#125;</div><div class="line">        if(defined(&apos;DEBUG&apos;))&#123;</div><div class="line">            $this-&gt;response(\Lib\Error::info(&quot;Runtime Error&quot;, $errorMsg),200);</div><div class="line">        &#125;else&#123;</div><div class="line">            $this-&gt;response(\Lib\Error::info(&quot;&quot;, &apos;页面发生错误&apos;),200);</div><div class="line">        &#125;</div><div class="line">        if(cur_url() &amp;&amp; $this-&gt;in_request)&#123;</div><div class="line">            _die();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/cxsv/cxsv源码分析系列（三）服务器启动/" rel="next" title="cxsv源码分析系列（三）服务器启动">
+                <i class="fa fa-chevron-left"></i> cxsv源码分析系列（三）服务器启动
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/cxsv/cxsv源码分析系列（五）HttpServer/" rel="prev" title="cxsv源码分析系列（五）HttpServer">
+                cxsv源码分析系列（五）HttpServer <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/img/avatar.png"
+               alt="Nuxseme" />
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AppServer-php"><span class="nav-number">2.</span> <span class="nav-text">AppServer.php</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

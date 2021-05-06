@@ -1,0 +1,531 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Nuxseme" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="概述 HttpServer是框架的核心文件，对swoole_http_server的实现。实现了各个注册的回调函数，监听端口并解析请求报文，然后将请求回调到AppServer-&amp;gt;start()，在wrok_start中实现了插件的挂载，在onTask回调函数中实现了任务的投递。定时器不能加载任务，进程中不能加载异步任务。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cxsv源码分析系列（五）HttpServer">
+<meta property="og:url" content="http://nuxseme.github.io/cxsv/cxsv源码分析系列（五）HttpServer/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="概述 HttpServer是框架的核心文件，对swoole_http_server的实现。实现了各个注册的回调函数，监听端口并解析请求报文，然后将请求回调到AppServer-&amp;gt;start()，在wrok_start中实现了插件的挂载，在onTask回调函数中实现了任务的投递。定时器不能加载任务，进程中不能加载异步任务。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-05-06T21:54:26.981Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cxsv源码分析系列（五）HttpServer">
+<meta name="twitter:description" content="概述 HttpServer是框架的核心文件，对swoole_http_server的实现。实现了各个注册的回调函数，监听端口并解析请求报文，然后将请求回调到AppServer-&amp;gt;start()，在wrok_start中实现了插件的挂载，在onTask回调函数中实现了任务的投递。定时器不能加载任务，进程中不能加载异步任务。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/cxsv/cxsv源码分析系列（五）HttpServer/"/>
+
+  <title> cxsv源码分析系列（五）HttpServer | Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                cxsv源码分析系列（五）HttpServer
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-27T23:49:28+00:00" content="2016-06-27">
+              2016-06-27
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
+<p>HttpServer是框架的核心文件，对swoole_http_server的实现。实现了各个注册的回调函数，监听端口并解析请求报文，然后将请求回调到AppServer-&gt;start()，在wrok_start中实现了插件的挂载，在onTask回调函数中实现了任务的投递。定时器不能加载任务，进程中不能加载异步任务。<br><a id="more"></a></p>
+</blockquote>
+<h3 id="HttpServer源码"><a href="#HttpServer源码" class="headerlink" title="HttpServer源码"></a>HttpServer源码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div><div class="line">255</div><div class="line">256</div><div class="line">257</div><div class="line">258</div><div class="line">259</div><div class="line">260</div><div class="line">261</div><div class="line">262</div><div class="line">263</div><div class="line">264</div><div class="line">265</div><div class="line">266</div><div class="line">267</div><div class="line">268</div><div class="line">269</div><div class="line">270</div><div class="line">271</div><div class="line">272</div><div class="line">273</div><div class="line">274</div><div class="line">275</div><div class="line">276</div><div class="line">277</div><div class="line">278</div><div class="line">279</div><div class="line">280</div><div class="line">281</div><div class="line">282</div><div class="line">283</div><div class="line">284</div><div class="line">285</div><div class="line">286</div><div class="line">287</div><div class="line">288</div><div class="line">289</div><div class="line">290</div><div class="line">291</div><div class="line">292</div><div class="line">293</div><div class="line">294</div><div class="line">295</div><div class="line">296</div><div class="line">297</div><div class="line">298</div><div class="line">299</div><div class="line">300</div><div class="line">301</div><div class="line">302</div><div class="line">303</div><div class="line">304</div><div class="line">305</div><div class="line">306</div><div class="line">307</div><div class="line">308</div><div class="line">309</div><div class="line">310</div><div class="line">311</div><div class="line">312</div><div class="line">313</div><div class="line">314</div><div class="line">315</div><div class="line">316</div><div class="line">317</div><div class="line">318</div><div class="line">319</div><div class="line">320</div><div class="line">321</div><div class="line">322</div><div class="line">323</div><div class="line">324</div><div class="line">325</div><div class="line">326</div><div class="line">327</div><div class="line">328</div><div class="line">329</div><div class="line">330</div><div class="line">331</div><div class="line">332</div><div class="line">333</div><div class="line">334</div><div class="line">335</div><div class="line">336</div><div class="line">337</div><div class="line">338</div><div class="line">339</div><div class="line">340</div><div class="line">341</div><div class="line">342</div><div class="line">343</div><div class="line">344</div><div class="line">345</div><div class="line">346</div><div class="line">347</div><div class="line">348</div><div class="line">349</div><div class="line">350</div><div class="line">351</div><div class="line">352</div><div class="line">353</div><div class="line">354</div><div class="line">355</div><div class="line">356</div><div class="line">357</div><div class="line">358</div><div class="line">359</div><div class="line">360</div><div class="line">361</div><div class="line">362</div><div class="line">363</div><div class="line">364</div><div class="line">365</div><div class="line">366</div><div class="line">367</div><div class="line">368</div><div class="line">369</div><div class="line">370</div><div class="line">371</div><div class="line">372</div><div class="line">373</div><div class="line">374</div><div class="line">375</div><div class="line">376</div><div class="line">377</div><div class="line">378</div><div class="line">379</div><div class="line">380</div><div class="line">381</div><div class="line">382</div><div class="line">383</div><div class="line">384</div><div class="line">385</div><div class="line">386</div><div class="line">387</div><div class="line">388</div><div class="line">389</div><div class="line">390</div><div class="line">391</div><div class="line">392</div></pre></td><td class="code"><pre><div class="line">class HttpServer&#123;</div><div class="line"></div><div class="line">       public function __construct($config)&#123;</div><div class="line">        $this-&gt;config = $config;</div><div class="line">        $this-&gt;loger = new EchoLog(&apos;&apos;);</div><div class="line">        //注册致命错误句柄</div><div class="line">        register_shutdown_function(array($this, &apos;handleFatal&apos;));</div><div class="line">    &#125;</div><div class="line">  </div><div class="line">    public function run()&#123;</div><div class="line">        $server = new \swoole_http_server($this-&gt;c(&apos;server.host&apos;), $this-&gt;c(&apos;server.port&apos;));</div><div class="line">        $this-&gt;serv = $server;</div><div class="line">        $server-&gt;set($swcfg);</div><div class="line">        $this-&gt;config = array_merge($this-&gt;config,$server-&gt;setting);</div><div class="line">        </div><div class="line">        //注册回调函数</div><div class="line">        </div><div class="line">        $server-&gt;on(&apos;Start&apos;,array($this,&apos;onStart&apos;));</div><div class="line">        $server-&gt;on(&apos;ManagerStart&apos;, array($this,&apos;onManagerStart&apos;));</div><div class="line">        $server-&gt;on(&apos;ManagerStop&apos;, array($this,&apos;onManagerStop&apos;));</div><div class="line">        $server-&gt;on(&apos;WorkerStart&apos;,array($this,&apos;onWorkerStart&apos;));</div><div class="line">        $server-&gt;on(&apos;Request&apos;, array($this, &apos;onRequest&apos;));</div><div class="line">        $server-&gt;on(&apos;Close&apos;, array($this, &apos;onClose&apos;));</div><div class="line">        $server-&gt;on(&apos;Shutdown&apos;, array($this, &apos;onShutdown&apos;));</div><div class="line">        $server-&gt;on(&apos;Task&apos;, array($this, &apos;onTask&apos;));</div><div class="line">        $server-&gt;on(&apos;Finish&apos;, array($this, &apos;onFinish&apos;));</div><div class="line">        $server-&gt;on(&apos;WorkerStop&apos;,[$this,&apos;onWorkerStop&apos;]);</div><div class="line">        $server-&gt;on(&apos;WorkerError&apos;,[$this,&apos;onWorkerError&apos;]);</div><div class="line">        // $server-&gt;on(&apos;Timeout&apos;,[$this,&apos;onTimeout&apos;]);</div><div class="line">        $server-&gt;start();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">    * 主进程启动时回调函数</div><div class="line">    * @access public</div><div class="line">    * @param \swoole_server $serv</div><div class="line">    * @return void</div><div class="line">    */</div><div class="line">    public function onMasterStart($serv)&#123;</div><div class="line">        $this-&gt;log(SERVER_NAME.&quot;[#master] start&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">    * 管理进程启动时回调函数</div><div class="line">    * @access public</div><div class="line">    * @param \swoole_server $serv</div><div class="line">    * @return void</div><div class="line">    */</div><div class="line">    public function onManagerStart($serv)&#123;</div><div class="line">        global $config_file;</div><div class="line">        //设定manager进程的名称</div><div class="line">        $this-&gt;setProcessName(&apos;php-manager: &apos;.APP_NAME.&apos; (&apos;.$config_file.&apos;)&apos;);</div><div class="line">        $this-&gt;log(SERVER_NAME.&quot;[#manager] start&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">    * 管理进程结束时回调函数</div><div class="line">    * @access public</div><div class="line">    * @param \swoole_server $serv</div><div class="line">    * @return void</div><div class="line">    */</div><div class="line">    public function onManagerStop($serv)&#123;</div><div class="line">        $this-&gt;log(SERVER_NAME.&quot;[#manager] stop&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">    * 服务器关闭时回调函数</div><div class="line">    * @access public</div><div class="line">    * @param \swoole_server $serv</div><div class="line">    * @return void</div><div class="line">    */</div><div class="line">    public function onShutdown($serv)&#123;</div><div class="line">        exec(&apos;rm -rf &apos;.SHM_PATH);</div><div class="line">        $this-&gt;log(SERVER_NAME.&quot; shutdown&quot;);</div><div class="line">        apply_action(&apos;on_shutdown&apos;,$this,$serv);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">    * 服务器启动时回调函数</div><div class="line">    * @access public</div><div class="line">    * @param \swoole_server $serv</div><div class="line">    * @return void</div><div class="line">    */</div><div class="line">    public function onStart($serv)&#123;</div><div class="line">    </div><div class="line">    //设定master进程名称</div><div class="line">    </div><div class="line">         $this-&gt;setProcessName(&apos;php-master: &apos; . APP_NAME . &apos; host=&apos; . $this-&gt;config[&apos;server&apos;][&apos;host&apos;] . &apos; port=&apos; . $this-&gt;config[&apos;server&apos;][&apos;port&apos;]);</div><div class="line">        apply_action(&apos;server_start&apos;,$serv);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">    * work进程启动时回调函数</div><div class="line">    * @access public</div><div class="line">    * @param \swoole_server $server</div><div class="line">    * @param int $worker_id</div><div class="line">    * @return void</div><div class="line">    */</div><div class="line">    public function onWorkerStart($server,$worker_id)&#123;</div><div class="line">        $this-&gt;worker_id = $worker_id;</div><div class="line">        </div><div class="line">        $this-&gt;loadPlugin();</div><div class="line">        //初始化加载插件</div><div class="line">        </div><div class="line">        if ($worker_id &gt;= $this-&gt;c(&apos;global.worker_num&apos;))&#123;</div><div class="line">      	    //如果work_id大于设定的work数量 则是task进程</div><div class="line">            $this-&gt;setProcessName(&apos;php-task: &apos;.APP_NAME.&apos; #&apos;.$worker_id);</div><div class="line">            $this-&gt;log(&quot;php-task[#&#123;$worker_id&#125;] running on &quot;.$this-&gt;c(&apos;server.host&apos;).&quot;:&quot;.$this-&gt;c(&apos;server.port&apos;));</div><div class="line">        &#125;else&#123;</div><div class="line">            $this-&gt;worker_id = $worker_id;</div><div class="line">            //设定work进程名称</div><div class="line">            $this-&gt;setProcessName(&apos;php-worker: &apos;.APP_NAME.&apos; #&apos;.$worker_id);</div><div class="line">            $this-&gt;log(&quot;php-worker[#&#123;$worker_id&#125;] running on &quot;.$this-&gt;c(&apos;server.host&apos;).&quot;:&quot;.$this-&gt;c(&apos;server.port&apos;));</div><div class="line">            apply_action(&apos;on_worker_start&apos;,$server,$worker_id);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">    * work进程退出时执行</div><div class="line">    * @access public</div><div class="line">    * @param string $var</div><div class="line">    * @return void</div><div class="line">    */</div><div class="line">    public function onWorkerStop($serv,$worker_id)&#123;</div><div class="line">        $this-&gt;log(&quot;php-worker[#&#123;$worker_id&#125;] Stoped&quot;);</div><div class="line">        exec(&apos;rm -rf &apos;.SHM_PATH);</div><div class="line">        while(\swoole_process::wait());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">    * 当work遇到错误时</div><div class="line">    * @access public</div><div class="line">    * @param swoole_server $serv</div><div class="line">    * @return void</div><div class="line">    */</div><div class="line">    public function onWorkerError($serv,$worker_id,$worker_pid,$exit_code)&#123;</div><div class="line">        em_log(&quot;php-worker[#&#123;$worker_id&#125;] Exit! pid:&#123;$worker_pid&#125; code:&#123;$exit_code&#125;, app_name:&quot;.APP_NAME.&quot;,traces: &quot;.\Lib\Error::trace());</div><div class="line">        $this-&gt;log(&quot;php-worker[#&#123;$worker_id&#125;] Exit! code:&#123;$exit_code&#125;&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">    * 异步任务回调函数</div><div class="line">    * @access public</div><div class="line">    * @param \swoole_server $serv</div><div class="line">    * @param int $task_id</div><div class="line">    * @param int $from_id</div><div class="line">    * @param string $data</div><div class="line">    * @return void</div><div class="line">    */</div><div class="line">    public function onTask($serv, $task_id, $from_id, $data)&#123;</div><div class="line">        try&#123;</div><div class="line">            $task_data = @json_decode(gzuncompress($data),true);</div><div class="line">            if(empty($task_data))&#123;</div><div class="line">                return;</div><div class="line">            &#125;</div><div class="line">            </div><div class="line">            //将data解包 解析出task_name 和参数</div><div class="line">            //根据task_name在命名空间Task中实例化对应的类</div><div class="line">            //在定时器中无法使用add_task()异步任务</div><div class="line">            </div><div class="line">            $task_name = $task_data[&apos;name&apos;];</div><div class="line">            $data = $task_data[&apos;data&apos;];</div><div class="line">            $params = &apos;&apos;;</div><div class="line">            $task = &apos;\\Task\\&apos;.ucwords($task_name);</div><div class="line">            $task::run($data);</div><div class="line">        &#125;catch(\Exception $e)&#123;</div><div class="line">            $this-&gt;log($e-&gt;getMessage());</div><div class="line">        &#125;</div><div class="line">        // $serv-&gt;finish();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">    * 异步任务结束时回调函数</div><div class="line">    * @access public</div><div class="line">    * @param \swoole_server $var</div><div class="line">    * @param int $task_id</div><div class="line">    * @param string $data</div><div class="line">    * @return void</div><div class="line">    */</div><div class="line">    public function onFinish($serv, $task_id, $data)&#123;</div><div class="line">        echo &apos;task data:&apos;.$data;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">    * 请求处理函数</div><div class="line">    * @access public</div><div class="line">    * @param swoole_request $rq</div><div class="line">    * @param swoole_response $rs</div><div class="line">    * @return void</div><div class="line">    */</div><div class="line">    public function onRequest(\swoole_http_request $rq,\swoole_http_response $rs)&#123;</div><div class="line">        $this-&gt;rs = $rs;</div><div class="line">        </div><div class="line">        //初始化全局参数</div><div class="line">        </div><div class="line">        $_GET = $_POST = $_FILES = $_COOKIE = $_SERVER = $_REQUEST = $GLOBALS = [];</div><div class="line">        if(!isset($rq-&gt;fd) || empty($rq-&gt;fd))&#123;</div><div class="line">            return false;</div><div class="line">        &#125;</div><div class="line">        $this-&gt;fd = $rq-&gt;fd;</div><div class="line">        $connection_info = $this-&gt;serv-&gt;connection_info($rq-&gt;fd);</div><div class="line">        if($connection_info==false)&#123;</div><div class="line">            return false;</div><div class="line">        &#125;</div><div class="line">        try&#123;</div><div class="line">            isset($rq-&gt;cookie) &amp;&amp; $_COOKIE = $rq-&gt;cookie;</div><div class="line">            isset($rq-&gt;files) &amp;&amp; $_FILES = $rq-&gt;files;</div><div class="line">            isset($rq-&gt;get) &amp;&amp; $_GET = $rq-&gt;get;</div><div class="line">            isset($rq-&gt;post) &amp;&amp; $_POST = $rq-&gt;post;</div><div class="line">            if($this-&gt;isMulFormData(val($rq,&apos;header&apos;)) &amp;&amp; $this-&gt;isArrayPost($_POST))&#123;</div><div class="line">                $_POST = $this-&gt;post2Array($_POST);</div><div class="line">            &#125;</div><div class="line">            $_REQUEST = array_merge($_GET,$_POST);</div><div class="line">            $GLOBALS[&apos;rawContent&apos;] = &apos;&apos;;</div><div class="line">            $connection_info &amp;&amp; $GLOBALS[&apos;rawContent&apos;] = $rq-&gt;rawContent();</div><div class="line">            $header = $server = [];</div><div class="line">            if(isset($rq-&gt;header))&#123;</div><div class="line">                foreach($rq-&gt;header as $key=&gt;$val)&#123;</div><div class="line">                    $header[&apos;HTTP_&apos;.strtoupper(str_replace(&apos;-&apos;,&apos;_&apos;,$key))] = $val;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            if(isset($rq-&gt;server))&#123;</div><div class="line">                $server = array_change_key_case($rq-&gt;server,CASE_UPPER);</div><div class="line">            &#125;</div><div class="line">            $_SERVER = array_merge($header,$server);</div><div class="line">            unset($server,$header);</div><div class="line">            $_SERVER[&apos;REMOTE_ADDR&apos;] = val($_SERVER,&apos;HTTP_X_FORWARDED_FOR&apos;,$_SERVER[&apos;REMOTE_ADDR&apos;]);</div><div class="line">            $_SERVER[&apos;SERVER_SOFTWARE&apos;] = SERVER_NAME;</div><div class="line">            if(defined(&apos;DEBUG&apos;))&#123;</div><div class="line">                $query_str = val($_SERVER,&apos;QUERY_STRING&apos;);</div><div class="line">                $query_str &amp;&amp; $query_str = &apos;?&apos;.$query_str;</div><div class="line">                $this-&gt;log(&quot;new request from [#&#123;$rs-&gt;fd&#125;]:\&quot;&quot;.$_SERVER[&apos;REQUEST_METHOD&apos;].&apos; &apos;.$_SERVER[&apos;REQUEST_URI&apos;].$query_str);</div><div class="line">            &#125;</div><div class="line">            </div><div class="line">            //将报文解析成数组</div><div class="line">            </div><div class="line">            apply_action(&apos;on_request&apos;);</div><div class="line">            //实现请求响应的插件</div><div class="line">            //回调到AppServer-&gt;start()</div><div class="line">            call_user_func($this-&gt;_onRequest,$rq,$rs);</div><div class="line">        &#125;catch(\Expectation $e)&#123;</div><div class="line">            $rs-&gt;status(400);</div><div class="line">            $rs-&gt;end($e-&gt;getMessage());</div><div class="line">        &#125;finally&#123;</div><div class="line">        </div><div class="line">            //资源回收</div><div class="line">            $this-&gt;rs = null;</div><div class="line">            $this-&gt;fs = null;</div><div class="line">            $rq = null;</div><div class="line">            $rs = null;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">    * 处理请求回调函数</div><div class="line">    * @access public</div><div class="line">    * @param function $callback</div><div class="line">    * @return void</div><div class="line">    */</div><div class="line">    public function setProcReqFun($callback)&#123;</div><div class="line">        $this-&gt;_onRequest = $callback;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 连接关闭时回调函数</div><div class="line">     * @param \swoole_server $serv</div><div class="line">     * @param int $fd</div><div class="line">     * @param int $from_id</div><div class="line">     * @return void</div><div class="line">     */</div><div class="line">    public function onClose($serv, $fd, $from_id)&#123;</div><div class="line">        $this-&gt;clear();</div><div class="line">        if(defined(&apos;DEBUG&apos;)) $this-&gt;log(&quot;client[#$fd@$from_id] close&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">    * 加载插件</div><div class="line">    * @access private</div><div class="line">    * @return void</div><div class="line">    */</div><div class="line">    private function loadPlugin()&#123;</div><div class="line">        $paths = array(&apos;global&apos;=&gt;FRAME_ROOT.&apos;plugin/&apos;,&apos;app&apos;=&gt;DOCUMENT_ROOT.&apos;Plugin/&apos;);</div><div class="line">        foreach($paths as $type =&gt; $plugin_path)&#123;</div><div class="line">            if(!is_dir($plugin_path))&#123;</div><div class="line">                continue;</div><div class="line">            &#125;</div><div class="line">            $odir = opendir($plugin_path);</div><div class="line">            while($file = readdir($odir))&#123;</div><div class="line">                if($file&#123;0&#125;!=&apos;.&apos; &amp;&amp; ($path=$plugin_path.$file.&apos;/&apos;) &amp;&amp; ($plugin_file=$path.$file.&apos;.php&apos;) &amp;&amp; is_file($plugin_file) &amp;&amp; (is_file($path.&apos;enabled&apos;) || $type == &apos;global&apos;))&#123;</div><div class="line">                 	//加载框架和应用下的插件</div><div class="line">                    include $plugin_file;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            closedir($odir);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">   </div><div class="line">    </div><div class="line">    /**</div><div class="line">    * 发送内容</div><div class="line">    * @access public</div><div class="line">    * @param \swoole_server $serv</div><div class="line">    * @param int $fd</div><div class="line">    * @param string $respData</div><div class="line">    * @param int $code</div><div class="line">    * @return void</div><div class="line">    */</div><div class="line">    public function response($respData, $code = 200)&#123;</div><div class="line">        if(empty($this-&gt;rs))&#123;</div><div class="line">            return false;</div><div class="line">        &#125;</div><div class="line">        $connection_info = $this-&gt;serv-&gt;connection_info($this-&gt;fd);</div><div class="line">        if($connection_info==false)&#123;</div><div class="line">            return false;</div><div class="line">        &#125;</div><div class="line">        try&#123;</div><div class="line">            $this-&gt;c(&apos;gzip_level&apos;) &amp;&amp; $this-&gt;rs-&gt;gzip($this-&gt;c(&apos;gzip_level&apos;));</div><div class="line">            $this-&gt;rs-&gt;status($code);</div><div class="line">            $this-&gt;c(&apos;server.keepalive&apos;) &amp;&amp; $this-&gt;setHeader(&apos;Connection&apos;,&apos;keep-alive&apos;);</div><div class="line">            $strlen = strlen($respData);</div><div class="line">            if($strlen &gt; 1024*1024*2)&#123;</div><div class="line">                $this-&gt;setHeader(&apos;Content-Length&apos;,$strlen);</div><div class="line">                $p=0;</div><div class="line">                $s=2000000;</div><div class="line">                while($data = substr($respData, $p++*$s,$s))&#123;</div><div class="line">                    $this-&gt;rs-&gt;write($data);</div><div class="line">                &#125;</div><div class="line">                $this-&gt;rs-&gt;end();</div><div class="line">            &#125;else&#123;</div><div class="line">                $this-&gt;rs-&gt;end((string)$respData);</div><div class="line">            &#125;</div><div class="line">            return true;</div><div class="line">        &#125;catch(\Exception $e)&#123;</div><div class="line">            $this-&gt;rs-&gt;status(500);</div><div class="line">            $rs-&gt;end($e-&gt;getMessage());</div><div class="line">            return true;</div><div class="line">        &#125;finally&#123;</div><div class="line">            $this-&gt;rs = null;</div><div class="line">        &#125;</div><div class="line">        return true;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">       /**</div><div class="line">     * Fatal Error的捕获</div><div class="line">     * @access public</div><div class="line">     * @return void</div><div class="line">     */</div><div class="line">    public function handleFatal()&#123;</div><div class="line">        $error = error_get_last();</div><div class="line">        $data = &apos;&apos;;</div><div class="line">        if(($data = ob_get_contents())!==false)&#123;</div><div class="line">            ob_end_clean();</div><div class="line">        &#125;</div><div class="line">        /**</div><div class="line">        * 如果脚本退出时，检测到has_process为true，说明是子进程退出</div><div class="line">        * 此时直接写到日志，而不是向客户端发送数据</div><div class="line">        */</div><div class="line">        if($this-&gt;has_process)&#123;</div><div class="line">            if(!empty($data) || !empty($error))&#123;</div><div class="line">                $msg = $data.$error[&apos;message&apos;];</div><div class="line">                $errorMsg = &quot;&#123;$error[&apos;message&apos;]&#125; (&#123;$error[&apos;file&apos;]&#125;:&#123;$error[&apos;line&apos;]&#125;)&quot;;</div><div class="line">                global $php;</div><div class="line">                $sql = $php-&gt;db-&gt;getLastSql();</div><div class="line">                em_log(&apos;child process fatal error : &apos;.$errorMsg.\Lib\Error::trace().($sql ? &apos; [SQL]:&apos;.$sql : &apos;&apos;));</div><div class="line">            &#125;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        if (empty($error) || !isset($error[&apos;type&apos;]))&#123;</div><div class="line">            $new_data = json_decode($data,true);</div><div class="line">            if(gettype($new_data)==&apos;array&apos;)&#123;</div><div class="line">                $new_data[&apos;_worker_info&apos;] = &apos;worker restarted&apos;;</div><div class="line">                $data = json_encode($new_data,JSON_UNESCAPED_UNICODE);</div><div class="line">            &#125;else&#123;</div><div class="line">                $data .= &apos;&lt;font color=&quot;red&quot;&gt;worker restarted&lt;/font&gt;&apos;;</div><div class="line">            &#125;</div><div class="line">            $this-&gt;response($data);</div><div class="line">            return;</div><div class="line">        &#125;else&#123;</div><div class="line">            $error[&apos;file&apos;] = str_replace(&apos;.php&apos;,&apos;&apos;,$error[&apos;file&apos;]);</div><div class="line">            $errorMsg = &quot;&#123;$error[&apos;message&apos;]&#125; (&quot;.str_replace([SHM_PATH.&apos;tpls/&apos;,SHM_PATH.&apos;widget/tpl/&apos;,APP_PATH,FRAME_ROOT,DOCUMENT_ROOT],[&apos;tpl:&apos;,&apos;widget_tpl:&apos;,&apos;app:&apos;,&apos;root:&apos;,&apos;app:&apos;],$error[&apos;file&apos;]).&quot;:&#123;$error[&apos;line&apos;]&#125;)&quot;;</div><div class="line">            $message = \Lib\Error::info(&quot;Server fatal error&quot;, $errorMsg);</div><div class="line">            em_log(&apos;Server fatal error : &apos;.$errorMsg.\Lib\Error::trace().&apos; URL:&apos;.cur_url());</div><div class="line">            if(defined(&apos;DEBUG&apos;))&#123;</div><div class="line">                $this-&gt;response($message);</div><div class="line">            &#125;else&#123;</div><div class="line">                $this-&gt;response(\Lib\Error::info(&quot;&quot;, &apos;页面发生错误&apos;),200);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/cxsv/cxsv源码分析系列（四）AppServer/" rel="next" title="cxsv源码分析系列（四）AppServer">
+                <i class="fa fa-chevron-left"></i> cxsv源码分析系列（四）AppServer
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/cxsv/cxsv源码分析系列（六）请求处理/" rel="prev" title="cxsv源码分析系列（六）请求处理">
+                cxsv源码分析系列（六）请求处理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/img/avatar.png"
+               alt="Nuxseme" />
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HttpServer源码"><span class="nav-number">2.</span> <span class="nav-text">HttpServer源码</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
