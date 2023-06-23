@@ -1,0 +1,954 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Nuxseme">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="Coding ...">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Nuxseme">
+<meta property="og:url" content="http://nuxseme.github.io/page/8/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="Coding ...">
+<meta property="og:locale" content="zh-Hans">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nuxseme">
+<meta name="twitter:description" content="Coding ...">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/page/8/">
+
+  <title> Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left 
+   page-home 
+ ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/cache/redis与memcached的区别及使用场景/" itemprop="url">
+                  redis与memcached的区别及使用场景
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-06-15T11:49:04+00:00" content="2018-06-15">
+              2018-06-15
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h3><h4 id="需要复杂数据类型支持"><a href="#需要复杂数据类型支持" class="headerlink" title="需要复杂数据类型支持"></a>需要复杂数据类型支持</h4><ul>
+<li>redis string  hash set zset list</li>
+<li>memcache string</li>
+</ul>
+<h4 id="需要持久化"><a href="#需要持久化" class="headerlink" title="需要持久化"></a>需要持久化</h4><ul>
+<li>redis不是mysql 固化数据不一定有mysql做的更好</li>
+<li>redis宕机重启，从硬盘回复数据。不会将压力瞬间压到数据服务器上</li>
+<li>redis重启可能导致数据不一致问题，一般针对特定的场景[允许数据不一致?]</li>
+</ul>
+<h4 id="高可用"><a href="#高可用" class="headerlink" title="高可用"></a>高可用</h4><ul>
+<li>redis 内置集群，故障转移对客户端透明</li>
+<li>memcache 需要客户端搭建集群服务</li>
+</ul>
+<h4 id="Value限制"><a href="#Value限制" class="headerlink" title="Value限制"></a>Value限制</h4><ul>
+<li>redis 512M</li>
+<li>memache 1M[可编译重新设置]</li>
+</ul>
+<h3 id="memcache"><a href="#memcache" class="headerlink" title="memcache"></a>memcache</h3><p>kv数据，并发量请求量大</p>
+<h4 id="内存机制"><a href="#内存机制" class="headerlink" title="内存机制"></a>内存机制</h4><ul>
+<li>redis 临时分配，碎片，分配时间 </li>
+<li>memcache 预分配内存池</li>
+</ul>
+<h4 id="虚拟内存"><a href="#虚拟内存" class="headerlink" title="虚拟内存"></a>虚拟内存</h4><ul>
+<li>redis 内存超量,采用swap,需要把冷盘的数据加载到内存</li>
+<li>memcache 所有数据都在物理内存</li>
+</ul>
+<h4 id="网络模型"><a href="#网络模型" class="headerlink" title="网络模型"></a>网络模型</h4><ul>
+<li>memcache redis 非阻塞IO </li>
+<li>redis 排序，集合复杂操作会阻塞</li>
+</ul>
+<h4 id="线程模型"><a href="#线程模型" class="headerlink" title="线程模型"></a>线程模型</h4><ul>
+<li>reids 单线程，原子性，无法复用多核性能</li>
+<li>memcache Master-Worker 多线程，worker可能会出现锁冲突</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>在通常的项目中其实用redis memcache  没什么区别。一般根据已定的cache使用即可</li>
+<li>在最初选型的时候需要结合项目来选定cache,其实中期也可以替换，不用太纠结</li>
+<li>项目瓶颈或者疑难杂症往往不在这，通常在项目中妥协的方案不是因为它够好，而是有更重要的东西还没解决好</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/php/php深浅复制及应用场景/" itemprop="url">
+                  php引用浅复制深复制
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-03-27T11:22:15+00:00" content="2018-03-27">
+              2018-03-27
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="非特殊场景-不建议使用"><a href="#非特殊场景-不建议使用" class="headerlink" title="非特殊场景 不建议使用"></a>非特殊场景 不建议使用</h3><h4 id="浅复制"><a href="#浅复制" class="headerlink" title="浅复制"></a>浅复制</h4><blockquote>
+<p>共用一个对象的引用,类比软连接。修改内存数据，所有引用都改变</p>
+</blockquote>
+<pre><code>$a = new A();
+$b = $a;
+</code></pre><h4 id="深复制"><a href="#深复制" class="headerlink" title="深复制"></a>深复制</h4><pre><code>$a = new A();
+$b = clone $a;
+</code></pre><blockquote>
+<p>克隆对象的handle(全局标识不一样),但是在内部引用的对象还是同一个地址，这个就需要非常清楚对象的行为，容易导致bug<br>不然就需要在 __clone的魔术方法重新实例化依赖的对象<br>虽然可以用序列化反序列解决多个需要重新初始化的值 总感觉可以有更好的方式来处理</p>
+</blockquote>
+<ul>
+<li>对象在实例化之后如果想多次复用最好确保类的简单 依赖较少 不然会导致莫名的oom，bug,属性变更等问题</li>
+<li>对象作为函数依赖，一般不建议再次修改对象的属性，这个还是要业务线清晰。不要在不需要update的地方随意变更对象属性 </li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/php/php延迟静态绑定/" itemprop="url">
+                  php延迟静态绑定
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-03-27T10:18:29+00:00" content="2018-03-27">
+              2018-03-27
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>延迟静态绑定指使用static关键词调用方法，如果如遇到self static  parent等关键词调用者需要被转移到最近的方法<br>使用场景较为局限，php 静态方法比较少，静态方法+继承使用的场景就更少了</p>
+</blockquote>
+<pre><code>class A {
+
+public static function test()
+{
+   static::who();
+
+}
+
+public static function who()
+{
+    echo __CLASS__,PHP_EOL;
+}
+
+}
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/php/php延迟静态绑定/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/linux/linux装机依赖/" itemprop="url">
+                  linux装机依赖
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-03-15T17:13:03+00:00" content="2018-03-15">
+              2018-03-15
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="nginx-依赖"><a href="#nginx-依赖" class="headerlink" title="nginx 依赖"></a>nginx 依赖</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install pcre-devel openssl openssl-devel openssh-clients openssh-server gcc automake autoconf libtool make curl libcurl-devel expat-devel perl-ExtUtils-MakeMaker gpm-libs</span><br></pre></td></tr></table></figure>
+<h3 id="win上传下载"><a href="#win上传下载" class="headerlink" title="win上传下载"></a>win上传下载</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install lszrz</span><br></pre></td></tr></table></figure>
+<h3 id="wget"><a href="#wget" class="headerlink" title="wget"></a>wget</h3><pre><code>yum -y install wget
+</code></pre><h3 id="w3m"><a href="#w3m" class="headerlink" title="w3m"></a>w3m</h3><pre><code>wget https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm
+wget http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/w/w3m-0.5.3-36.git20180125.el7.x86_64.rpm
+wget http://rpmfind.net/linux/epel/7/x86_64/Packages/p/perl-NKF-2.1.3-5.el7.x86_64.rpm
+  //错误：依赖检测失败：
+//libgc.so.1()(64bit) 被 w3m-0.5.3-36.git20180125.el7.x86_64 需要
+//perl(NKF) 被 w3m-0.5.3-36.git20180125.el7.x86_64 需要
+wget https://rpmfind.net/linux/centos/7.4.1708/os/x86_64/Packages/gc-7.2d-7.el7.x86_64.rpm
+</code></pre><h3 id="net-tools"><a href="#net-tools" class="headerlink" title="net-tools"></a>net-tools</h3><pre><code>yum install -y net-tools
+</code></pre>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/docker/docker-ssh/" itemprop="url">
+                  docker-ssh
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-03-14T15:15:03+00:00" content="2018-03-14">
+              2018-03-14
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="dockerfile"><a href="#dockerfile" class="headerlink" title="dockerfile"></a>dockerfile</h3><blockquote>
+<p>预先生成authorized_keys</p>
+</blockquote>
+<pre><code>FROM centos
+#安装
+RUN yum update -y \
+&amp;&amp;  yum install -y openssh-server \
+&amp;&amp;  mkdir /root/.ssh \
+&amp;&amp;  ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key
+#复制外部的sshd_config文件
+
+ADD sshd_config /etc/ssh/
+ADD authorized_keys /root/.ssh/
+
+EXPOSE 22
+
+CMD [ &quot;/usr/sbin/sshd&quot;,&quot;-D&quot; ]
+</code></pre><h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><pre><code>$docker run -p 5000:22 --name centos-ssh -d centos-ssh
+</code></pre><h3 id="cli"><a href="#cli" class="headerlink" title="cli"></a>cli</h3><pre><code>$ssh -p 5000 root@127.0.0.1
+</code></pre>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/avatar.png" alt="Nuxseme">
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

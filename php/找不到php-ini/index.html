@@ -1,0 +1,534 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Nuxseme">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="问题描述在指定的文件目录下已经存在php.ini 重启了php-fpm依然无法加载php.ini 12345678910$ php -i|headphpinfo()PHP Version =&amp;gt; 7.0.8System =&amp;gt; Linux VM_237_61_centos 3.10.0-327.el7.x86_64 #1 SMP Thu Nov 19 22:10:57 UTC 2015 x">
+<meta property="og:type" content="article">
+<meta property="og:title" content="找不到php.ini">
+<meta property="og:url" content="http://nuxseme.github.io/php/找不到php-ini/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="问题描述在指定的文件目录下已经存在php.ini 重启了php-fpm依然无法加载php.ini 12345678910$ php -i|headphpinfo()PHP Version =&amp;gt; 7.0.8System =&amp;gt; Linux VM_237_61_centos 3.10.0-327.el7.x86_64 #1 SMP Thu Nov 19 22:10:57 UTC 2015 x">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-06-23T07:49:36.377Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="找不到php.ini">
+<meta name="twitter:description" content="问题描述在指定的文件目录下已经存在php.ini 重启了php-fpm依然无法加载php.ini 12345678910$ php -i|headphpinfo()PHP Version =&amp;gt; 7.0.8System =&amp;gt; Linux VM_237_61_centos 3.10.0-327.el7.x86_64 #1 SMP Thu Nov 19 22:10:57 UTC 2015 x">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/php/找不到php-ini/">
+
+  <title> 找不到php.ini | Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                找不到php.ini
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-29T23:07:28+00:00" content="2016-06-29">
+              2016-06-29
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>在指定的文件目录下已经存在php.ini 重启了php-fpm依然无法加载php.ini</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ php -i|head</span><br><span class="line">phpinfo()</span><br><span class="line">PHP Version =&gt; 7.0.8</span><br><span class="line">System =&gt; Linux VM_237_61_centos 3.10.0-327.el7.x86_64 #1 SMP Thu Nov 19 22:10:57 UTC 2015 x86_64</span><br><span class="line">Build Date =&gt; Jun 28 2016 22:33:02</span><br><span class="line">Configure Command =&gt;  &apos;./configure&apos;  &apos;--prefix=/opt/software/php7&apos; &apos;--with-curl&apos; &apos;--with-freetype-dir&apos; &apos;--with-gd&apos; &apos;--with-gettext&apos; &apos;--with-iconv-dir&apos; &apos;--with-kerberos&apos; &apos;--with-libdir=lib64&apos; &apos;--with-libxml-dir&apos; &apos;--with-mysqli&apos; &apos;--with-openssl&apos; &apos;--with-pcre-regex&apos; &apos;--with-pdo-mysql&apos; &apos;--with-pdo-sqlite&apos; &apos;--with-pear&apos; &apos;--with-png-dir&apos; &apos;--with-xmlrpc&apos; &apos;--with-xsl&apos; &apos;--with-zlib&apos; &apos;--enable-fpm&apos; &apos;--enable-bcmath&apos; &apos;--enable-libxml&apos; &apos;--enable-inline-optimization&apos; &apos;--enable-gd-native-ttf&apos; &apos;--enable-mbregex&apos; &apos;--enable-mbstring&apos; &apos;--enable-opcache&apos; &apos;--enable-pcntl&apos; &apos;--enable-shmop&apos; &apos;--enable-soap&apos; &apos;--enable-sockets&apos; &apos;--enable-sysvsem&apos; &apos;--enable-xml&apos; &apos;--enable-zip&apos;</span><br><span class="line">Server API =&gt; Command Line Interface</span><br><span class="line">Virtual Directory Support =&gt; disabled</span><br><span class="line">Configuration File (php.ini) Path =&gt; /opt/software/php7/lib</span><br><span class="line">Loaded Configuration File =&gt; (none)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[ /opt/software/php7/lib ]$ ll</span><br><span class="line">total 84</span><br><span class="line">drwxr-xr-x  3 root root  4096 Jun 28 22:38 .</span><br><span class="line">drwxr-xr-x  9 root root  4096 Jun 28 22:33 ..</span><br><span class="line">drwxr-xr-x 15 root root  4096 Jun 28 22:33 php</span><br><span class="line">-rw-r--r--  1 root root 68935 Jun 28 22:38 php.ini</span><br></pre></td></tr></table></figure>
+<h3 id="跟踪命令"><a href="#跟踪命令" class="headerlink" title="跟踪命令"></a>跟踪命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strace  php -i 2&gt; /tmp/strace.php.ini.log</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ cat /tmp/strace.php.ini.log |grep php.ini</span><br><span class="line">open(&quot;/opt/software/php7/bin/php.ini&quot;, O_RDONLY) = -1 ENOENT (No such file or directory)</span><br><span class="line">open(&quot;/opt/software/php/lib/php.ini&quot;, O_RDONLY) = -1 ENOENT (No such file or directory)</span><br><span class="line">write(1, &quot;Configuration File (php.ini) Pat&quot;..., 33) = 33</span><br></pre></td></tr></table></figure>
+<p>问题找到了 php加载php.ini 会在–prefix/bin或者–prefix同级下的php/lib加载！  </p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><blockquote>
+<p>1 复制文件到对应的目录下 不需要重新编译，立即见效,没有仔细看过为啥会去php/lib目录下找对应的php.ini，所以新建目录php/lib不是很确定会不会对后面的扩展有影响<br>2 重新编译 –prefix=/opt/php (已验证)</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/php/Centos下安装php7总结/" rel="next" title="Centos下安装php7总结">
+                <i class="fa fa-chevron-left"></i> Centos下安装php7总结
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/linux/目录监控自动脚本/" rel="prev" title="目录监控自动脚本">
+                目录监控自动脚本 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/avatar.png" alt="Nuxseme">
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跟踪命令"><span class="nav-number">2.</span> <span class="nav-text">跟踪命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方案"><span class="nav-number">3.</span> <span class="nav-text">解决方案</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

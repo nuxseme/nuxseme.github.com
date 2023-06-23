@@ -1,0 +1,531 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Nuxseme">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="inotify$tar -zxvf inotify-tools-3.14.tar.gz $./configure --prefix=&amp;apos;dir&amp;apos; $make &amp;amp;&amp;amp; make install">
+<meta property="og:type" content="article">
+<meta property="og:title" content="目录监控自动脚本">
+<meta property="og:url" content="http://nuxseme.github.io/linux/目录监控自动脚本/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="inotify$tar -zxvf inotify-tools-3.14.tar.gz $./configure --prefix=&amp;apos;dir&amp;apos; $make &amp;amp;&amp;amp; make install">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-06-23T07:49:36.377Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="目录监控自动脚本">
+<meta name="twitter:description" content="inotify$tar -zxvf inotify-tools-3.14.tar.gz $./configure --prefix=&amp;apos;dir&amp;apos; $make &amp;amp;&amp;amp; make install">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/linux/目录监控自动脚本/">
+
+  <title> 目录监控自动脚本 | Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                目录监控自动脚本
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-29T23:08:45+00:00" content="2016-06-29">
+              2016-06-29
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="inotify"><a href="#inotify" class="headerlink" title="inotify"></a>inotify</h3><pre><code>$tar -zxvf inotify-tools-3.14.tar.gz
+$./configure --prefix=&apos;dir&apos;
+$make &amp;&amp; make install
+</code></pre><a id="more"></a>
+<h3 id="watchdog"><a href="#watchdog" class="headerlink" title="watchdog"></a>watchdog</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">#监视文件活动</span><br><span class="line">#接受个参数 分别是活动目录 安静目录 应用名称</span><br><span class="line"></span><br><span class="line">#判断参数个数,2个参数解析为活动目录 应用名称</span><br><span class="line">#3个参数 解析为 活动目录 安静目录 应用名称  </span><br><span class="line">params_notice=&apos;-e \033[0;31;1musage monitor [start monitor_dir no_monitor_dir |stop|list|restart]\033[0m&apos;</span><br><span class="line"></span><br><span class="line">#定义当前文件目录路径</span><br><span class="line">if [ -L &quot;$0&quot; ];then</span><br><span class="line">	path=$(dirname `readlink $0`)</span><br><span class="line">else</span><br><span class="line">	path=$(pwd) </span><br><span class="line">fi</span><br><span class="line">ok=&apos;-e [\033[0;32;1mok\033[0m]&apos;</span><br><span class="line">fail=&apos;-e [\033[0;31;1mok\033[0m]&apos;</span><br><span class="line"></span><br><span class="line">list()&#123;</span><br><span class="line">	ps aux | grep inotifywait |grep -v grep |awk &apos;&#123;print $2&quot; &quot;$14&quot; &quot;$17&#125;&apos;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">start()&#123;</span><br><span class="line">	#监控执行</span><br><span class="line">	monitor_dir=$1</span><br><span class="line">	if [ -z &quot;$2&quot; ];then</span><br><span class="line">		no_monitor_dir=$path</span><br><span class="line">	else</span><br><span class="line">		no_monitor_dir=$2</span><br><span class="line">	fi</span><br><span class="line">	last_time=&apos;&apos;</span><br><span class="line">	inotifywait -rmq --exclude &quot;$no_monitor_dir&quot; -e modify,create,delete,moved_to $monitor_dir |while read event;</span><br><span class="line">	do </span><br><span class="line">       now=`date +&apos;%s&apos;`</span><br><span class="line">       diff=$[now-last_time]</span><br><span class="line">       if [[ $diff -ge 2 ]];then</span><br><span class="line">		   iphp restart</span><br><span class="line">		   echo $event</span><br><span class="line">		   echo `date &apos;+%m-%d %H:%M:%S&apos;` $event &gt;&gt; $watchdoglog</span><br><span class="line">		fi</span><br><span class="line">		last_time=`date +&apos;%s&apos;`</span><br><span class="line">	done &gt;&gt; /dev/null &amp;</span><br><span class="line">	echo -e &quot;start $1 [\033[0;32;1mok\033[0m]&quot;</span><br><span class="line">	#done </span><br><span class="line">	#| awk &apos;&#123;print datenow &quot; &quot; $1&#125;&apos; datenow=&quot;`date +%m-%d-%H:%M:%S`&quot; &gt;&gt; $watchdoglog</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">stop()&#123;</span><br><span class="line"></span><br><span class="line">	$0 list |while read pid; </span><br><span class="line">	do</span><br><span class="line">		pid_no=`echo $pid|awk &apos;&#123;print $1&#125;&apos;`</span><br><span class="line">		kill -15 $pid_no</span><br><span class="line">		echo -e &quot;Stopping $pid [\033[0;32;1mok\033[0m]&quot;</span><br><span class="line">	done </span><br><span class="line">&#125;</span><br><span class="line">restart()&#123;</span><br><span class="line">	$0 stop </span><br><span class="line">	#$0 start &gt;&gt; /dev/null</span><br><span class="line">	echo -e &quot;Restart $0 [\033[0;32;1mok\033[0m]&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">case $1 in</span><br><span class="line">	list )</span><br><span class="line">		list</span><br><span class="line">		exit 0;;</span><br><span class="line">	stop )</span><br><span class="line">		stop</span><br><span class="line">		exit 0;;</span><br><span class="line">	start )</span><br><span class="line">		if [ -z &quot;$2&quot; ];then</span><br><span class="line">			echo $params_notice</span><br><span class="line">			exit 0;</span><br><span class="line">		fi</span><br><span class="line">		start $2 $3</span><br><span class="line">		exit 0;;</span><br><span class="line">	restart )</span><br><span class="line">		restart</span><br><span class="line">		exit 0;;</span><br><span class="line">	*)</span><br><span class="line">	start $2 $3</span><br><span class="line">	exit 0;;</span><br><span class="line">esac</span><br><span class="line">exit 0</span><br></pre></td></tr></table></figure>
+<h3 id="环境检测"><a href="#环境检测" class="headerlink" title="环境检测"></a>环境检测</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">#环境监测</span><br><span class="line"></span><br><span class="line">ok=&apos;[\033[0;32;1mok\033[0m]&apos;</span><br><span class="line">fail=&apos;[\033[0;31;1mok\033[0m]&apos;</span><br><span class="line"></span><br><span class="line">#nginx</span><br><span class="line">nginx=`ps aux|grep nginx|grep -v grep`</span><br><span class="line">if [ -n &quot;$nginx&quot; ];then</span><br><span class="line">	echo -e &quot;nginx........$ok&quot;</span><br><span class="line">	`nginx -v`</span><br><span class="line">else</span><br><span class="line">	echo -e &quot;nginx........$fail&quot;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">#php</span><br><span class="line">PHP=`php -v`</span><br><span class="line">if [ -n &quot;$PHP&quot; ];then</span><br><span class="line">	echo -e &quot;php........$ok&quot;</span><br><span class="line">	php -v</span><br><span class="line">else</span><br><span class="line">	echo -e &quot;php........$fail&quot;</span><br><span class="line">fi</span><br><span class="line">#php-fpm</span><br><span class="line">php_fpm=`ps aux|grep php-fpm|grep -v grep`</span><br><span class="line"></span><br><span class="line">if [ -n &quot;$php_fpm&quot; ];then</span><br><span class="line">	echo -e &quot;php-fpm........$ok&quot;</span><br><span class="line">else</span><br><span class="line">	echo -e &quot;php-fpm........$fail&quot;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">#swoole</span><br><span class="line">swoole=`php -r &quot;echo SWOOLE_VERSION;&quot;`</span><br><span class="line">if [ -n &quot;$swoole&quot; ];then</span><br><span class="line">	echo -e &quot;swoole........$ok&quot;</span><br><span class="line">	echo &quot;SWOOLE_VERSION=&gt;&quot;$swoole</span><br><span class="line">else</span><br><span class="line">	echo -e &quot;swoole........$fail&quot;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/php/找不到php-ini/" rel="next" title="找不到php.ini">
+                <i class="fa fa-chevron-left"></i> 找不到php.ini
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/mongodb/mongodb启动报错/" rel="prev" title="mongodb启动报错">
+                mongodb启动报错 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/avatar.png" alt="Nuxseme">
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#inotify"><span class="nav-number">1.</span> <span class="nav-text">inotify</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#watchdog"><span class="nav-number">2.</span> <span class="nav-text">watchdog</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#环境检测"><span class="nav-number">3.</span> <span class="nav-text">环境检测</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

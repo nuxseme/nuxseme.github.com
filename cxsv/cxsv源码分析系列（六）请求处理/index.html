@@ -1,0 +1,546 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Nuxseme">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="概述 从客户端发起请求到应用服务器响应返回数据整个过程在AppServer和HttpServer已经提到过，这里完整系统的梳理下  端口监听 服务器实例化之后就监听了设定的端口。这里的请求可以来自客户端直接访问，也可以用nginx和apache作为代理转发。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cxsv源码分析系列（六）请求处理">
+<meta property="og:url" content="http://nuxseme.github.io/cxsv/cxsv源码分析系列（六）请求处理/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="概述 从客户端发起请求到应用服务器响应返回数据整个过程在AppServer和HttpServer已经提到过，这里完整系统的梳理下  端口监听 服务器实例化之后就监听了设定的端口。这里的请求可以来自客户端直接访问，也可以用nginx和apache作为代理转发。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-06-23T07:49:36.373Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cxsv源码分析系列（六）请求处理">
+<meta name="twitter:description" content="概述 从客户端发起请求到应用服务器响应返回数据整个过程在AppServer和HttpServer已经提到过，这里完整系统的梳理下  端口监听 服务器实例化之后就监听了设定的端口。这里的请求可以来自客户端直接访问，也可以用nginx和apache作为代理转发。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/cxsv/cxsv源码分析系列（六）请求处理/">
+
+  <title> cxsv源码分析系列（六）请求处理 | Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                cxsv源码分析系列（六）请求处理
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-27T23:53:19+00:00" content="2016-06-27">
+              2016-06-27
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
+<p>从客户端发起请求到应用服务器响应返回数据整个过程在AppServer和HttpServer已经提到过，这里完整系统的梳理下</p>
+</blockquote>
+<h3 id="端口监听"><a href="#端口监听" class="headerlink" title="端口监听"></a>端口监听</h3><blockquote>
+<p>服务器实例化之后就监听了设定的端口。这里的请求可以来自客户端直接访问，也可以用nginx和apache作为代理转发。</p>
+</blockquote>
+<a id="more"></a>
+<h3 id="HttpServer响应请求"><a href="#HttpServer响应请求" class="headerlink" title="HttpServer响应请求"></a>HttpServer响应请求</h3><blockquote>
+<p>HttpServer实现了swoole扩展的swoole_http_server的回调函数。<br>开启服务器之后，onRequest函数响应端口接受的请求。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public function onRequest(\swoole_http_request $rq,\swoole_http_response $rs)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//响应请求的插件</span><br><span class="line">apply_action(&apos;on_request&apos;);</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//回调到AppServer-&gt;start</span><br><span class="line">call_user_func($this-&gt;_onRequest,$rq,$rs);</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="AppServer解析控制器"><a href="#AppServer解析控制器" class="headerlink" title="AppServer解析控制器"></a>AppServer解析控制器</h3><blockquote>
+<p>应用服务器继承http服务器的特性，请求回调到AppServer-&gt;start下进行下一步处理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">public function start($serv)&#123;</span><br><span class="line">            $path_info = Common::getActionUrl();</span><br><span class="line">            $request_methods = array(&apos;get&apos;=&gt;&apos;doGet&apos;,&apos;post&apos;=&gt;&apos;doPost&apos;,&apos;add&apos;=&gt;&apos;doAdd&apos;,&apos;update&apos;=&gt;&apos;doUpdate&apos;,&apos;put&apos;=&gt;&apos;doUpdate&apos;,&apos;delete&apos;=&gt;&apos;doDelete&apos;);</span><br><span class="line">            //解析method</span><br><span class="line">            $method = &apos;get&apos;;</span><br><span class="line">            $path_info = trim($path_info,&apos;/&apos;);</span><br><span class="line">            $reqs = explode(&apos;/&apos;,$path_info);</span><br><span class="line">            if(!empty($path_info) &amp;&amp; count($reqs)==1)&#123;</span><br><span class="line">                $act = $reqs[0];</span><br><span class="line">                if(is_post())&#123;</span><br><span class="line">                    $method = &apos;post&apos;;</span><br><span class="line">                &#125;elseif(is_put())&#123;</span><br><span class="line">                    $method = &apos;put&apos;;</span><br><span class="line">                &#125;elseif(is_delete())&#123;</span><br><span class="line">                    $method = &apos;delete&apos;;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;elseif(count($reqs)&gt;1)&#123;</span><br><span class="line">                $m = array_pop($reqs);</span><br><span class="line">                if(in_array($m,array_keys($request_methods)))&#123;</span><br><span class="line">                    $method = $m;</span><br><span class="line">                &#125;else&#123;</span><br><span class="line">                    $reqs[] = $m;</span><br><span class="line">                    if(is_post())&#123;</span><br><span class="line">                        $method = &apos;post&apos;;</span><br><span class="line">                    &#125;elseif(is_put())&#123;</span><br><span class="line">                        $method = &apos;put&apos;;</span><br><span class="line">                    &#125;elseif(is_delete())&#123;</span><br><span class="line">                        $method = &apos;delete&apos;;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                array_walk($reqs,function(&amp;$v,$k)&#123;$v = ucwords($v);&#125;);      </span><br><span class="line">                //解析act</span><br><span class="line">                $act = join(&apos;\\&apos;,$reqs);</span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                $act = &apos;index&apos;;</span><br><span class="line">            &#125;</span><br><span class="line">            $act = ucwords($act);</span><br><span class="line">            $act_class = &apos;\\Act\\&apos;.$act;</span><br><span class="line">            //解析模板文件</span><br><span class="line">            $act_file = APP_PATH.&apos;Act/&apos;.str_replace(&apos;\\&apos;,&apos;/&apos;,$act).&apos;.php&apos;;</span><br><span class="line">            if(!in_array($method,array_keys($request_methods)) || !is_file($act_file) || !class_exists($act_class))&#123;</span><br><span class="line">            	return $this-&gt;http404();</span><br><span class="line">            &#125;</span><br><span class="line">            //开启缓存</span><br><span class="line">            ob_start();</span><br><span class="line">            apply_action(&apos;app_start&apos;,$act_file);</span><br><span class="line">            $this-&gt;session-&gt;start();</span><br><span class="line">            $act_obj = new $act_class($this,$method);</span><br><span class="line">            $handler = $request_methods[$method];</span><br><span class="line">            //执行请求的act-&gt;method</span><br><span class="line">            $data = $act_obj-&gt;$handler();</span><br><span class="line">            $data_type = gettype($data);</span><br><span class="line">            if($data_type==&apos;array&apos; || $data_type == &apos;object&apos;)&#123;</span><br><span class="line">                $data = var_export($data,true);</span><br><span class="line">            &#125;</span><br><span class="line">            if(($obcache = ob_get_contents())!==false)&#123;</span><br><span class="line">                $data = $obcache . $data;</span><br><span class="line">                //清空缓存</span><br><span class="line">                ob_end_clean();</span><br><span class="line">            &#125;</span><br><span class="line">            apply_action(&apos;on_response&apos;,$data);</span><br><span class="line">            //返回数据</span><br><span class="line">            $this-&gt;response($data);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/cxsv/cxsv源码分析系列（五）HttpServer/" rel="next" title="cxsv源码分析系列（五）HttpServer">
+                <i class="fa fa-chevron-left"></i> cxsv源码分析系列（五）HttpServer
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/cxsv/cxsv源码分析系列（七）插件plugin/" rel="prev" title="cxsv源码分析系列（七）插件plugin">
+                cxsv源码分析系列（七）插件plugin <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/avatar.png" alt="Nuxseme">
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#端口监听"><span class="nav-number">2.</span> <span class="nav-text">端口监听</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HttpServer响应请求"><span class="nav-number">3.</span> <span class="nav-text">HttpServer响应请求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AppServer解析控制器"><span class="nav-number">4.</span> <span class="nav-text">AppServer解析控制器</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

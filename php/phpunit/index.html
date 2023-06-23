@@ -1,0 +1,581 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Nuxseme">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="安装 composer 安装    composer require –dev phpunit/phpunit ^x.y composer安装需要注意，将vender/bin/phpunit加入到$path变量中,这样安装的phpunit是一个脚本文件，在使用可能会缺少其他的依赖比如PHP_Invoker，这是因为composer方式安装没有包含这个依赖包,需要手动再次composer requi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="phpunit">
+<meta property="og:url" content="http://nuxseme.github.io/php/phpunit/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="安装 composer 安装    composer require –dev phpunit/phpunit ^x.y composer安装需要注意，将vender/bin/phpunit加入到$path变量中,这样安装的phpunit是一个脚本文件，在使用可能会缺少其他的依赖比如PHP_Invoker，这是因为composer方式安装没有包含这个依赖包,需要手动再次composer requi">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-06-23T07:49:36.373Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="phpunit">
+<meta name="twitter:description" content="安装 composer 安装    composer require –dev phpunit/phpunit ^x.y composer安装需要注意，将vender/bin/phpunit加入到$path变量中,这样安装的phpunit是一个脚本文件，在使用可能会缺少其他的依赖比如PHP_Invoker，这是因为composer方式安装没有包含这个依赖包,需要手动再次composer requi">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/php/phpunit/">
+
+  <title> phpunit | Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                phpunit
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-12-08T11:21:02+00:00" content="2017-12-08">
+              2017-12-08
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><ul>
+<li><p>composer 安装  </p>
+<blockquote>
+<p>composer require –dev phpunit/phpunit ^x.y composer安装需要注意，将vender/bin/phpunit加入到$path变量中,这样安装的phpunit是一个脚本文件，在使用可能会缺少其他的依赖比如PHP_Invoker，这是因为composer方式安装没有包含这个依赖包,需要手动再次composer require –dev phpunit/php-invoker。在项目开发中可以添加在外部扩展，IDE可以有提示</p>
+</blockquote>
+</li>
+<li><p>phar安装(建议)</p>
+<blockquote>
+<p>phpunit 以及相关的依赖已经在打包在一个可执行文件里，下载对应的版本</p>
+</blockquote>
+</li>
+</ul>
+<a id="more"></a>
+<h1 id="基境"><a href="#基境" class="headerlink" title="基境"></a>基境</h1><ul>
+<li><p>setUp</p>
+<blockquote>
+<p>每个测试方法在跑之前都会先执行的方法，常用场景，初始化数据</p>
+</blockquote>
+</li>
+<li><p>tearDown</p>
+<blockquote>
+<p>测试方法运行结束后，不管是成功还是失败，都会调用tearDown</p>
+</blockquote>
+</li>
+<li><p>setUpBeforeClass </p>
+<blockquote>
+<p>在测试类跑之前执行一次，常用于设置，数据库连接，设置登录态  </p>
+</blockquote>
+</li>
+<li><p>tearDownAfterClass</p>
+<blockquote>
+<p>在测试类结束之后执行一次，用于释放数据库，删除测试数据等等</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="桩"><a href="#桩" class="headerlink" title="桩"></a>桩</h1><blockquote>
+<p>待续</p>
+</blockquote>
+<h1 id="phpunit-xml"><a href="#phpunit-xml" class="headerlink" title="phpunit.xml"></a>phpunit.xml</h1><blockquote>
+<p>测试编排</p>
+</blockquote>
+<pre><code>&lt;phpunit bootstrap=&quot;bootstrap.php&quot;
+    colors=&quot;true&quot;
+    convertErrorsToExceptions=&quot;true&quot;
+    convertNoticesToExceptions=&quot;true&quot;
+    convertWarningsToExceptions=&quot;true&quot;
+    stopOnFailure=&quot;true&quot;&gt;
+&lt;testsuites&gt;
+    &lt;testsuite name=&quot;dir&quot;&gt;
+       &lt;directory&gt;path&lt;/directory&gt;
+    &lt;/testsuite&gt;
+&lt;/testsuites&gt;
+&lt;/phpunit&gt;
+</code></pre><h1 id="bootstrap"><a href="#bootstrap" class="headerlink" title="bootstrap"></a>bootstrap</h1><blockquote>
+<p>执行测试文件之前加载的文件<br>加载配置文件<br>加载自动加载文件<br>…<br>通常修改自index文件</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/uncategorized/brew/" rel="next" title="brew">
+                <i class="fa fa-chevron-left"></i> brew
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/uncategorized/抛出异常与返回false/" rel="prev" title="抛出异常与返回false">
+                抛出异常与返回false <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/avatar.png" alt="Nuxseme">
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基境"><span class="nav-number">2.</span> <span class="nav-text">基境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#桩"><span class="nav-number">3.</span> <span class="nav-text">桩</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#phpunit-xml"><span class="nav-number">4.</span> <span class="nav-text">phpunit.xml</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#bootstrap"><span class="nav-number">5.</span> <span class="nav-text">bootstrap</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

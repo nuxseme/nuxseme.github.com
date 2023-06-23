@@ -1,0 +1,568 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Nuxseme">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="持续集成 在用hexo 或者 jekyll 搭建个人博客。在平时会不定期发布文章，然后重新生成文档部署到线上。这就是一个典型的不断开发，不断测试，不断部署的例子。持续集成简单讲，就是一个不断开发，不断测试，不断部署的流程，为了方便，就出现了自动持续集成  travis-ci 免费开源，结合github非常方便。[travis-ci 需要收费，弃用，转用github actions]1 travis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="travis-hexo">
+<meta property="og:url" content="http://nuxseme.github.io/ci/travis-hexo/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="持续集成 在用hexo 或者 jekyll 搭建个人博客。在平时会不定期发布文章，然后重新生成文档部署到线上。这就是一个典型的不断开发，不断测试，不断部署的例子。持续集成简单讲，就是一个不断开发，不断测试，不断部署的流程，为了方便，就出现了自动持续集成  travis-ci 免费开源，结合github非常方便。[travis-ci 需要收费，弃用，转用github actions]1 travis">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-06-23T07:49:36.377Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="travis-hexo">
+<meta name="twitter:description" content="持续集成 在用hexo 或者 jekyll 搭建个人博客。在平时会不定期发布文章，然后重新生成文档部署到线上。这就是一个典型的不断开发，不断测试，不断部署的例子。持续集成简单讲，就是一个不断开发，不断测试，不断部署的流程，为了方便，就出现了自动持续集成  travis-ci 免费开源，结合github非常方便。[travis-ci 需要收费，弃用，转用github actions]1 travis">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/ci/travis-hexo/">
+
+  <title> travis-hexo | Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                travis-hexo
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-01T11:28:18+00:00" content="2016-11-01">
+              2016-11-01
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="持续集成"><a href="#持续集成" class="headerlink" title="持续集成"></a>持续集成</h3><blockquote>
+<p>在用hexo 或者 jekyll 搭建个人博客。在平时会不定期发布文章，然后重新生成文档部署到线上。这就是一个典型的不断开发，不断测试，不断部署的例子。持续集成简单讲，就是一个不断开发，不断测试，不断部署的流程，为了方便，就出现了自动持续集成</p>
+</blockquote>
+<h3 id="travis-ci"><a href="#travis-ci" class="headerlink" title="travis-ci"></a>travis-ci</h3><blockquote>
+<p>免费开源，结合github非常方便。[travis-ci 需要收费，弃用，转用github actions]<br>1 travis 会在收到你的push之后自动建立一个虚拟环境，执行.travis.yml指令<br>2 你的github项目中包含正确配置的.travis.yml文件<br>3 在travis.org中，将你的github项目同步过去，并开启配置</p>
+</blockquote>
+<a id="more"></a>
+<h3 id="技巧和坑"><a href="#技巧和坑" class="headerlink" title="技巧和坑"></a>技巧和坑</h3><blockquote>
+<p>1 GH_TOKEN<br>  拿到github Personal access tokens,填写时注意空格，GH_TOKEN 不能写成GH-TOKEN<br>  2 GH_REF<br>  GH_REF 全局变量，冒号之后需要空格，yml强格式<br>  3 theme/<br>  确保主题上传到了git中，否则会出现空白，hexo g 不会生成js css<br>  多看travis  job log  </p>
+</blockquote>
+<h3 id="travis-yml"><a href="#travis-yml" class="headerlink" title=".travis.yml"></a>.travis.yml</h3><pre><code>language: node_js #指定语言
+node_js: stable #指定版本
+
+install:
+  - npm install #安装npm 包管理
+  - npm install hexo-cli -g #安装hexo
+
+notifications:
+  email:
+    - nuxseme@gmail.com
+  on_success: always
+  on_failure: always
+
+script:
+  - hexo -v #查看版本信息确认是否安装成功
+  - hexo clean # 清除public文件
+  - hexo g # 重新生成public
+
+after_script:
+  - cd ./public #进入生成的public目录
+  - git init #初始化git
+  - git config  user.name &quot;nuxseme&quot; #设定git配置
+  - git config  user.email &quot;nuxseme@gmail.com&quot;
+  - git add . #加入暂存区
+  - git commit -m &quot;Auto deploy from Travis-CI &quot; # 提交生成版本
+  - git push --force  &quot;https://${GH_TOKEN}@${GH_REF}&quot; master:gh-pages #推送到远端 master是指刚刚生成的public的分支，gh-pages是指远端GH_REF的分支，这个分支是用来发布的  ${GH_TOKEN} 来自travis setting设置的全局变量
+
+branches:
+  only:
+    - master
+env:
+ global:
+   - GH_REF: github.com/nuxseme/travis-ci.com.git #全局配置
+</code></pre>
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/composer/composer/" rel="next" title="composer">
+                <i class="fa fa-chevron-left"></i> composer
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/yii/Yii-sa-路由解析/" rel="prev" title="Yii-sa-路由解析">
+                Yii-sa-路由解析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/avatar.png" alt="Nuxseme">
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#持续集成"><span class="nav-number">1.</span> <span class="nav-text">持续集成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#travis-ci"><span class="nav-number">2.</span> <span class="nav-text">travis-ci</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#技巧和坑"><span class="nav-number">3.</span> <span class="nav-text">技巧和坑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#travis-yml"><span class="nav-number">4.</span> <span class="nav-text">.travis.yml</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

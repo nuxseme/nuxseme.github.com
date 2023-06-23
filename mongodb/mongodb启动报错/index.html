@@ -1,0 +1,619 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Nuxseme">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="报错信息 child process failed, exited with error number 100  查看mongodbp配置$cat mongodb.cnf  #configuration Options for MongoDB # # For More Information, Consider: # - Configuration Parameters: http://www.m">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mongodb启动报错">
+<meta property="og:url" content="http://nuxseme.github.io/mongodb/mongodb启动报错/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="报错信息 child process failed, exited with error number 100  查看mongodbp配置$cat mongodb.cnf  #configuration Options for MongoDB # # For More Information, Consider: # - Configuration Parameters: http://www.m">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-06-23T07:49:36.373Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mongodb启动报错">
+<meta name="twitter:description" content="报错信息 child process failed, exited with error number 100  查看mongodbp配置$cat mongodb.cnf  #configuration Options for MongoDB # # For More Information, Consider: # - Configuration Parameters: http://www.m">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/mongodb/mongodb启动报错/">
+
+  <title> mongodb启动报错 | Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                mongodb启动报错
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-29T23:24:51+00:00" content="2016-06-29">
+              2016-06-29
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="报错信息"><a href="#报错信息" class="headerlink" title="报错信息"></a>报错信息</h3><blockquote>
+<p>child process failed, exited with error number 100</p>
+</blockquote>
+<h3 id="查看mongodbp配置"><a href="#查看mongodbp配置" class="headerlink" title="查看mongodbp配置"></a>查看mongodbp配置</h3><pre><code>$cat mongodb.cnf 
+#configuration Options for MongoDB
+#
+# For More Information, Consider:
+# - Configuration Parameters: http://www.mongodb.org/display/DOCS/Command+Line+Parameters
+# - File Based Configuration: http://www.mongodb.org/display/DOCS/File+Based+Configuration
+dbpath = /home/mongo/db/
+logpath = /home/mongo/log/m.log
+logappend = true
+#绑定监听地址
+bind_ip = 127.0.0.1
+port = 27017
+fork = true
+#auth = true
+noauth = true
+directoryperdb = true
+journal = true
+</code></pre><a id="more"></a>
+<h3 id="查看日志"><a href="#查看日志" class="headerlink" title="查看日志"></a>查看日志</h3><blockquote>
+<p> Please make at least 3379MB available in /home/mongo/db/journal or use –smallfiles<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">2016-06-22T17:09:59.814+0800 I CONTROL  ***** SERVER RESTARTED *****</span><br><span class="line">2016-06-22T17:09:59.932+0800 I STORAGE  [initandlisten] </span><br><span class="line">2016-06-22T17:09:59.932+0800 I STORAGE  [initandlisten] ** WARNING: Readahead for /home/mongo/db/ is set to 4096KB</span><br><span class="line">2016-06-22T17:09:59.932+0800 I STORAGE  [initandlisten] **          We suggest setting it to 256KB (512 sectors) or less</span><br><span class="line">2016-06-22T17:09:59.932+0800 I STORAGE  [initandlisten] **          http://dochub.mongodb.org/core/readahead</span><br><span class="line">2016-06-22T17:09:59.933+0800 I JOURNAL  [initandlisten] journal dir=/home/mongo/db/journal</span><br><span class="line">2016-06-22T17:09:59.933+0800 I JOURNAL  [initandlisten] recover : no journal files present, no recovery needed</span><br><span class="line">2016-06-22T17:09:59.933+0800 I JOURNAL  [initandlisten] </span><br><span class="line">2016-06-22T17:09:59.933+0800 E JOURNAL  [initandlisten] Insufficient free space for journal files</span><br><span class="line">2016-06-22T17:09:59.933+0800 I JOURNAL  [initandlisten] Please make at least 3379MB available in /home/mongo/db/journal or use --smallfiles</span><br><span class="line">2016-06-22T17:09:59.933+0800 I JOURNAL  [initandlisten] </span><br><span class="line">2016-06-22T17:09:59.963+0800 I STORAGE  [initandlisten] exception in initAndListen: 15926 Insufficient free space for journals, terminating</span><br><span class="line">2016-06-22T17:09:59.963+0800 I CONTROL  [initandlisten] now exiting</span><br><span class="line">2016-06-22T17:09:59.963+0800 I NETWORK  [initandlisten] shutdown: going to close listening sockets...</span><br><span class="line">2016-06-22T17:09:59.963+0800 I NETWORK  [initandlisten] shutdown: going to flush diaglog...</span><br><span class="line">2016-06-22T17:09:59.963+0800 I NETWORK  [initandlisten] shutdown: going to close sockets...</span><br><span class="line">2016-06-22T17:09:59.963+0800 I STORAGE  [initandlisten] shutdown: waiting for fs preallocator...</span><br><span class="line">2016-06-22T17:09:59.963+0800 I STORAGE  [initandlisten] shutdown: final commit...</span><br><span class="line">2016-06-22T17:09:59.963+0800 I STORAGE  [initandlisten] shutdown: closing all files...</span><br><span class="line">2016-06-22T17:09:59.963+0800 I STORAGE  [initandlisten] closeAllFiles() finished</span><br><span class="line">2016-06-22T17:09:59.963+0800 I CONTROL  [initandlisten] dbexit:  rc: 100</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="除去启动时warning"><a href="#除去启动时warning" class="headerlink" title="除去启动时warning"></a>除去启动时warning</h3><pre><code>MongoDB shell version: 3.2.10
+connecting to: test
+Welcome to the MongoDB shell.
+For interactive help, type &quot;help&quot;.
+For more comprehensive documentation, see
+    http://docs.mongodb.org/
+Questions? Try the support group
+    http://groups.google.com/group/mongodb-user
+Server has startup warnings: 
+2016-10-15T01:18:21.530+0800 I STORAGE  [initandlisten] 
+2016-10-15T01:18:21.530+0800 I STORAGE  [initandlisten] ** WARNING: Readahead for /var/mongodb/db/ is set to 4096KB
+2016-10-15T01:18:21.530+0800 I STORAGE  [initandlisten] **          We suggest setting it to 256KB (512 sectors) or less
+2016-10-15T01:18:21.530+0800 I STORAGE  [initandlisten] **          http://dochub.mongodb.org/core/readahead
+2016-10-15T01:18:21.587+0800 I CONTROL  [initandlisten] ** WARNING: You are running this process as the root user, which is not recommended.
+2016-10-15T01:18:21.587+0800 I CONTROL  [initandlisten] 
+2016-10-15T01:18:21.587+0800 I CONTROL  [initandlisten] 
+2016-10-15T01:18:21.587+0800 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/enabled is &apos;always&apos;.
+2016-10-15T01:18:21.587+0800 I CONTROL  [initandlisten] **        We suggest setting it to &apos;never&apos;
+2016-10-15T01:18:21.587+0800 I CONTROL  [initandlisten] 
+2016-10-15T01:18:21.587+0800 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/defrag is &apos;always&apos;.
+2016-10-15T01:18:21.587+0800 I CONTROL  [initandlisten] **        We suggest setting it to &apos;never&apos;
+2016-10-15T01:18:21.587+0800 I CONTROL  [initandlisten]
+
+//除去磁盘读取块大小设置warning
+df -h
+Filesystem               Size  Used Avail Use% Mounted on
+/dev/mapper/centos-root   38G  4.8G   33G  13% /
+devtmpfs                 479M     0  479M   0% /dev
+tmpfs                    489M     0  489M   0% /dev/shm
+tmpfs                    489M  6.8M  483M   2% /run
+tmpfs                    489M     0  489M   0% /sys/fs/cgroup
+/dev/sda1                497M  123M  375M  25% /boot
+tmpfs                     98M     0   98M   0% /run/user/0
+.host:/                  128G   29G  100G  22% /mnt/hgfs
+
+blockdev --report
+RO    RA   SSZ   BSZ   StartSec            Size   Device
+rw  8192   512  4096          0     42949672960   /dev/sda
+rw  8192   512   512       2048       524288000   /dev/sda1
+rw  8192   512  4096    1026048     42424336384   /dev/sda2
+rw   256  2048  2048          0        74151936   /dev/sr0
+rw  8192   512   512          0     40227569664   /dev/dm-0
+rw  8192   512  4096          0      2147483648   /dev/dm-1
+
+blockdev --setra 256 /dev/mapper/centos-root
+
+blockdev --report
+RO    RA   SSZ   BSZ   StartSec            Size   Device
+rw  8192   512  4096          0     42949672960   /dev/sda
+rw  8192   512   512       2048       524288000   /dev/sda1
+rw  8192   512  4096    1026048     42424336384   /dev/sda2
+rw   256  2048  2048          0        74151936   /dev/sr0
+rw  8192   512   512          0     40227569664   /dev/dm-0
+rw  8192   512  4096          0      2147483648   /dev/dm-1
+
+echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled
+echo never &gt; /sys/kernel/mm/transparent_hugepage/defrag
+
+#效果
+
+[ ~ ]$ mongo
+MongoDB shell version: 3.2.10
+connecting to: test
+Server has startup warnings: 
+2016-10-15T01:32:45.014+0800 I CONTROL  [initandlisten] ** WARNING: You are running this process as the root user, which is not recommended.
+2016-10-15T01:32:45.014+0800 I CONTROL  [initandlisten] 
+&gt;
+</code></pre><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><blockquote>
+<p>前面mongodb启动错误,通常直接google百度,发现网上的答案往往跟自己的不太符合,这个时候最有效的方式就是直接查看日志。安装时，别忘记根据配置建立db和log目录</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/linux/目录监控自动脚本/" rel="next" title="目录监控自动脚本">
+                <i class="fa fa-chevron-left"></i> 目录监控自动脚本
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/php/Content-Type/" rel="prev" title="Content-Type">
+                Content-Type <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/avatar.png" alt="Nuxseme">
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#报错信息"><span class="nav-number">1.</span> <span class="nav-text">报错信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看mongodbp配置"><span class="nav-number">2.</span> <span class="nav-text">查看mongodbp配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看日志"><span class="nav-number">3.</span> <span class="nav-text">查看日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#除去启动时warning"><span class="nav-number">4.</span> <span class="nav-text">除去启动时warning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,548 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Nuxseme">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="挂件 挂件，可以自定义编辑内容和位置。在显示区的导航栏，专区等等这些承模块化的显示区域就可以用挂件来实现，满足用户频繁更新的需求(其实是程序员想省事)。  关键点1 挂件并不是完全独立，切合整体的结构2 需要显示的页面有标记例如：{widget}3 输出页面的时候替换掉标记4 每个method对应到一个page_id5 后台能编辑存储挂件mongodb（page_id,content）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cxsv源码分析系列（十一）挂件">
+<meta property="og:url" content="http://nuxseme.github.io/cxsv/cxsv源码分析系列（十一）挂件/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="挂件 挂件，可以自定义编辑内容和位置。在显示区的导航栏，专区等等这些承模块化的显示区域就可以用挂件来实现，满足用户频繁更新的需求(其实是程序员想省事)。  关键点1 挂件并不是完全独立，切合整体的结构2 需要显示的页面有标记例如：{widget}3 输出页面的时候替换掉标记4 每个method对应到一个page_id5 后台能编辑存储挂件mongodb（page_id,content）">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-06-23T07:49:36.373Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cxsv源码分析系列（十一）挂件">
+<meta name="twitter:description" content="挂件 挂件，可以自定义编辑内容和位置。在显示区的导航栏，专区等等这些承模块化的显示区域就可以用挂件来实现，满足用户频繁更新的需求(其实是程序员想省事)。  关键点1 挂件并不是完全独立，切合整体的结构2 需要显示的页面有标记例如：{widget}3 输出页面的时候替换掉标记4 每个method对应到一个page_id5 后台能编辑存储挂件mongodb（page_id,content）">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/cxsv/cxsv源码分析系列（十一）挂件/">
+
+  <title> cxsv源码分析系列（十一）挂件 | Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                cxsv源码分析系列（十一）挂件
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-29T22:31:11+00:00" content="2016-06-29">
+              2016-06-29
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="挂件"><a href="#挂件" class="headerlink" title="挂件"></a>挂件</h3><blockquote>
+<p>挂件，可以自定义编辑内容和位置。在显示区的导航栏，专区等等这些承模块化的显示区域就可以用挂件来实现，满足用户频繁更新的需求(其实是程序员想省事)。</p>
+</blockquote>
+<h3 id="关键点"><a href="#关键点" class="headerlink" title="关键点"></a>关键点</h3><p>1 挂件并不是完全独立，切合整体的结构<br>2 需要显示的页面有标记例如：{<strong>widget</strong>}<br>3 输出页面的时候替换掉标记<br>4 每个method对应到一个page_id<br>5 后台能编辑存储挂件mongodb（page_id,content）</p>
+<a id="more"></a>
+<h3 id="重写display"><a href="#重写display" class="headerlink" title="重写display"></a>重写display</h3><blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">protected function display($tpl_file,$data=[])&#123;</span><br><span class="line">		if(!is_array($data))&#123;</span><br><span class="line">			_exit(&apos;template data must to be an arrays!&apos;);</span><br><span class="line">		&#125;</span><br><span class="line">		$data = array_merge($this-&gt;data,$data);</span><br><span class="line">		extract($data);</span><br><span class="line">		ob_start();</span><br><span class="line">		include($this-&gt;tpl($tpl_file));</span><br><span class="line">		$content = ob_get_clean();</span><br><span class="line">		// 如果有&#123;__CONTENT__&#125;，则获取模块并替换到页面</span><br><span class="line">		if(strpos($content, &apos;&#123;__CONTENT__&#125;&apos;))&#123;</span><br><span class="line">			$page_id = $this-&gt;page_id;</span><br><span class="line">			$mdb = mongodb(&apos;widget_data&apos;);</span><br><span class="line">			$widgets = $mdb-&gt;where(&quot;page_id=&#123;$page_id&#125; and public_id=&apos;&#123;$this-&gt;public[&apos;public_id&apos;]&#125;&apos; and theme=&apos;&#123;$this-&gt;getTemplate()&#125;&apos;&quot;)-&gt;order(&apos;index asc&apos;)-&gt;select();</span><br><span class="line">			$html = &apos;&apos;;</span><br><span class="line">			foreach ($widgets as $key =&gt; $widget) &#123;</span><br><span class="line">				if(!val($widget,&apos;data&apos;) || time() - $widget[&apos;refersh_time&apos;] &gt; $widget[&apos;expired&apos;])&#123;				</span><br><span class="line">					ob_start();</span><br><span class="line">					$error = false;</span><br><span class="line">					try&#123;</span><br><span class="line">						(new $widget[&apos;widget_path&apos;]($this-&gt;page_id,$this))-&gt;show([&apos;uniqid&apos;=&gt;$widget[&apos;_id&apos;]]);</span><br><span class="line">					&#125;catch(\Exception $e)&#123;</span><br><span class="line">						$error = true;</span><br><span class="line">						echo $e-&gt;getMessage();</span><br><span class="line">					&#125;</span><br><span class="line">					$widget[&apos;data&apos;] = ob_get_clean();</span><br><span class="line">					if(!$error)&#123;</span><br><span class="line">						$widget[&apos;refersh_time&apos;] = time();</span><br><span class="line">						$mdb-&gt;save($widget);</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">				$html .= &apos;&lt;div class=&quot;mod&quot; data-uniqid=&quot;&apos;.$widget[&apos;_id&apos;].&apos;&quot; data-id=&quot;&apos;.$widget[&apos;widget_id&apos;].&apos;&quot; data-page-id=&quot;&apos;.$widget[&apos;page_id&apos;].&apos;&quot; data-name=&quot;&apos;.$widget[&apos;tag&apos;].&apos;&quot;&gt;&apos;.val($widget,&apos;data&apos;).&apos;&lt;/div&gt;&apos; ;</span><br><span class="line">			&#125;</span><br><span class="line">			$content = str_replace(&apos;&#123;__CONTENT__&#125;&apos;,&apos;&lt;div class=&quot;mods&quot;&gt;&apos;.$html.&apos;&lt;/div&gt;&apos;,$content);</span><br><span class="line">		&#125;</span><br><span class="line">		$this-&gt;data = [];</span><br><span class="line">		echo $content;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="页面标记"><a href="#页面标记" class="headerlink" title="页面标记"></a>页面标记</h3><blockquote>
+<pre><code> &lt;/div&gt;
+{__CONTENT__}
+&lt;div class=&quot;indexMenuIcoContainer clearfix&quot;&gt;
+&lt;nav class=&quot;indexMenuIco clearfix&quot;&gt;
+</code></pre></blockquote>
+<h3 id="page-id"><a href="#page-id" class="headerlink" title="page_id"></a>page_id</h3><blockquote>
+</blockquote>
+<pre><code>#在action的构造函数有对每一个action_url做冗余校验填充32位
+$this-&gt;act_name = \Lib\Common::getActionUrl();
+$this-&gt;page_id = abs(crc32($this-&gt;act_name));
+$this-&gt;assign(&apos;page_id&apos;,$this-&gt;page_id);
+</code></pre><h3 id="存储挂件"><a href="#存储挂件" class="headerlink" title="存储挂件"></a>存储挂件</h3><blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">public function saveData($data)&#123;</span><br><span class="line">		if(!is_array($data))&#123;</span><br><span class="line">			return $this-&gt;action-&gt;jsonError(&apos;invalid data. the data must to be an arrays&apos;);</span><br><span class="line">		&#125;</span><br><span class="line">		$mdb = mongodb(&apos;widget_data&apos;);</span><br><span class="line">		$validator = new \Lib\Validator($data);</span><br><span class="line">		$validator-&gt;setRules([</span><br><span class="line">			&apos;_id&apos;=&gt;[&apos;required&apos;=&gt;true],</span><br><span class="line">			&apos;name&apos;=&gt;[&apos;required&apos;=&gt;true,&apos;validate&apos;=&gt;&apos;strip_tags,trim&apos;],</span><br><span class="line">			&apos;public_id&apos;=&gt;[&apos;default&apos;=&gt;$this-&gt;action-&gt;getPublic()[&apos;public_id&apos;],&apos;validate&apos;=&gt;&apos;strip_tags,trim&apos;],</span><br><span class="line">			&apos;theme&apos;=&gt;[&apos;required&apos;=&gt;true,&apos;validate&apos;=&gt;&apos;strip_tags,trim&apos;],</span><br><span class="line">			&apos;tag&apos;=&gt;[&apos;required&apos;=&gt;true,&apos;validate&apos;=&gt;&apos;strip_tags,trim&apos;],</span><br><span class="line">			&apos;page_id&apos;=&gt;[&apos;required&apos;=&gt;true,&apos;validate&apos;=&gt;&apos;longint&apos;],</span><br><span class="line">			&apos;widget_id&apos;=&gt;[&apos;required&apos;=&gt;true,&apos;validate&apos;=&gt;&apos;absint&apos;],</span><br><span class="line">			&apos;widget_path&apos;=&gt;[&apos;required&apos;=&gt;true,&apos;validate&apos;=&gt;&apos;trim&apos;],</span><br><span class="line">			&apos;config&apos;=&gt;[&apos;required&apos;=&gt;true],</span><br><span class="line">			&apos;data&apos;=&gt;[],</span><br><span class="line">			&apos;refersh_time&apos; =&gt; [&apos;default&apos;=&gt;time()],</span><br><span class="line">			&apos;expired&apos;=&gt;[&apos;default&apos;=&gt;86400],</span><br><span class="line">		])-&gt;setMessages([</span><br><span class="line">			&apos;_id&apos;=&gt;[&apos;required&apos;=&gt;&apos;唯一ID不能为空&apos;],</span><br><span class="line">			&apos;name&apos;=&gt;[&apos;required&apos;=&gt;&apos;挂件名称不能为空&apos;,&apos;validate&apos;=&gt;&apos;模块名称不合法&apos;],</span><br><span class="line">			&apos;public_id&apos;=&gt;[&apos;validate&apos;=&gt;&apos;模板ID不合法&apos;],</span><br><span class="line">			&apos;theme&apos;=&gt;[&apos;required&apos;=&gt;&apos;模板主题不能为空&apos;,&apos;validate&apos;=&gt;&apos;模板主题不合法&apos;],</span><br><span class="line">			&apos;tag&apos;=&gt;[&apos;required&apos;=&gt;&apos;挂件标识不能为空&apos;,&apos;validate&apos;=&gt;&apos;挂件标识不合法&apos;],</span><br><span class="line">			&apos;page_id&apos;=&gt;[&apos;required&apos;=&gt;&apos;页面ID不能为空&apos;,&apos;validate&apos;=&gt;&apos;页面ID不合法&apos;],</span><br><span class="line">			&apos;widget_id&apos;=&gt;[&apos;required&apos;=&gt;&apos;挂件ID不能为空&apos;,&apos;validate&apos;=&gt;&apos;挂件ID不合法&apos;],</span><br><span class="line">			&apos;widget_path&apos;=&gt;[&apos;required&apos;=&gt;&apos;挂件路径不能为空&apos;,&apos;validate&apos;=&gt;&apos;挂件路径不合法&apos;],</span><br><span class="line">			&apos;config&apos;=&gt;[&apos;required&apos;=&gt;&apos;挂件配置不能为空&apos;],</span><br><span class="line">			&apos;data&apos;=&gt;[],</span><br><span class="line">		]);</span><br><span class="line">		$data = $validator-&gt;validate();</span><br><span class="line">		if(empty($data))&#123;</span><br><span class="line">			return $this-&gt;action-&gt;jsonError($validator-&gt;getError());</span><br><span class="line">		&#125;		</span><br><span class="line">		if(!is_array($data[&apos;config&apos;]))&#123;</span><br><span class="line">			$data[&apos;config&apos;] = json_decode($data[&apos;config&apos;],true);</span><br><span class="line">		&#125;</span><br><span class="line">		if(isset($data[&apos;data&apos;]) &amp;&amp; !empty($data[&apos;data&apos;]) &amp;&amp; !is_array($data[&apos;data&apos;]))&#123;</span><br><span class="line">			$data[&apos;data&apos;] = json_decode($data[&apos;data&apos;],true);</span><br><span class="line">		&#125;</span><br><span class="line">		$condition = &quot;_id=&apos;&#123;$data[&apos;_id&apos;]&#125;&apos;&quot;;</span><br><span class="line">		if($mdb-&gt;where($condition)-&gt;count())&#123;</span><br><span class="line">			return $this-&gt;action-&gt;jsonSuccess($mdb-&gt;where($condition)-&gt;update($data));</span><br><span class="line">		&#125;else&#123;</span><br><span class="line">			$data[&apos;index&apos;] = $this-&gt;getAutoIncrementId($mdb);</span><br><span class="line">			return $this-&gt;action-&gt;jsonSuccess($mdb-&gt;insert($data));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/cxsv/cxsv源码分析系列（十）日志/" rel="next" title="cxsv源码分析系列（十）日志">
+                <i class="fa fa-chevron-left"></i> cxsv源码分析系列（十）日志
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/php/Centos下安装php7总结/" rel="prev" title="Centos下安装php7总结">
+                Centos下安装php7总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/avatar.png" alt="Nuxseme">
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#挂件"><span class="nav-number">1.</span> <span class="nav-text">挂件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关键点"><span class="nav-number">2.</span> <span class="nav-text">关键点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重写display"><span class="nav-number">3.</span> <span class="nav-text">重写display</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#页面标记"><span class="nav-number">4.</span> <span class="nav-text">页面标记</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#page-id"><span class="nav-number">5.</span> <span class="nav-text">page_id</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#存储挂件"><span class="nav-number">6.</span> <span class="nav-text">存储挂件</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

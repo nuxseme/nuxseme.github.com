@@ -1,0 +1,594 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Nuxseme">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="composer 类似npm yum apt-get Homebrew 的php包管理器。在构建项目时，常常需要引进轮子，为了避免不断的include,不断的升级，composer管理器会根据制定的composer.json引进需要的php包，并自动生成自动加载代码，只要require autoload.php就可以对应命名空间包含我们需要的类文件。  composer commandcompos">
+<meta property="og:type" content="article">
+<meta property="og:title" content="composer">
+<meta property="og:url" content="http://nuxseme.github.io/composer/composer/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="composer 类似npm yum apt-get Homebrew 的php包管理器。在构建项目时，常常需要引进轮子，为了避免不断的include,不断的升级，composer管理器会根据制定的composer.json引进需要的php包，并自动生成自动加载代码，只要require autoload.php就可以对应命名空间包含我们需要的类文件。  composer commandcompos">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-06-23T07:49:36.373Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="composer">
+<meta name="twitter:description" content="composer 类似npm yum apt-get Homebrew 的php包管理器。在构建项目时，常常需要引进轮子，为了避免不断的include,不断的升级，composer管理器会根据制定的composer.json引进需要的php包，并自动生成自动加载代码，只要require autoload.php就可以对应命名空间包含我们需要的类文件。  composer commandcompos">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/composer/composer/">
+
+  <title> composer | Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                composer
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-01T11:22:57+00:00" content="2016-11-01">
+              2016-11-01
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="composer"><a href="#composer" class="headerlink" title="composer"></a>composer</h3><blockquote>
+<p>类似npm yum apt-get Homebrew 的php包管理器。在构建项目时，常常需要引进轮子，为了避免不断的include,不断的升级，composer管理器会根据制定的composer.json引进需要的php包，并自动生成自动加载代码，只要require autoload.php就可以对应命名空间包含我们需要的类文件。</p>
+</blockquote>
+<h3 id="composer-command"><a href="#composer-command" class="headerlink" title="composer command"></a>composer command</h3><pre><code>composer config #查看coposer配置
+composer init  #初始化一个composer.json 交互式填写
+composer install #根据composer.json 构建
+composer remove package # 移除
+composer require &quot;package:version&quot; #引入
+</code></pre><a id="more"></a>
+<h3 id="composer-origin"><a href="#composer-origin" class="headerlink" title="composer origin"></a>composer origin</h3><pre><code>方法一：
+composer config repo.packagist composer https://packagist.phpcomposer.com #全局
+方法二：
+//composer.json
+&quot;repositories&quot;: {
+&quot;packagist&quot;: {
+    &quot;type&quot;: &quot;composer&quot;,
+    &quot;url&quot;: &quot;https://packagist.phpcomposer.com&quot;
+    }
+}
+</code></pre><h3 id="制作自己的包"><a href="#制作自己的包" class="headerlink" title="制作自己的包"></a>制作自己的包</h3><blockquote>
+<p>将自己的库包放到github上，项目中通过composer 安装</p>
+</blockquote>
+<pre><code>{
+&quot;name&quot;: &quot;nuxseme/composer.origin&quot;,#引入的包名
+&quot;type&quot;: &quot;library&quot;,
+&quot;description&quot;: &quot;composer template&quot;,
+&quot;keywords&quot;: [&quot;composer template&quot;],
+&quot;homepage&quot;: &quot;http://nuxseme.com&quot;,
+&quot;license&quot;: &quot;MIT&quot;,
+&quot;authors&quot;: [
+    {&quot;name&quot;: &quot;nuxseme&quot;, &quot;email&quot;: &quot;nuxseme@gmail.com&quot;}
+],
+&quot;require&quot;: {
+    &quot;php&quot;: &quot;&gt;=7&quot;
+},
+&quot;autoload&quot;: {
+        #按照命名空间对应
+    &quot;psr-0&quot;: { &quot;Nuxseme\\APP\\&quot;: &quot;lib/&quot; }
+}
+}
+#需要在github仓库发布初始的release
+
+
+{
+&quot;name&quot;: &quot;hyd/composer-test&quot;,
+&quot;type&quot;: &quot;project&quot;,
+&quot;license&quot;: &quot;MIT&quot;,
+&quot;authors&quot;: [
+    {
+        &quot;name&quot;: &quot;hyd&quot;,
+        &quot;email&quot;: &quot;406671554@qq.com&quot;
+    }
+],
+&quot;repositories&quot;: [
+    {
+        &quot;type&quot;: &quot;vcs&quot;,
+        &quot;url&quot;: &quot;git@github.com:nuxseme/composer.origin.git&quot; #包地址
+    },
+    {
+        &quot;packagist&quot;: false #禁止显示packagelist
+    }
+   #注意： 顺序是非常重要的，当 Composer 查找资源包时，它会按照顺序进行。默认情况下 Packagist 是最后加入的，因此自定义设置将可以覆盖 Packagist 上的包。
+
+],
+&quot;require&quot;: {
+        #对应包名称 
+    &quot;nuxseme/composer.origin&quot;: &quot;&gt;=1.0.0&quot;
+    }
+}
+</code></pre>
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/uncategorized/git创建项目并推送到git仓库/" rel="next" title="git创建项目并推送到git仓库">
+                <i class="fa fa-chevron-left"></i> git创建项目并推送到git仓库
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/ci/travis-hexo/" rel="prev" title="travis-hexo">
+                travis-hexo <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/avatar.png" alt="Nuxseme">
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#composer"><span class="nav-number">1.</span> <span class="nav-text">composer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#composer-command"><span class="nav-number">2.</span> <span class="nav-text">composer command</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#composer-origin"><span class="nav-number">3.</span> <span class="nav-text">composer origin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#制作自己的包"><span class="nav-number">4.</span> <span class="nav-text">制作自己的包</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

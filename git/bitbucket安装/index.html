@@ -1,0 +1,575 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Nuxseme">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="docker-compose.ymlversion: &amp;apos;3&amp;apos; services:   bitbucket:     image: atlassian/bitbucket-server     volumes:       - ./data:/var/atlassian/application-data/bitbucket:rw     ports:       - 7990:7">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bitbucket安装">
+<meta property="og:url" content="http://nuxseme.github.io/git/bitbucket安装/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="docker-compose.ymlversion: &amp;apos;3&amp;apos; services:   bitbucket:     image: atlassian/bitbucket-server     volumes:       - ./data:/var/atlassian/application-data/bitbucket:rw     ports:       - 7990:7">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://nuxseme.github.io/img/bitbucket-start.png">
+<meta property="og:image" content="http://nuxseme.github.io/img/bitbucket-select-language.png">
+<meta property="og:image" content="http://nuxseme.github.io/img/bitbucket-generate-license.png">
+<meta property="og:image" content="http://nuxseme.github.io/img/bitbucket-install-license.png">
+<meta property="og:image" content="http://nuxseme.github.io/img/bitbucket-setting-license.png">
+<meta property="og:image" content="http://nuxseme.github.io/img/bitbucket-admin-setting.png">
+<meta property="og:image" content="http://nuxseme.github.io/img/bitbucket-login.png">
+<meta property="og:image" content="http://nuxseme.github.io/img/bitbucket-down-chinese-language-pack.png">
+<meta property="og:image" content="http://nuxseme.github.io/img/bitbucket-upload-language-pack.png">
+<meta property="og:image" content="http://nuxseme.github.io/img/bitbucket-chinese.png">
+<meta property="og:updated_time" content="2023-06-23T07:49:36.373Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="bitbucket安装">
+<meta name="twitter:description" content="docker-compose.ymlversion: &amp;apos;3&amp;apos; services:   bitbucket:     image: atlassian/bitbucket-server     volumes:       - ./data:/var/atlassian/application-data/bitbucket:rw     ports:       - 7990:7">
+<meta name="twitter:image" content="http://nuxseme.github.io/img/bitbucket-start.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/git/bitbucket安装/">
+
+  <title> bitbucket安装 | Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                bitbucket安装
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2019-09-12T01:19:23+00:00" content="2019-09-12">
+              2019-09-12
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="docker-compose-yml"><a href="#docker-compose-yml" class="headerlink" title="docker-compose.yml"></a>docker-compose.yml</h3><pre><code>version: &apos;3&apos;
+services:
+  bitbucket:
+    image: atlassian/bitbucket-server
+    volumes:
+      - ./data:/var/atlassian/application-data/bitbucket:rw
+    ports:
+      - 7990:7990
+      - 7999:7999
+    container_name: bitbucket
+
+
+mikdir data
+docker-compose  up -d
+Creating network &quot;bitbucket_default&quot; with the default driver
+Creating bitbucket ... done
+</code></pre><h3 id="setting-up"><a href="#setting-up" class="headerlink" title="setting up"></a>setting up</h3><ol>
+<li>打开web ip:7990  进行初始配置<br><img src="/img/bitbucket-start.png" alt="start">  </li>
+</ol>
+<ol start="2">
+<li>选择初始语言 后续再安装中文包<br><img src="/img/bitbucket-select-language.png" alt="select language"></li>
+</ol>
+<ol start="3">
+<li>注册bitbucket 账号生成证书<br> <img src="/img/bitbucket-generate-license.png" alt="generate license"></li>
+<li>证书选项<br><img src="/img/bitbucket-install-license.png" alt="install license"></li>
+<li>安装证书<br> <img src="/img/bitbucket-setting-license.png" alt="setting license"></li>
+<li>管理员设置<br> <img src="/img/bitbucket-admin-setting.png" alt="admin setting"></li>
+<li><p>登陆<br> <img src="/img/bitbucket-login.png" alt="login"></p>
+</li>
+<li><p>下载中文语言包<br> 地址：<a href="https://packages.atlassian.com/maven/com/atlassian/translations/bitbucket-language-pack-zh_CN/" target="_blank" rel="noopener">https://packages.atlassian.com/maven/com/atlassian/translations/bitbucket-language-pack-zh_CN/</a><br> <img src="/img/bitbucket-down-chinese-language-pack.png" alt="down chinese language pack"></p>
+</li>
+<li><p>上传并安装语言包<br> <img src="/img/bitbucket-upload-language-pack.png" alt="upload language pack"></p>
+</li>
+<li>语言设置成功<br><img src="/img/bitbucket-chinese.png" alt="chinese"></li>
+</ol>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ol>
+<li>测试版本选择了内部的数据库，如果要用于生产环境，最好外接数据库</li>
+<li>docker 挂载的data 需要备份容灾</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/系统/数据库和缓存一致性/" rel="next" title="数据库和缓存一致性">
+                <i class="fa fa-chevron-left"></i> 数据库和缓存一致性
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/系统/线程安全/" rel="prev" title="线程安全">
+                线程安全 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/avatar.png" alt="Nuxseme">
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-compose-yml"><span class="nav-number">1.</span> <span class="nav-text">docker-compose.yml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#setting-up"><span class="nav-number">2.</span> <span class="nav-text">setting up</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注意事项"><span class="nav-number">3.</span> <span class="nav-text">注意事项</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

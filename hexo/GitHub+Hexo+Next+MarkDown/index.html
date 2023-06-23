@@ -1,0 +1,590 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Nuxseme">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="导语  个人搭建博客，想要自己从前端到后台都实现，同时完善后台框架，周期太长。想找个记录笔记的地方，锻炼下文档的能力，博客的数据量不大，不需要用到数据库，恰好看到Jekyll|Hexo+GitHub Pages静态化存到github上，不错的选择。  前言 Jekyll &amp;amp;&amp;amp; Hexo Jekyll是一款源码文档到成品的转化引擎，通常我们在网页上看到的静态页面包含css和js的,除">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GitHub+Hexo+Next+MarkDown">
+<meta property="og:url" content="http://nuxseme.github.io/hexo/GitHub+Hexo+Next+MarkDown/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="导语  个人搭建博客，想要自己从前端到后台都实现，同时完善后台框架，周期太长。想找个记录笔记的地方，锻炼下文档的能力，博客的数据量不大，不需要用到数据库，恰好看到Jekyll|Hexo+GitHub Pages静态化存到github上，不错的选择。  前言 Jekyll &amp;amp;&amp;amp; Hexo Jekyll是一款源码文档到成品的转化引擎，通常我们在网页上看到的静态页面包含css和js的,除">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-06-23T07:49:36.373Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GitHub+Hexo+Next+MarkDown">
+<meta name="twitter:description" content="导语  个人搭建博客，想要自己从前端到后台都实现，同时完善后台框架，周期太长。想找个记录笔记的地方，锻炼下文档的能力，博客的数据量不大，不需要用到数据库，恰好看到Jekyll|Hexo+GitHub Pages静态化存到github上，不错的选择。  前言 Jekyll &amp;amp;&amp;amp; Hexo Jekyll是一款源码文档到成品的转化引擎，通常我们在网页上看到的静态页面包含css和js的,除">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/hexo/GitHub+Hexo+Next+MarkDown/">
+
+  <title> GitHub+Hexo+Next+MarkDown | Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                GitHub+Hexo+Next+MarkDown
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-25T10:28:21+00:00" content="2016-06-25">
+              2016-06-25
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h4><hr>
+<blockquote>
+<p>个人搭建博客，想要自己从前端到后台都实现，同时完善后台框架，周期太长。想找个记录笔记的地方，锻炼下文档的能力，博客的数据量不大，不需要用到数据库，恰好看到Jekyll|Hexo+GitHub Pages静态化存到github上，不错的选择。</p>
+</blockquote>
+<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><hr>
+<h4 id="Jekyll-amp-amp-Hexo"><a href="#Jekyll-amp-amp-Hexo" class="headerlink" title="Jekyll &amp;&amp; Hexo"></a>Jekyll &amp;&amp; Hexo</h4><blockquote>
+<p>Jekyll是一款源码文档到成品的转化引擎，通常我们在网页上看到的静态页面包含css和js的,除去文档自身的css、js,头部，尾部，侧边栏，评论系统等等都需要配置。jekyll引擎做了这样一件事情，我们预先配置好头尾，侧边栏，分类等等,这些文件按照一定的规则存放在不同的文件目录。jekyll和Hexo就帮我们将css,js和其他配置生成一个静态的框架，我们在这个静态的框架下写文档就好，最终我们的关注点就只放在文档自身.github.io内置jekyll引擎，所以我们将写好的文档源码连同项目配置上传到github规范的仓库就部署好了。Hexo则需要先生成好项目，上传部署。jekyll和Hexo都可以搭配很多开源优秀的主题使用，我自己用的是Hexo+Next.Mist,只测试了下Jekyll的使用.</p>
+</blockquote>
+<a id="more"></a>
+<h4 id="MarkDown"><a href="#MarkDown" class="headerlink" title="MarkDown"></a>MarkDown</h4><blockquote>
+<p>markdown 教程比较多也很完善，这里写上它完全是因为喜爱。小而美。学习很简单，找篇别人的markdown源文件对应者预览，想要实现什么效果对应看源码格式就好，多写几次就能满足基本的文档需要。专注文档本身，而非花里胡哨没必要的东西。</p>
+</blockquote>
+<h4 id="Hexo的安装配置"><a href="#Hexo的安装配置" class="headerlink" title="Hexo的安装配置"></a>Hexo的安装配置</h4><hr>
+<h5 id="1-node-安装"><a href="#1-node-安装" class="headerlink" title="1 node 安装"></a>1 node 安装</h5><p>网址 <a href="https://nodejs.org" target="_blank" rel="noopener">https://nodejs.org</a> 包含mac、win、linux等版本选择自己对应的下载安装</p>
+<pre><code>$node -v  
+$v6.2.2
+$npm -v
+$3.9.5    
+</code></pre><h5 id="2-hexo-安装"><a href="#2-hexo-安装" class="headerlink" title="2 hexo 安装"></a>2 hexo 安装</h5><pre><code>$sudo npm install -g hexo-cli
+$sudo npm install hexo-server
+</code></pre><p>这里通常会出错，对应错误google即可，建议加上sudo，可能会出现目录权限不够</p>
+<pre><code>$hexo init #进入自定义的项目目录之后，hexo init会初始化 并clone git上的默认主题
+$hexo s #hexo server 出现这个说明启动成功，启动失败可以用hexo server --debug这
+个时候会在项目跟目录下生成debug.log 查找原因即可
+INFO  Start processing
+INFO  Hexo is running at http://localhost:4000/. Press Ctrl+C to stop.
+</code></pre><p>通常我们也会将git的已有的项目拉取下来，这个时候小心用hexo init 会重新初始化。这个时候需要执行下</p>
+<pre><code>$npm install
+$hexo s
+$hexo s --draft #预览草稿
+</code></pre><p>对应提示差什么包安装即可.出现Cannot Get / ，hexo server 也启动成功，很可能是没有执行npm install</p>
+<h5 id="3-hexo-指令简介"><a href="#3-hexo-指令简介" class="headerlink" title="3 hexo 指令简介"></a>3 hexo 指令简介</h5><pre><code>$hexo -h #最有用 没有之一
+$hexo s #本地预览 默认端口4000  端口被占用可选择关闭端口或者选择其他端口 hexo s -p 6666 
+如果出现样式不对 没有加载可以尝试强制刷新或者重启服务
+$hexo s --drafts #将草稿加入本地预览      
+$hexo g #根据source生成public 在github上的代码就是public中的文件
+$hexo d #部署 部署是根据项目配置文件中的
+$hexo clean #删除生成的public文件
+$hexo new title #在_post下新建文件，不需要加后缀
+$hexo new draft title #在_drafts下新建草稿
+$hexo publish title #将draft发布
+
+deploy: #通常采用ssh-key模式 不需要再次输入账户密码
+    type: git
+    repo: git@github.com:yourgithubname/yourprojectname.git #可以多个
+    branch: master#your branch
+    #message: &quot;update&quot;
+</code></pre><h4 id="Next"><a href="#Next" class="headerlink" title="Next"></a>Next</h4><hr>
+<h5 id="1-config-yml"><a href="#1-config-yml" class="headerlink" title="1 _config.yml"></a>1 _config.yml</h5><blockquote>
+<p>两个配置文件不要混淆了，一个是项目跟目录下的_config.yml 一个是主题下的_config.yml。项目根目录下得配置文件预览下，通常跟用户的个性设定有关，主题的跟主题参数设置相关，具体可以详细了解下.</p>
+</blockquote>
+<h5 id="2-languages"><a href="#2-languages" class="headerlink" title="2 languages"></a>2 languages</h5><blockquote>
+<p>保存语言key-value值，选择自己需要，其他的可删掉.</p>
+</blockquote>
+<h5 id="3-layout"><a href="#3-layout" class="headerlink" title="3 layout"></a>3 layout</h5><blockquote>
+<p>生成html的模板，这个文件下的东西可以好好了解下，里面主题的头部，脚本，侧边栏，菜单的设定和修改都可以在这里找到。需要自定义主题，可以在预览下找到对应的class name 全局搜索即可，作者采用的命名很规范和释义。我的主题删减了很多部分就是先删除这里的html代码生成的部分. </p>
+</blockquote>
+<h5 id="4-source"><a href="#4-source" class="headerlink" title="4 source"></a>4 source</h5><blockquote>
+<p>这里面存放的是css部分的东西，修改样式通常在这里修改即可  </p>
+</blockquote>
+<p><a href="http://theme-next.iissnan.com" target="_blank" rel="noopener">官方的说明文档</a>查看.</p>
+<hr>
+<h5 id="more"><a href="#more" class="headerlink" title="more:"></a>more:</h5><blockquote>
+<p><a href="http://www.nuxseme.com" target="_blank" rel="noopener">我的主题</a>——<a href="https://github.com/nuxseme/nuxseme.github.com.origin" target="_blank" rel="noopener">源码</a><br><a href="http://www.jianshu.com/p/465830080ea9" target="_blank" rel="noopener">HEXO+Github,搭建属于自己的博客</a><br><a href="http://www.jianshu.com/p/73779eacb494" target="_blank" rel="noopener">Hexo 靜態博客使用指南</a>  </p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/uncategorized/hello-world/" rel="next" title="Hello World Hexo">
+                <i class="fa fa-chevron-left"></i> Hello World Hexo
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/cxsv/cxsv源码分析系列（一）框架简介/" rel="prev" title="cxsv源码分析系列(一)框架简介">
+                cxsv源码分析系列(一)框架简介 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/avatar.png" alt="Nuxseme">
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#导语"><span class="nav-number">1.</span> <span class="nav-text">导语</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">2.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Jekyll-amp-amp-Hexo"><span class="nav-number">3.</span> <span class="nav-text">Jekyll &amp;&amp; Hexo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MarkDown"><span class="nav-number">4.</span> <span class="nav-text">MarkDown</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Hexo的安装配置"><span class="nav-number">5.</span> <span class="nav-text">Hexo的安装配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-node-安装"><span class="nav-number">5.1.</span> <span class="nav-text">1 node 安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-hexo-安装"><span class="nav-number">5.2.</span> <span class="nav-text">2 hexo 安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-hexo-指令简介"><span class="nav-number">5.3.</span> <span class="nav-text">3 hexo 指令简介</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Next"><span class="nav-number">6.</span> <span class="nav-text">Next</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-config-yml"><span class="nav-number">6.1.</span> <span class="nav-text">1 _config.yml</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-languages"><span class="nav-number">6.2.</span> <span class="nav-text">2 languages</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-layout"><span class="nav-number">6.3.</span> <span class="nav-text">3 layout</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-source"><span class="nav-number">6.4.</span> <span class="nav-text">4 source</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#more"><span class="nav-number">6.5.</span> <span class="nav-text">more:</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

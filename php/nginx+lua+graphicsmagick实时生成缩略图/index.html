@@ -1,0 +1,589 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Nuxseme">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="安装  安装lua LuaJITln -s /usr/local/lib/libluajit-5.1.so.2 /lib64/libluajit-5.1.so.2 设置软连接，不然配置nginx会报错安装 GraphicsMagick安装 nginx  --with-ld-opt=-Wl,-rpath,/user/local/lib --add-module=/opt/download/ngx_d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nginx+lua+graphicsmagick实时生成缩略图">
+<meta property="og:url" content="http://nuxseme.github.io/php/nginx+lua+graphicsmagick实时生成缩略图/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="安装  安装lua LuaJITln -s /usr/local/lib/libluajit-5.1.so.2 /lib64/libluajit-5.1.so.2 设置软连接，不然配置nginx会报错安装 GraphicsMagick安装 nginx  --with-ld-opt=-Wl,-rpath,/user/local/lib --add-module=/opt/download/ngx_d">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-06-23T07:49:36.373Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="nginx+lua+graphicsmagick实时生成缩略图">
+<meta name="twitter:description" content="安装  安装lua LuaJITln -s /usr/local/lib/libluajit-5.1.so.2 /lib64/libluajit-5.1.so.2 设置软连接，不然配置nginx会报错安装 GraphicsMagick安装 nginx  --with-ld-opt=-Wl,-rpath,/user/local/lib --add-module=/opt/download/ngx_d">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/php/nginx+lua+graphicsmagick实时生成缩略图/">
+
+  <title> nginx+lua+graphicsmagick实时生成缩略图 | Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                nginx+lua+graphicsmagick实时生成缩略图
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-28T15:14:55+00:00" content="2016-11-28">
+              2016-11-28
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>安装</p>
+<blockquote>
+<p>安装lua LuaJIT<br>ln -s /usr/local/lib/libluajit-5.1.so.2 /lib64/libluajit-5.1.so.2 设置软连接，不然配置nginx会报错<br>安装 GraphicsMagick<br>安装 nginx</p>
+</blockquote>
+<pre><code>--with-ld-opt=-Wl,-rpath,/user/local/lib --add-module=/opt/download/ngx_devel_kit-0.3.0 --add-module=/opt/download/lua-nginx-module-0.10.7
+</code></pre><a id="more"></a>
+<p>配置</p>
+<pre><code> //http://lua.img.com:9876/image/1.png.400x300.png
+ location  /image {
+        root /opt/project/lua.img.com;
+        set $image_root /opt/project/lua.img.com;
+        set $file &quot;$image_root$uri&quot;;
+        //ngx.var.file=/opt/project/lua.img.com/iamge/1.png.400x300.png
+        //图片存在 直接返回 图片不存在处理保存并返回结果
+        if (!-f $file) {
+                    rewrite_by_lua &apos;
+                            ngx.var.uri=image/1.png.400x300.png
+                            local index = string.find(ngx.var.uri, &quot;([0-9]+)x([0-9]+)&quot;);
+                            //index= 13
+                            if (index == nil) then
+                               ngx.exit(404);end;
+                            local originalUri = string.sub(ngx.var.uri, 0, index-2);
+                            //originxUri=image/1.png
+                            local area = string.sub(ngx.var.uri, index);
+                            //area=400x300.png
+                            index = string.find(area, &quot;([.])&quot;);
+                            //index=7
+                            area = string.sub(area, 0, index-1);
+                            //area=400x300
+                            print(area)
+                            local image_sizes = {&quot;160x160&quot;,&quot;400x300&quot;};
+                            function table.contains(table, element)
+                            for _, value in pairs(table) do
+                                    if value == element then
+                                            return true
+                                    end
+                            end
+                            return false
+                    end
+                    print(table.contains(image_sizes,area))
+                    if table.contains(image_sizes, area) then
+                    //调用gm 处理
+                    //ngx.var.image_root = /opt/project/lua.img.com
+                    //originalUri = image/1.png
+                    //area = 400x300
+                    //ngx.var.uri= image/1.png.400x300.png
+                    local command = &quot;/opt/software/GraphicsMagick/bin/gm convert &quot; ..ngx.var.image_root ..  originalUri  .. &quot; -thumbnail &quot; .. area .. &quot; &quot;.. ngx.var.image_root .. ngx.var.uri;
+                    print(command)
+                    local ret=os.execute(command);
+                    else
+                    ngx.exit(404);
+                    end;
+            &apos;;
+      }
+
+      expires 7d;
+}
+</code></pre><p>问题</p>
+<blockquote>
+<p>在测试过程中，出现了一个问题，command = “gm convert “ ..ngx.var.image_root ..  originalUri  .. “ -thumbnail “ .. area .. “ “.. ngx.var.image_root .. ngx.var.uri;原本这里的gm是全局的指令，这样设定的时候，在nginx日志中能看到流程处理了，command命令没有执行成功。这里调试了很久，修改为/opt/software/GraphicsMagick/bin/gm就可以了。</p>
+</blockquote>
+<blockquote>
+<p>nginx.conf  user root root 确保对文件具有读写权限</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/php/nginx+image_filter实时生成缩略图/" rel="next" title="nginx+image_filter实时生成缩略图">
+                <i class="fa fa-chevron-left"></i> nginx+image_filter实时生成缩略图
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/js/Jquery-File-Upload/" rel="prev" title="Jquery-File-Upload">
+                Jquery-File-Upload <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/avatar.png" alt="Nuxseme">
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

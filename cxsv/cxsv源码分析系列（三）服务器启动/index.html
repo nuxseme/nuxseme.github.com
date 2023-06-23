@@ -1,0 +1,568 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Nuxseme">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="概述框架启动很简单，php执行单入口脚本即可，有多个项目可以自己写个简单的shell脚本。启动之前请确认安装swoole，在指定目录(用户可以修改)有当前应用的配置文件。根据启动时报错信息作相应的安装扩展，修改配置文件即可。 启动命令12#规划好应用名称和配置，在appServer.php(启动服务的单入口文件)中会设定应用名称为环境变量$php appServer.php app_name">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cxsv源码分析系列（三）服务器启动">
+<meta property="og:url" content="http://nuxseme.github.io/cxsv/cxsv源码分析系列（三）服务器启动/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="概述框架启动很简单，php执行单入口脚本即可，有多个项目可以自己写个简单的shell脚本。启动之前请确认安装swoole，在指定目录(用户可以修改)有当前应用的配置文件。根据启动时报错信息作相应的安装扩展，修改配置文件即可。 启动命令12#规划好应用名称和配置，在appServer.php(启动服务的单入口文件)中会设定应用名称为环境变量$php appServer.php app_name">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-06-23T07:49:36.373Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cxsv源码分析系列（三）服务器启动">
+<meta name="twitter:description" content="概述框架启动很简单，php执行单入口脚本即可，有多个项目可以自己写个简单的shell脚本。启动之前请确认安装swoole，在指定目录(用户可以修改)有当前应用的配置文件。根据启动时报错信息作相应的安装扩展，修改配置文件即可。 启动命令12#规划好应用名称和配置，在appServer.php(启动服务的单入口文件)中会设定应用名称为环境变量$php appServer.php app_name">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/cxsv/cxsv源码分析系列（三）服务器启动/">
+
+  <title> cxsv源码分析系列（三）服务器启动 | Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                cxsv源码分析系列（三）服务器启动
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-26T23:26:22+00:00" content="2016-06-26">
+              2016-06-26
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>框架启动很简单，php执行单入口脚本即可，有多个项目可以自己写个简单的shell脚本。启动之前请确认安装swoole，在指定目录(用户可以修改)有当前应用的配置文件。根据启动时报错信息作相应的安装扩展，修改配置文件即可。</p>
+<h3 id="启动命令"><a href="#启动命令" class="headerlink" title="启动命令"></a>启动命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#规划好应用名称和配置，在appServer.php(启动服务的单入口文件)中会设定应用名称为环境变量</span><br><span class="line">$php appServer.php app_name</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (empty($app_name = $argv[1])) &#123;</span><br><span class="line">    exit(&quot;Usage: appServer.php app_name&quot; . PHP_EOL);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">//读取配置文件</span><br><span class="line">if(!is_dir(&apos;/etc/cxsv/&apos;))&#123;</span><br><span class="line">	mkdir(&apos;/etc/cxsv/&apos;);</span><br><span class="line">&#125;</span><br><span class="line">$config_file = &apos;/etc/cxsv/&apos;.$app_name.&apos;.ini&apos;;</span><br><span class="line">if(!file_exists($config_file))&#123;</span><br><span class="line">	$config_file = __DIR__.&apos;/etc/&apos;.$app_name.&apos;.ini&apos;;</span><br><span class="line">&#125;</span><br><span class="line">if (!is_file($config_file) || false === $config = parse_ini_file($config_file, true)) &#123;</span><br><span class="line">    echo &apos;the config file [/etc/cxsv/&apos;.$app_name.&apos;.ini] no such , or cat not parsed&apos; . PHP_EOL;</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br><span class="line">#这部分代码可以自己修改，当前设定在/etc/cxsv目录下和框架目录/etc下</span><br></pre></td></tr></table></figure>
+<h3 id="应用配置文件"><a href="#应用配置文件" class="headerlink" title="应用配置文件"></a>应用配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$php createConfig.php app_name  #应用配置文件根据swoole.ini拷贝</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line">#应用配置被加载成数组，在httpServer内部某些参数可以重新设定</span><br><span class="line">;守护进程化</span><br><span class="line">daemonize=1</span><br><span class="line"></span><br><span class="line">;工作进程数</span><br><span class="line">worker_num=4</span><br><span class="line"></span><br><span class="line">;异步任务进程数</span><br><span class="line">task_worker_num=4</span><br><span class="line"></span><br><span class="line">;最大请求数，超过此数目，会关闭WORK进程并重新创建，防止内存泄漏</span><br><span class="line">max_request = 100000</span><br><span class="line"></span><br><span class="line">;最大连接数，超过此数量后，新进入的连接将被拒绝</span><br><span class="line">max_conn=51200</span><br><span class="line"></span><br><span class="line">[server]</span><br><span class="line">;应用根目录</span><br><span class="line">document_root = &quot;/home/www/&#123;app_name&#125;&quot;</span><br><span class="line"></span><br><span class="line">;重命名进程</span><br><span class="line">process_rename = 1</span><br><span class="line"></span><br><span class="line">;监听IP地址</span><br><span class="line">host = 127.0.0.1</span><br><span class="line"></span><br><span class="line">;绑定端口</span><br><span class="line">port = &#123;port&#125;</span><br><span class="line"></span><br><span class="line">;keepleve</span><br><span class="line">keepalive=1</span><br><span class="line"></span><br><span class="line">;启用定时器</span><br><span class="line">enable_timer = 1</span><br><span class="line"></span><br><span class="line">[session]</span><br><span class="line">type = memcache</span><br><span class="line">;如果没有指定单独储存，则用[cache]设置的</span><br><span class="line">;memcache = 127.0.0.1:11211:1:1,127.0.0.1:11211:2:1</span><br><span class="line">session_life = 2880</span><br><span class="line">;session前缀</span><br><span class="line">;prefix = </span><br><span class="line"></span><br><span class="line">;cookie名称，默认为CXSESSID</span><br><span class="line">;cookie_name =</span><br><span class="line"></span><br><span class="line">[app]</span><br><span class="line">;编码</span><br><span class="line">charset = utf-8</span><br><span class="line"></span><br><span class="line">;应用子目录，在前后台分开目录的情况下有用，否则请保持与document_root一致</span><br><span class="line">app_path = /home/www/&#123;app_name&#125;</span><br><span class="line"></span><br><span class="line">[cache]</span><br><span class="line">;缓存类型，目前只支持memcache</span><br><span class="line">type = memcache</span><br><span class="line"></span><br><span class="line">;memcache服务器的IP地址列表，多个之间用关角逗号分隔。支持分布式</span><br><span class="line">;host:port:weight:persistent</span><br><span class="line">host = 127.0.0.1:11211:1:1,127.0.0.1:11211:1:1</span><br><span class="line"></span><br><span class="line">[redis]</span><br><span class="line">;主机IP</span><br><span class="line">host = 127.0.0.1</span><br><span class="line"></span><br><span class="line">;端口</span><br><span class="line">port = 6379</span><br><span class="line"></span><br><span class="line">;密码</span><br><span class="line">auth = </span><br><span class="line"></span><br><span class="line">[db]</span><br><span class="line">;数据库配置</span><br><span class="line">;格式：host:port:user:password:dbname</span><br><span class="line"></span><br><span class="line">;读写分离</span><br><span class="line">;read = 127.0.0.1:3306:user:password:dbname</span><br><span class="line">;write = 127.0.0.1:3306:user:password:dbname</span><br><span class="line"></span><br><span class="line">;单机</span><br><span class="line">host = 127.0.0.1:3306:&#123;app_name&#125;:&#123;app_name&#125;123:&#123;app_name&#125;</span><br><span class="line"></span><br><span class="line">;mongodb</span><br><span class="line">[mongodb]</span><br><span class="line">;无密码的链接</span><br><span class="line">host = 127.0.0.1:27017</span><br><span class="line"></span><br><span class="line">;带用户名密码的链接</span><br><span class="line">;host = mongodb://&#123;app_name&#125;:123@127.0.0.1</span><br><span class="line"></span><br><span class="line">;多个数据库</span><br><span class="line">;host = mongodb://127.0.0.1:27017,127.0.0.1:27018</span><br><span class="line"></span><br><span class="line">;数据库/集</span><br><span class="line">db = &#123;app_name&#125;</span><br><span class="line"></span><br><span class="line">##以上截取了部分配置项</span><br></pre></td></tr></table></figure>
+<h3 id="启动流程"><a href="#启动流程" class="headerlink" title="启动流程"></a>启动流程</h3><h4 id="appServer-php"><a href="#appServer-php" class="headerlink" title="appServer.php"></a>appServer.php</h4><blockquote>
+<p>扩展检测<br>加载配置文件<br>定义环境变量<br>创建应用目录<br>加载全局函数 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">require __DIR__.&apos;/load.php&apos;;</span><br><span class="line">##load.php</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#包含自动加载器</span><br><span class="line">require LIB_PATH.&apos;Loader.php&apos;;</span><br><span class="line">//注册命名空间</span><br><span class="line">\Lib\Loader::setRootNS(&apos;Lib&apos;,LIB_PATH);</span><br><span class="line">\Lib\Loader::setRootNS(&apos;Mod&apos;,MOD_PATH);</span><br><span class="line">//注册自动加载函数</span><br><span class="line">spl_autoload_register(&apos;\\Lib\Loader::autoload&apos;);</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>创建应用服务器实例</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$server=new \Lib\AppServer($config);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>设置请求回调</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$server-&gt;setProcReqFun(array($server,&apos;start&apos;));</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>挂载全局树  </p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$php = &amp;$server;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>启动  </p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$server-&gt;run();</span><br></pre></td></tr></table></figure>
+<h4 id="AppServer-php"><a href="#AppServer-php" class="headerlink" title="AppServer.php"></a>AppServer.php</h4><blockquote>
+<p>调用HttpServer构造函数，设定配置，日志，脚本关闭句柄</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public function __construct($config)&#123;</span><br><span class="line">        $this-&gt;config = $config;</span><br><span class="line">        $this-&gt;loger = new EchoLog(&apos;&apos;);</span><br><span class="line">        register_shutdown_function(array($this, &apos;handleFatal&apos;));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注册命名空间<br>设置错误句柄</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set_error_handler(array($this,&apos;errorHandler&apos;));</span><br></pre></td></tr></table></figure>
+<h4 id="HttpServer-php"><a href="#HttpServer-php" class="headerlink" title="HttpServer.php"></a>HttpServer.php</h4><blockquote>
+<p>function run<br>实例化swoole_http_server<br>注册事件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$server-&gt;on(&apos;Start&apos;,array($this,&apos;onStart&apos;));</span><br><span class="line">$server-&gt;on(&apos;ManagerStart&apos;, array($this,&apos;onManagerStart&apos;));</span><br><span class="line">$server-&gt;on(&apos;ManagerStop&apos;, array($this,&apos;onManagerStop&apos;));</span><br><span class="line">$server-&gt;on(&apos;WorkerStart&apos;,array($this,&apos;onWorkerStart&apos;));</span><br><span class="line">$server-&gt;on(&apos;Request&apos;, array($this, &apos;onRequest&apos;));</span><br><span class="line">$server-&gt;on(&apos;Close&apos;, array($this, &apos;onClose&apos;));</span><br><span class="line">$server-&gt;on(&apos;Shutdown&apos;, array($this, &apos;onShutdown&apos;));</span><br><span class="line">$server-&gt;on(&apos;Task&apos;, array($this, &apos;onTask&apos;));</span><br><span class="line">$server-&gt;on(&apos;Finish&apos;, array($this, &apos;onFinish&apos;));</span><br><span class="line">$server-&gt;on(&apos;WorkerStop&apos;,[$this,&apos;onWorkerStop&apos;]);</span><br><span class="line">$server-&gt;on(&apos;WorkerError&apos;,[$this,&apos;onWorkerError&apos;]);</span><br><span class="line">// $server-&gt;on(&apos;Timeout&apos;,[$this,&apos;onTimeout&apos;]);</span><br><span class="line">$server-&gt;start();#服务器启动</span><br></pre></td></tr></table></figure>
+<p>自此服务器启动完毕，这时候生成进程<br>master-&gt;manager-&gt;work<br>根据设定的定时器和任务还会开启定时器进程和任务进程</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/cxsv/cxsv源码分析系列（二）扩展安装/" rel="next" title="cxsv源码分析系列（二）扩展安装">
+                <i class="fa fa-chevron-left"></i> cxsv源码分析系列（二）扩展安装
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/cxsv/cxsv源码分析系列（四）AppServer/" rel="prev" title="cxsv源码分析系列（四）AppServer">
+                cxsv源码分析系列（四）AppServer <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/avatar.png" alt="Nuxseme">
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动命令"><span class="nav-number">2.</span> <span class="nav-text">启动命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用配置文件"><span class="nav-number">3.</span> <span class="nav-text">应用配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动流程"><span class="nav-number">4.</span> <span class="nav-text">启动流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#appServer-php"><span class="nav-number">4.1.</span> <span class="nav-text">appServer.php</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AppServer-php"><span class="nav-number">4.2.</span> <span class="nav-text">AppServer.php</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HttpServer-php"><span class="nav-number">4.3.</span> <span class="nav-text">HttpServer.php</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

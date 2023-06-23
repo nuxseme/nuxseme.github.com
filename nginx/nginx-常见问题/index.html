@@ -1,0 +1,590 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Nuxseme">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="相同 server_name 多个虚拟主机优先级#当出现虚拟主机域名相同的情况，重启nginx时，会出现警告⚠️处理，但是并不不会阻止nginx继续使用  server {     listen 80;     server_name www.baidu.com     ... }  server {     listen 80;     server_name www.baidu.com">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nginx-常见问题">
+<meta property="og:url" content="http://nuxseme.github.io/nginx/nginx-常见问题/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="相同 server_name 多个虚拟主机优先级#当出现虚拟主机域名相同的情况，重启nginx时，会出现警告⚠️处理，但是并不不会阻止nginx继续使用  server {     listen 80;     server_name www.baidu.com     ... }  server {     listen 80;     server_name www.baidu.com">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-06-23T07:49:36.373Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="nginx-常见问题">
+<meta name="twitter:description" content="相同 server_name 多个虚拟主机优先级#当出现虚拟主机域名相同的情况，重启nginx时，会出现警告⚠️处理，但是并不不会阻止nginx继续使用  server {     listen 80;     server_name www.baidu.com     ... }  server {     listen 80;     server_name www.baidu.com">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/nginx/nginx-常见问题/">
+
+  <title> nginx-常见问题 | Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                nginx-常见问题
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2019-07-08T16:26:19+00:00" content="2019-07-08">
+              2019-07-08
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="相同-server-name-多个虚拟主机优先级"><a href="#相同-server-name-多个虚拟主机优先级" class="headerlink" title="相同 server_name 多个虚拟主机优先级"></a>相同 server_name 多个虚拟主机优先级</h4><pre><code>#当出现虚拟主机域名相同的情况，重启nginx时，会出现警告⚠️处理，但是并不不会阻止nginx继续使用
+
+server {
+    listen 80;
+    server_name www.baidu.com
+    ...
+}
+
+server {
+    listen 80;
+    server_name www.baidu.com
+    ...
+}
+
+...
+
+优先选择最新读取到的配置文件，当多个文件是通过include时，文件排序越靠前，越早被读取
+</code></pre><h4 id="location-匹配优先级"><a href="#location-匹配优先级" class="headerlink" title="location 匹配优先级"></a>location 匹配优先级</h4><pre><code> =        #进行普通字符精确匹配，完全匹配
+ ^~       #进行普通字符匹配，当前表示前缀匹配
+ ~\~*     #表示执行一个正则匹配()
+
+#当程序使用精确匹配时，一但匹配成功，将停止其他匹配
+#当正则匹配成功时，会继续接下来的匹配，寻找是否还有更精准的匹配
+</code></pre><h4 id="try-files的使用"><a href="#try-files的使用" class="headerlink" title="try_files的使用"></a>try_files的使用</h4><p>按顺序检查文件是否存在</p>
+<pre><code>location / {
+    try_files $uri $uri/ /index.php;
+}
+
+#先查找$uri下是否有文件存在，若存在直接返回给用户
+#若$url下没有文件存在，再次访问$uri/的路径是否有文件存在
+#还是没有文件存在，交给index.php处理
+
+例：
+location / {
+    root /test/index.html
+    try_files $uri @test
+}
+
+location @test {
+    proxy_pass http://127.0.0.1：9090;
+}
+
+#访问 / 时，查看 /test/index.html 文件是否存在
+#若不存在，让9090端口的程序去处理这个请求
+</code></pre><h4 id="alias和root的区别"><a href="#alias和root的区别" class="headerlink" title="alias和root的区别"></a>alias和root的区别</h4><pre><code>location /request_path/image/ {
+root /local_path/image/;
+}
+
+#当我们访问 http://xxx.com/request_path/image/cat.png时
+#将访问 http://xxx.com/request_path/image/local_path/image/cat.png 下的文件
+
+location /request_path/image/ {
+    alias /local_path/image/;
+}
+
+#当我们访问 http://xxx.com/request_path/image/cat.png时
+#将访问 http://xxx.com/local_path/image/cat.png 下的文件
+</code></pre><h4 id="获取用户真实IP"><a href="#获取用户真实IP" class="headerlink" title="获取用户真实IP"></a>获取用户真实IP</h4><p>当一个请求通过多个代理服务器时，用户的IP将会被代理服务器IP覆盖</p>
+<pre><code>#在第一个代理服务器中设置
+    set x_real_ip=$remote_addr
+#最后一个代理服务器中获取
+    $x_real_ip=IP1
+</code></pre><h4 id="Nginx-常见错误码"><a href="#Nginx-常见错误码" class="headerlink" title="Nginx 常见错误码"></a>Nginx 常见错误码</h4><pre><code>413 Request Entity Too Large    #上传文件过大，设置 client_max_body_size
+503 bad gateway                 #后端服务无响应
+504 Gateway Time-out            #后端服务执行超时
+</code></pre>
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/nginx/nginx-负载均衡和缓存服务/" rel="next" title="nginx-负载均衡和缓存服务">
+                <i class="fa fa-chevron-left"></i> nginx-负载均衡和缓存服务
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/nginx/nginx-常见配置/" rel="prev" title="nginx-常见配置">
+                nginx-常见配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/avatar.png" alt="Nuxseme">
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#相同-server-name-多个虚拟主机优先级"><span class="nav-number">1.</span> <span class="nav-text">相同 server_name 多个虚拟主机优先级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#location-匹配优先级"><span class="nav-number">2.</span> <span class="nav-text">location 匹配优先级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#try-files的使用"><span class="nav-number">3.</span> <span class="nav-text">try_files的使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#alias和root的区别"><span class="nav-number">4.</span> <span class="nav-text">alias和root的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取用户真实IP"><span class="nav-number">5.</span> <span class="nav-text">获取用户真实IP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Nginx-常见错误码"><span class="nav-number">6.</span> <span class="nav-text">Nginx 常见错误码</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

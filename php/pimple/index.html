@@ -1,0 +1,724 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Nuxseme">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="php 容器源码分析  pimple master经过了过度的设计，分析piplme 1.1的代码更明白广泛的容器概念主要的思想就是实现一个对象来保存设定的键值">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pimple">
+<meta property="og:url" content="http://nuxseme.github.io/php/pimple/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="php 容器源码分析  pimple master经过了过度的设计，分析piplme 1.1的代码更明白广泛的容器概念主要的思想就是实现一个对象来保存设定的键值">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-06-23T07:49:36.373Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="pimple">
+<meta name="twitter:description" content="php 容器源码分析  pimple master经过了过度的设计，分析piplme 1.1的代码更明白广泛的容器概念主要的思想就是实现一个对象来保存设定的键值">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/php/pimple/">
+
+  <title> pimple | Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                pimple
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-13T20:06:17+00:00" content="2017-07-13">
+              2017-07-13
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>php 容器源码分析  pimple master经过了过度的设计，分析piplme 1.1的代码更明白广泛的容器概念<br>主要的思想就是实现一个对象来保存设定的键值</p>
+</blockquote>
+<a id="more"></a>
+<pre><code>&lt;?php
+/*
+ * This file is part of Pimple.
+ *
+ * Copyright (c) 2009 Fabien Potencier
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+/**
+ * Pimple main class.
+ *
+ * @package pimple
+ * @author  Fabien Potencier
+ */
+
+ //并没有想象中实现prs/ContainerInterface
+ //实现了ArrayAccess 数组操作
+class Pimple implements ArrayAccess
+{
+    protected $values = array();
+    /**
+     * Instantiate the container.
+     *
+     * Objects and parameters can be passed as argument to the constructor.
+     *
+     * @param array $values The parameters or objects.
+     */
+    public function __construct(array $values = array())
+    {
+        $this-&gt;values = $values;
+    }
+    /**
+     * Sets a parameter or an object.
+     *
+     * Objects must be defined as Closures.
+     *
+     * Allowing any PHP callable leads to difficult to debug problems
+     * as function names (strings) are callable (creating a function with
+     * the same a name as an existing parameter would break your container).
+     *
+     * @param string $id    The unique identifier for the parameter or object
+     * @param mixed  $value The value of the parameter or a closure to defined an object
+     */
+    public function offsetSet($id, $value)
+    {
+        $this-&gt;values[$id] = $value;
+    }
+    /**
+     * Gets a parameter or an object.
+     *
+     * @param string $id The unique identifier for the parameter or object
+     *
+     * @return mixed The value of the parameter or an object
+     *
+     * @throws InvalidArgumentException if the identifier is not defined
+     */
+    public function offsetGet($id)
+    {
+        //为啥不用offsetExists 呢？
+        if (!array_key_exists($id, $this-&gt;values)) {
+            throw new InvalidArgumentException(sprintf(&apos;Identifier &quot;%s&quot; is not defined.&apos;, $id));
+        }
+        $isFactory = is_object($this-&gt;values[$id]) &amp;&amp; method_exists($this-&gt;values[$id], &apos;__invoke&apos;);
+        return $isFactory ? $this-&gt;values[$id]($this) : $this-&gt;values[$id];
+    }
+    /**
+     * Checks if a parameter or an object is set.
+     *
+     * @param string $id The unique identifier for the parameter or object
+     *
+     * @return Boolean
+     */
+    public function offsetExists($id)
+    {
+        return array_key_exists($id, $this-&gt;values);
+    }
+    /**
+     * Unsets a parameter or an object.
+     *
+     * @param string $id The unique identifier for the parameter or object
+     */
+    public function offsetUnset($id)
+    {
+        unset($this-&gt;values[$id]);
+    }
+    /**
+     * Returns a closure that stores the result of the given service definition
+     * for uniqueness in the scope of this instance of Pimple.
+     *
+     * @param callable $callable A service definition to wrap for uniqueness
+     *
+     * @return Closure The wrapped closure
+     */
+    public static function share($callable)
+    {
+        if (!is_object($callable) || !method_exists($callable, &apos;__invoke&apos;)) {
+            throw new InvalidArgumentException(&apos;Service definition is not a Closure or invokable object.&apos;);
+        }
+        return function ($c) use ($callable) {
+            static $object;
+            if (null === $object) {
+                $object = $callable($c);
+            }
+            return $object;
+        };
+    }
+    /**
+     * Protects a callable from being interpreted as a service.
+     *
+     * This is useful when you want to store a callable as a parameter.
+     *
+     * @param callable $callable A callable to protect from being evaluated
+     *
+     * @return Closure The protected closure
+     */
+    public static function protect($callable)
+    {
+        if (!is_object($callable) || !method_exists($callable, &apos;__invoke&apos;)) {
+            throw new InvalidArgumentException(&apos;Callable is not a Closure or invokable object.&apos;);
+        }
+        return function ($c) use ($callable) {
+            return $callable;
+        };
+    }
+    /**
+     * Gets a parameter or the closure defining an object.
+     *
+     * @param string $id The unique identifier for the parameter or object
+     *
+     * @return mixed The value of the parameter or the closure defining an object
+     *
+     * @throws InvalidArgumentException if the identifier is not defined
+     */
+    public function raw($id)
+    {
+        if (!array_key_exists($id, $this-&gt;values)) {
+            throw new InvalidArgumentException(sprintf(&apos;Identifier &quot;%s&quot; is not defined.&apos;, $id));
+        }
+        return $this-&gt;values[$id];
+    }
+    /**
+     * Extends an object definition.
+     *
+     * Useful when you want to extend an existing object definition,
+     * without necessarily loading that object.
+     *
+     * @param string $id       The unique identifier for the object
+     * @param callable $callable A service definition to extend the original
+     *
+     * @return Closure The wrapped closure
+     *
+     * @throws InvalidArgumentException if the identifier is not defined or not a service definition
+     */
+    public function extend($id, $callable)
+    {
+        if (!array_key_exists($id, $this-&gt;values)) {
+            throw new InvalidArgumentException(sprintf(&apos;Identifier &quot;%s&quot; is not defined.&apos;, $id));
+        }
+        if (!is_object($this-&gt;values[$id]) || !method_exists($this-&gt;values[$id], &apos;__invoke&apos;)) {
+            throw new InvalidArgumentException(sprintf(&apos;Identifier &quot;%s&quot; does not contain an object definition.&apos;, $id));
+        }
+        if (!is_object($callable) || !method_exists($callable, &apos;__invoke&apos;)) {
+            throw new InvalidArgumentException(&apos;Extension service definition is not a Closure or invokable object.&apos;);
+        }
+        $factory = $this-&gt;values[$id];
+        return $this-&gt;values[$id] = function ($c) use ($callable, $factory) {
+            return $callable($factory($c), $c);
+        };
+    }
+    /**
+     * Returns all defined value names.
+     *
+     * @return array An array of value names
+     */
+    public function keys()
+    {
+        return array_keys($this-&gt;values);
+    }
+}
+</code></pre>
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/centos/命令自动补全/" rel="next" title="命令自动补全">
+                <i class="fa fa-chevron-left"></i> 命令自动补全
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/uncategorized/设计不足与过度设计/" rel="prev" title="设计不足和过度设计">
+                设计不足和过度设计 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/avatar.png" alt="Nuxseme">
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

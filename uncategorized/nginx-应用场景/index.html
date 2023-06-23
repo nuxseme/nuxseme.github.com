@@ -1,0 +1,633 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Nuxseme">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="静态资源web服务器 静态资源类型   非服务器动态运行生成的文件，换句话说，就是可以直接在服务器上找到对应文件的请求   静态资源服务场景-CDN   nginx 静态资源配置 配置域：http、server、location  #文件高速读取 http {        sendfile   on; } #在 sendfile 开启的情况下，开启 tcp_nopush 提高网络包传输效率 #t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nginx-应用场景">
+<meta property="og:url" content="http://nuxseme.github.io/uncategorized/nginx-应用场景/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="静态资源web服务器 静态资源类型   非服务器动态运行生成的文件，换句话说，就是可以直接在服务器上找到对应文件的请求   静态资源服务场景-CDN   nginx 静态资源配置 配置域：http、server、location  #文件高速读取 http {        sendfile   on; } #在 sendfile 开启的情况下，开启 tcp_nopush 提高网络包传输效率 #t">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-06-23T07:49:36.373Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="nginx-应用场景">
+<meta name="twitter:description" content="静态资源web服务器 静态资源类型   非服务器动态运行生成的文件，换句话说，就是可以直接在服务器上找到对应文件的请求   静态资源服务场景-CDN   nginx 静态资源配置 配置域：http、server、location  #文件高速读取 http {        sendfile   on; } #在 sendfile 开启的情况下，开启 tcp_nopush 提高网络包传输效率 #t">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/uncategorized/nginx-应用场景/">
+
+  <title> nginx-应用场景 | Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                nginx-应用场景
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2019-07-03T14:23:28+00:00" content="2019-07-03">
+              2019-07-03
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="静态资源web服务器"><a href="#静态资源web服务器" class="headerlink" title="静态资源web服务器"></a>静态资源web服务器</h4><ul>
+<li>静态资源类型</li>
+</ul>
+<blockquote>
+<p>非服务器动态运行生成的文件，换句话说，就是可以直接在服务器上找到对应文件的请求</p>
+</blockquote>
+<ul>
+<li>静态资源服务场景-CDN</li>
+</ul>
+<ul>
+<li><p>nginx 静态资源配置</p>
+<pre><code>配置域：http、server、location 
+#文件高速读取
+http {  
+     sendfile   on;
+}
+#在 sendfile 开启的情况下，开启 tcp_nopush 提高网络包传输效率
+#tcp_nopush 将文件一次性一起传输给客户端，就好像你有十个包裹，快递员一次送一个，来回十趟，开启后，快递员讲等待你十个包裹都派件，一趟一起送给你
+http {  
+     sendfile   on;
+     tcp_nopush on;
+}
+#tcp_nodelay 开启实时传输，传输方式与 tcp_nopush 相反，追求实时性，但是它只有在长连接下才生效
+http {  
+     sendfile   on;
+     tcp_nopush on;
+     tcp_nodelay on;
+}
+
+#将访问的文件压缩传输 （减少文件资源大小，提高传输速度）
+#当访问内容以gif或jpg结尾的资源时
+location ~ .*\.(gif|jpg)$ {  
+    gzip on; #开启
+    gzip_http_version 1.1; #服务器传输版本
+    gzip_comp_level 2; #压缩比，越高压缩越多，压缩越高可能会消耗服务器性能
+    gzip_types   text/plain application/javascript application/x-javascript text/javascript text/css application/xml application/xml+rss image/jpeg image/gif image/png;     #压缩文件类型
+    root /opt/app/code;     #对应目录（去该目录下寻找对应文件）
+}
+
+#直接访问已压缩文件
+#当访问路径以download开头时，如www.baidu.com/download/test.img
+#去/opt/app/code目录下寻找test.img.gz文件，返回到前端时已是可以浏览的img文件
+location ~ load^/download {  
+    gzip_static on #开启;
+    tcp_nopush on;
+    root /opt/app/code;
+}
+</code></pre></li>
+</ul>
+<h4 id="浏览器缓存"><a href="#浏览器缓存" class="headerlink" title="浏览器缓存"></a>浏览器缓存</h4><pre><code>location ~ .*\.(html|htm)$ {  
+expires 12h;    #缓存12小时
+}
+</code></pre><blockquote>
+<p>服务器响应静态文件时，请求头信息会带上 etag 和 last_modified_since 2个标签值，浏览器下次去请求时，头信息发送这两个标签，服务器检测文件有没有发生变化，如无,直接头信息返 etag 和last_modified_since，状态码为 304 ，浏览器知道内容无改变,于是直接调用本地缓存，这个过程也请求了服务，但是传着的内容极少</p>
+</blockquote>
+<h4 id="跨站访问"><a href="#跨站访问" class="headerlink" title="跨站访问"></a>跨站访问</h4><pre><code>ocation ~ .*\.(html|htm)$ {  
+ add_header Access-Control-Allow-Origin *;
+ add_header Access-Control-Allow-Methods GET,POST,PUT,DELETE,OPTIONS;
+ #Access-Control-Allow-Credentials true #允许cookie跨域
+}
+</code></pre><blockquote>
+<p>在响应中指定 Access-Control-Allow-Credentials 为 true 时，Access-Control-Allow-Origin 不能指定为 *，需要指定到具体域名</p>
+</blockquote>
+<h4 id="防盗链"><a href="#防盗链" class="headerlink" title="防盗链"></a>防盗链</h4><blockquote>
+<p>防止服务器内的静态资源被其他网站所套用<br>此处介绍的 nginx 防盗链为基础方式，其它更加深入的方式将在之后的文章介绍</p>
+</blockquote>
+<p>首先，需要理解一个nginx变量</p>
+<pre><code>$http_referer #表示当前请求上一次页面访问的地址，换句话说，访问 www.baidu.com 主页，这是第一次访问，所以 $http_referer 为空，但是 访问此页面的时候还需要获取一张首页图片，再请求这张图片的时候 $http_referer 就为 www.baidu.com 
+
+location ~ .*\.(jpg|gif)$ {  
+#valid_referers 表示我们允许哪些 $http_referer 来访问
+#none 表示没有带 $http_referer，如第一次访问时 $http_referer 为空
+#blocked 表示 $http_referer 不是标准的地址，非正常域名等
+#只允许此ip
+valid_referers none blocked 127.xxx.xxx.xx
+if ($invalid_referer) {     #不满足情况下变量值为1
+    return 403;
+}
+}
+</code></pre><h4 id="HTTP代理服务"><a href="#HTTP代理服务" class="headerlink" title="HTTP代理服务"></a>HTTP代理服务</h4><p>正向代理代理的对象是客户端<br>反向代理代理的对象是服务端</p>
+<pre><code>语法：proxy_pass URL
+默认：——
+位置：loaction
+
+
+#代理端口
+#场景：服务器80端口开放，8080端口对外关闭，客户端需要访问到8080
+#在nginx中配置proxy_pass代理转发时，如果在proxy_pass后面的url加/，表示绝对根路径；如果没有/，表示相对路径，把匹配的路径部分也给代理走
+server {
+listen 80;
+location / {
+    proxy_pass http://127.0.0.1:8080/;
+    proxy_redirect default;
+
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Real-IP $remote_addr; #获取客户端真实IP
+
+    proxy_connect_timeout 30; #超时时间
+    proxy_send_timeout 60;
+    proxy_read_timeout 60;
+
+    proxy_buffer_size 32k;
+    proxy_buffering on; #开启缓冲区,减少磁盘io
+    proxy_buffers 4 128k;
+    proxy_busy_buffers_size 256k;
+    proxy_max_temp_file_size 256k; #当超过内存允许储蓄大小，存到文件
+}
+}
+</code></pre>
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/nginx/nginx-基础篇/" rel="next" title="nginx-基础篇">
+                <i class="fa fa-chevron-left"></i> nginx-基础篇
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/nginx/nginx-负载均衡和缓存服务/" rel="prev" title="nginx-负载均衡和缓存服务">
+                nginx-负载均衡和缓存服务 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/avatar.png" alt="Nuxseme">
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#静态资源web服务器"><span class="nav-number">1.</span> <span class="nav-text">静态资源web服务器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#浏览器缓存"><span class="nav-number">2.</span> <span class="nav-text">浏览器缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#跨站访问"><span class="nav-number">3.</span> <span class="nav-text">跨站访问</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#防盗链"><span class="nav-number">4.</span> <span class="nav-text">防盗链</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP代理服务"><span class="nav-number">5.</span> <span class="nav-text">HTTP代理服务</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

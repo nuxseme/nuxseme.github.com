@@ -1,0 +1,755 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Nuxseme">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="简介 优秀的开源 文件上传 插件  流程1 点击上传按钮，添加文件 2 文件信息数据传递给模板引擎，每个文件渲染一个template-upload 附到files 3 点击开始上传，获取设定的服务器url等参数 formData 可以设置额外参数 4 数据提交到服务器 服务器处理返回结果 5 浏览器获取服务器返回的数据 渲染template-down">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jquery-File-Upload">
+<meta property="og:url" content="http://nuxseme.github.io/js/Jquery-File-Upload/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="简介 优秀的开源 文件上传 插件  流程1 点击上传按钮，添加文件 2 文件信息数据传递给模板引擎，每个文件渲染一个template-upload 附到files 3 点击开始上传，获取设定的服务器url等参数 formData 可以设置额外参数 4 数据提交到服务器 服务器处理返回结果 5 浏览器获取服务器返回的数据 渲染template-down">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-06-23T07:49:36.373Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Jquery-File-Upload">
+<meta name="twitter:description" content="简介 优秀的开源 文件上传 插件  流程1 点击上传按钮，添加文件 2 文件信息数据传递给模板引擎，每个文件渲染一个template-upload 附到files 3 点击开始上传，获取设定的服务器url等参数 formData 可以设置额外参数 4 数据提交到服务器 服务器处理返回结果 5 浏览器获取服务器返回的数据 渲染template-down">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/js/Jquery-File-Upload/">
+
+  <title> Jquery-File-Upload | Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Jquery-File-Upload
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-09T14:04:58+00:00" content="2016-12-09">
+              2016-12-09
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><blockquote>
+<p>优秀的开源 文件上传 插件</p>
+</blockquote>
+<h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><pre><code>1 点击上传按钮，添加文件
+2 文件信息数据传递给模板引擎，每个文件渲染一个template-upload 附到files
+3 点击开始上传，获取设定的服务器url等参数 formData 可以设置额外参数
+4 数据提交到服务器 服务器处理返回结果
+5 浏览器获取服务器返回的数据 渲染template-down 
+</code></pre><a id="more"></a>
+<h3 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h3><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Title&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;../css/bootstrap.min.css&quot;&gt;
+    &lt;!-- Generic page styles --&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;../css/style.css&quot;&gt;
+    &lt;!-- blueimp Gallery styles --&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;../css/blueimp-gallery.min.css&quot;&gt;
+    &lt;!-- CSS to style the file input field as button and adjust the Bootstrap progress bars --&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;../css/jquery.fileupload.css&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;../css/jquery.fileupload-ui.css&quot;&gt;
+    &lt;!-- CSS adjustments for browsers with JavaScript disabled --&gt;
+    &lt;noscript&gt;&lt;link rel=&quot;stylesheet&quot; href=&quot;../css/jquery.fileupload-noscript.css&quot;&gt;&lt;/noscript&gt;
+    &lt;noscript&gt;&lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/jquery.fileupload-ui-noscript.css&quot;&gt;&lt;/noscript&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;!--最外层容器为.fileupload-buttonbar，内部包含--&gt;
+&lt;!--文件选择按钮 .fileinput-button (必须)，内部必须包裹一个input:file  multiple 批量上传--&gt;
+&lt;!--开始上传按钮 .start--&gt;
+&lt;!--取消上传按钮 .cancel--&gt;
+&lt;!--删除按钮 .delete--&gt;
+&lt;!--文件勾选按钮 .toggle--&gt;
+&lt;!--最外层容器为.fileupload-progress，内部包含--&gt;
+&lt;!--上传进度条容器.progress--&gt;
+&lt;!--上传进度条 .bar--&gt;
+&lt;!--上传进度文本 .progress-extended--&gt;
+&lt;!--显示容器--&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;!-- 文件上传表单--&gt;
+    &lt;!--可设置data-url 上传服务器地址--&gt;
+    &lt;form id=&quot;fileupload&quot; data-url=&quot;http://xxxx.com&quot; method=&quot;POST&quot; enctype=&quot;multipart/form-data&quot;&gt;
+        &lt;!--包含添加 上传 开始 取消 和勾选按钮--&gt;
+        &lt;div class=&quot;row fileupload-buttonbar&quot;&gt;
+            &lt;div class=&quot;col-lg-7&quot;&gt;
+                &lt;span class=&quot;btn btn-success fileinput-button&quot;&gt;
+                    &lt;i class=&quot;glyphicon glyphicon-plus&quot;&gt;&lt;/i&gt;
+                    &lt;span&gt;Add Files...&lt;/span&gt;
+                    &lt;input type=&quot;file&quot; name=&quot;uploadfiles[]&quot; multiple&gt;
+                &lt;/span&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary start&quot;&gt;
+                    &lt;i class=&quot;glyphicon glyphicon-upload&quot;&gt;&lt;/i&gt;
+                    &lt;span&gt;Start Upload&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;button type=&quot;reset&quot; class=&quot;btn btn-warning cancel&quot; &gt;
+                    &lt;i class=&quot;glyphicon glyphicon-ban-circle&quot;&gt;&lt;/i&gt;
+                    &lt;span&gt;Cancel upload&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;button type=&quot;button&quot; class=&quot;btn btn-danger delete&quot; &gt;
+                    &lt;i class=&quot;glyphicon glyphicon-trash&quot;&gt;&lt;/i&gt;
+                    &lt;span&gt;Delete&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;input type=&quot;checkbox&quot; class=&quot;toggle&quot; &gt;
+                &lt;!--文件处理状态--&gt;
+                &lt;span class=&quot;fileupload-process&quot;&gt;&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-lg-5 fileupload-progress fade&quot;&gt;
+                &lt;div class=&quot;progress progress-striped active&quot; role=&quot;progressbar&quot; aria-valuemin=&quot;0&quot; aria-valuemax=&quot;100&quot;&gt;
+                    &lt;div class=&quot;progress-bar progress-bar-success&quot; style=&quot;width:0%;&quot;&gt;&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;progress-extended&quot;&gt;&amp;nbsp;&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;table role=&quot;presentation&quot; class=&quot;table table-striped&quot;&gt;&lt;tbody class=&quot;files&quot;&gt;&lt;/tbody&gt;&lt;/table&gt;
+    &lt;/form&gt;
+&lt;/div&gt;
+&lt;!-- 大图显示框 --&gt;
+&lt;div id=&quot;blueimp-gallery&quot; class=&quot;blueimp-gallery blueimp-gallery-controls&quot; data-filter=&quot;:even&quot;&gt;
+    &lt;div class=&quot;slides&quot;&gt;&lt;/div&gt;
+    &lt;h3 class=&quot;title&quot;&gt;&lt;/h3&gt;
+    &lt;a class=&quot;prev&quot;&gt;‹&lt;/a&gt;
+    &lt;a class=&quot;next&quot;&gt;›&lt;/a&gt;
+    &lt;a class=&quot;close&quot;&gt;×&lt;/a&gt;
+    &lt;a class=&quot;play-pause&quot;&gt;&lt;/a&gt;
+    &lt;ol class=&quot;indicator&quot;&gt;&lt;/ol&gt;
+&lt;/div&gt;
+
+&lt;!--文件预览模板 (必须)--&gt;
+&lt;script id=&quot;template-upload&quot; type=&quot;text/x-tmpl&quot;&gt;
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    &lt;tr class=&quot;template-upload fade&quot;&gt;
+        &lt;td&gt;
+            &lt;span class=&quot;preview&quot;&gt;&lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+            &lt;p class=&quot;name&quot;&gt;{%=file.name%}&lt;/p&gt;
+            &lt;strong class=&quot;error text-danger&quot;&gt;&lt;/strong&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+            &lt;p class=&quot;size&quot;&gt;process...&lt;/p&gt;
+            &lt;div class=&quot;progress progress-striped active&quot; role=&quot;progressbar&quot; aria-valuemin=&quot;0&quot; aria-valuemax=&quot;100&quot; aria-valuenow=&quot;0&quot;&gt;&lt;div class=&quot;progress-bar progress-bar-success&quot; style=&quot;width:0%;&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+            {% if (!i && !o.options.autoUpload) { %}
+                &lt;button class=&quot;btn btn-primary start&quot; disabled&gt;
+                    &lt;i class=&quot;glyphicon glyphicon-upload&quot;&gt;&lt;/i&gt;
+                    &lt;span&gt;Start&lt;/span&gt;
+                &lt;/button&gt;
+            {% } %}
+            {% if (!i) { %}
+                &lt;button class=&quot;btn btn-warning cancel&quot;&gt;
+                    &lt;i class=&quot;glyphicon glyphicon-ban-circle&quot;&gt;&lt;/i&gt;
+                    &lt;span&gt;Cancle&lt;/span&gt;
+                &lt;/button&gt;
+            {% } %}
+        &lt;/td&gt;
+    &lt;/tr&gt;
+{% } %}
+&lt;/script&gt;
+&lt;!--文件上传完毕显示模板--&gt;
+&lt;script id=&quot;template-download&quot; type=&quot;text/x-tmpl&quot;&gt;
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    &lt;tr class=&quot;template-download fade&quot;&gt;
+        &lt;td&gt;
+            &lt;span class=&quot;preview&quot;&gt;
+                {% if (file.thumbnailUrl) { %}
+                    &lt;a href=&quot;{%=file.url%}&quot; title=&quot;{%=file.name%}&quot; download=&quot;{%=file.name%}&quot; data-gallery&gt;&lt;img src=&quot;{%=file.thumbnailUrl%}&quot;  height=&quot;80&quot; width=&quot;80&quot;&gt;&lt;/a&gt;
+                {% } %}
+            &lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+            &lt;p class=&quot;name&quot;&gt;
+                {% if (file.url) { %}
+                    &lt;a href=&quot;%=file.url%}&quot; title=&quot;{%=file.name%}&quot; download=&quot;{%=file.name%}&quot; {%=file.thumbnailUrl?'data-gallery':''%}&gt;{%=file.name%}&lt;/a&gt;
+                {% } else { %}
+                    &lt;span&gt;{%=file.name%}&lt;/span&gt;
+                {% } %}
+            &lt;/p&gt;
+            {% if (file.error) { %}
+                &lt;div&gt;&lt;span class=&quot;label label-danger&quot;&gt;Error&lt;/span&gt; {%=file.error%}&lt;/div&gt;
+            {% } %}
+        &lt;/td&gt;
+        &lt;td&gt;
+            &lt;span class=&quot;size&quot;&gt;{%=o.formatFileSize(file.size)%}&lt;/span&gt;
+        &lt;/td&gt;
+         {% if (!file.error) { %}
+           &lt;td&gt;
+            &lt;p class=&quot;name&quot;&gt;
+                &lt;input type=&apos;text&apos; value=&quot;{%=file.url%}&quot;  size=70 /&gt;
+            &lt;/p&gt;
+        &lt;/td&gt;
+            {% } %}
+        &lt;td&gt;
+            {% if (file.deleteUrl) { %}
+                &lt;button class=&quot;btn btn-danger delete&quot; data-type=&quot;{%=file.deleteType%}&quot; data-url=&quot;{%=file.deleteUrl%}&quot;{% if (file.deleteWithCredentials) { %} data-xhr-fields=&apos;{&quot;withCredentials&quot;:true}&apos;{% } %}&gt;
+                    &lt;i class=&quot;glyphicon glyphicon-trash&quot;&gt;&lt;/i&gt;
+                    &lt;span&gt;Delete&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;input type=&quot;checkbox&quot; name=&quot;delete&quot; value=&quot;1&quot; class=&quot;toggle&quot;&gt;
+            {% } else { %}
+                &lt;button class=&quot;btn btn-warning cancel&quot;&gt;
+                    &lt;i class=&quot;glyphicon glyphicon-ban-circle&quot;&gt;&lt;/i&gt;
+                    &lt;span&gt;Cancel&lt;/span&gt;
+                &lt;/button&gt;
+            {% } %}
+        &lt;/td&gt;
+    &lt;/tr&gt;
+{% } %}d
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+
+
+&lt;!--基础  jquery.js--&gt;
+&lt;script src=&quot;../js/jquery-3.1.1.js&quot;&gt;&lt;/script&gt;
+&lt;!--ui显示插件--&gt;
+&lt;script src=&quot;../js/vendor/jquery.ui.widget.js&quot;&gt;&lt;/script&gt;
+&lt;!--JS模板引擎 用于渲染上传、下载的项目--&gt;
+&lt;script src=&quot;../js/vendor/tmpl.min.js&quot;&gt;&lt;/script&gt;
+&lt;!--Load Image 预览图片--&gt;
+&lt;script src=&quot;../js/vendor/load-image.all.min.js&quot;&gt;&lt;/script&gt;
+&lt;!--图片剪裁需要用到Canvas to Blob plugin--&gt;
+&lt;script src=&quot;../js/vendor/canvas-to-blob.min.js&quot;&gt;&lt;/script&gt;
+&lt;!--Bootstrap JS 用于响应式设计--&gt;
+&lt;script src=&quot;../js/vendor/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+&lt;!--图片carousel--&gt;
+&lt;script src=&quot;../js/vendor/jquery.blueimp-gallery.min.js&quot;&gt;&lt;/script&gt;
+&lt;!--负责上传 --&gt;
+&lt;script src=&quot;../js/jquery.fileupload.js&quot;&gt;&lt;/script&gt;
+&lt;!--上传处理  准备预览图--&gt;
+&lt;script src=&quot;../js/jquery.fileupload-process.js&quot;&gt;&lt;/script&gt;
+&lt;!--待上传image 生成预览图 并剪裁   调用canvas.toBlob 绘制预览图--&gt;
+&lt;script src=&quot;../js/jquery.fileupload-image.js&quot;&gt;&lt;/script&gt;
+&lt;!--文件检测  类型 大小  数量等--&gt;
+&lt;script src=&quot;../js/jquery.fileupload-validate.js&quot;&gt;&lt;/script&gt;
+&lt;!--上传UI--&gt;
+&lt;script src=&quot;../js/jquery.fileupload-ui.js&quot;&gt;&lt;/script&gt;
+&lt;!--设置上传参数 --&gt;
+&lt;script src=&quot;main.js&quot;&gt;&lt;/script&gt;
+</code></pre><h3 id="服务器返回数据格式"><a href="#服务器返回数据格式" class="headerlink" title="服务器返回数据格式"></a>服务器返回数据格式</h3><blockquote>
+<p>这是标准的返回数据格式。这里可以定制化，返回的json数据用来渲染template-down模板，参数名对应即可，也可以添加自己需要的参数</p>
+</blockquote>
+<pre><code>{
+    &quot;files&quot;: [
+        {
+            &quot;name&quot;: &quot;PNG.png&quot;,
+            &quot;size&quot;: 42971,
+            &quot;type&quot;: &quot;image/png&quot;,
+            &quot;url&quot;: &quot;http://localhost/UPLOAD/server/php/files/PNG.png&quot;,
+            &quot;thumbnailUrl&quot;: &quot;http://localhost/UPLOAD/server/php/files/thumbnail/PNG.png&quot;,
+            &quot;deleteUrl&quot;: &quot;http://localhost/UPLOAD/server/php/?file=PNG.png&quot;,
+            &quot;deleteType&quot;: &quot;DELETE&quot;
+        }
+    ]
+}
+</code></pre><h3 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h3><blockquote>
+<p>跨域<br>确保访问地址正常<br>在服务器响应部分添加<br>header(“Access-Control-Allow-Origin: *”); # 跨域处理<br>header(“Access-Control-Allow-Methods:PUT,POST,GET,DELETE,OPTIONS”);#允许的请求方法  </p>
+</blockquote>
+<blockquote>
+<p>参数<br>除了图片数据，可以用formData设置需要额外传递的参数  </p>
+</blockquote>
+<pre><code>$(&apos;#fileupload&apos;).fileupload({
+        dataType: &apos;json&apos;,
+        multipart: true,//设置为true
+        formData:[{name:&apos;hello&apos;,value:&apos;world&apos;}]
+    });
+</code></pre><blockquote>
+<p>服务端参考自带的server下服务端的实现代码</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/php/nginx+lua+graphicsmagick实时生成缩略图/" rel="next" title="nginx+lua+graphicsmagick实时生成缩略图">
+                <i class="fa fa-chevron-left"></i> nginx+lua+graphicsmagick实时生成缩略图
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/php/php三元运算符/" rel="prev" title="php三元运算符">
+                php三元运算符 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/avatar.png" alt="Nuxseme">
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#流程"><span class="nav-number">2.</span> <span class="nav-text">流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Demo"><span class="nav-number">3.</span> <span class="nav-text">Demo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务器返回数据格式"><span class="nav-number">4.</span> <span class="nav-text">服务器返回数据格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tips"><span class="nav-number">5.</span> <span class="nav-text">Tips</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

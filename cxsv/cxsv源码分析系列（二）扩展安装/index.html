@@ -1,0 +1,542 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Nuxseme">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="Notic以下安装仅仅作为示例，具体安装版本以实际情况为准，./configure的配置参数参看./configure –help，配置文件路径以实际为准。 安装swoole-src-swoole-1.8.4-stable12345tar zxvf swoole-src-swoole-1.8.4-stable.tar.gzcd swoole-src-swoole-1.8.4-stablephpiz">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cxsv源码分析系列（二）扩展安装">
+<meta property="og:url" content="http://nuxseme.github.io/cxsv/cxsv源码分析系列（二）扩展安装/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="Notic以下安装仅仅作为示例，具体安装版本以实际情况为准，./configure的配置参数参看./configure –help，配置文件路径以实际为准。 安装swoole-src-swoole-1.8.4-stable12345tar zxvf swoole-src-swoole-1.8.4-stable.tar.gzcd swoole-src-swoole-1.8.4-stablephpiz">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-06-23T07:49:36.373Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cxsv源码分析系列（二）扩展安装">
+<meta name="twitter:description" content="Notic以下安装仅仅作为示例，具体安装版本以实际情况为准，./configure的配置参数参看./configure –help，配置文件路径以实际为准。 安装swoole-src-swoole-1.8.4-stable12345tar zxvf swoole-src-swoole-1.8.4-stable.tar.gzcd swoole-src-swoole-1.8.4-stablephpiz">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/cxsv/cxsv源码分析系列（二）扩展安装/">
+
+  <title> cxsv源码分析系列（二）扩展安装 | Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                cxsv源码分析系列（二）扩展安装
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-26T00:59:41+00:00" content="2016-06-26">
+              2016-06-26
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Notic"><a href="#Notic" class="headerlink" title="Notic"></a>Notic</h3><p>以下安装仅仅作为示例，具体安装版本以实际情况为准，./configure的配置参数参看./configure –help，配置文件路径以实际为准。</p>
+<h3 id="安装swoole-src-swoole-1-8-4-stable"><a href="#安装swoole-src-swoole-1-8-4-stable" class="headerlink" title="安装swoole-src-swoole-1.8.4-stable"></a>安装swoole-src-swoole-1.8.4-stable</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf swoole-src-swoole-1.8.4-stable.tar.gz</span><br><span class="line">cd swoole-src-swoole-1.8.4-stable</span><br><span class="line">phpize</span><br><span class="line">./configure --enable-sockets --enable-async-mysql --enable-openssl</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="安装mongodb-1-1-1-php7"><a href="#安装mongodb-1-1-1-php7" class="headerlink" title="安装mongodb-1.1.1-php7"></a>安装mongodb-1.1.1-php7</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">yum install cyrus-sasl-devel</span><br><span class="line">tar zxvf mongodb-1.1.1-php7.tgz</span><br><span class="line">cd mongodb-1.1.1</span><br><span class="line">phpize</span><br><span class="line">./configure</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<h3 id="安装libmemcached-1-0-18"><a href="#安装libmemcached-1-0-18" class="headerlink" title="安装libmemcached-1.0.18"></a>安装libmemcached-1.0.18</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf libmemcached-1.0.18.tar.gz</span><br><span class="line">cd libmemcached-1.0.18</span><br><span class="line">./configure --prefix=/usr/local/libmemcached</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<h3 id="安装php-memcached-php7"><a href="#安装php-memcached-php7" class="headerlink" title="安装php-memcached-php7"></a>安装php-memcached-php7</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">unzip php-memcached-php7.zip</span><br><span class="line">cd php-memcached-php7</span><br><span class="line">phpize</span><br><span class="line">./configure --with-libmemcached-dir=/usr/local/libmemcached --disable-memcached-sasl</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<h3 id="安装phpredis-php7"><a href="#安装phpredis-php7" class="headerlink" title="安装phpredis-php7"></a>安装phpredis-php7</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">unzip phpredis-php7.zip</span><br><span class="line">cd phpredis-php7</span><br><span class="line">phpize</span><br><span class="line">./configure</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<h3 id="修改php-ini"><a href="#修改php-ini" class="headerlink" title="修改php.ini"></a>修改php.ini</h3><pre><code>echo extension=swoole.so &gt;&gt; /usr/local/php/lib/php.ini  
+echo extension=redis.so &gt;&gt; /usr/local/php/lib/php.ini
+echo extension=mongo.so &gt;&gt; /usr/local/php/lib/php.ini
+echo extension=memcached.so &gt;&gt; /usr/local/php/lib/php.ini
+</code></pre><h3 id="php指令简介"><a href="#php指令简介" class="headerlink" title="php指令简介"></a>php指令简介</h3><pre><code>$php -v #显示php版本，检验是否安装了php
+$php -m|grep swoole #检测是否安装swoole扩展
+$php -i #显示phpinfo 可以查看php.ini实际引用目录 configure参数
+$php -r &quot;echo phpinfo();&quot; #执行php代码
+$php -r &quot;echo SWOOLE_VERSION;&quot; #显示swoole版本
+$php --ri swoole #显示swoole简要信息
+</code></pre>
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/cxsv/cxsv源码分析系列（一）框架简介/" rel="next" title="cxsv源码分析系列(一)框架简介">
+                <i class="fa fa-chevron-left"></i> cxsv源码分析系列(一)框架简介
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/cxsv/cxsv源码分析系列（三）服务器启动/" rel="prev" title="cxsv源码分析系列（三）服务器启动">
+                cxsv源码分析系列（三）服务器启动 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/avatar.png" alt="Nuxseme">
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Notic"><span class="nav-number">1.</span> <span class="nav-text">Notic</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装swoole-src-swoole-1-8-4-stable"><span class="nav-number">2.</span> <span class="nav-text">安装swoole-src-swoole-1.8.4-stable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装mongodb-1-1-1-php7"><span class="nav-number">3.</span> <span class="nav-text">安装mongodb-1.1.1-php7</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装libmemcached-1-0-18"><span class="nav-number">4.</span> <span class="nav-text">安装libmemcached-1.0.18</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装php-memcached-php7"><span class="nav-number">5.</span> <span class="nav-text">安装php-memcached-php7</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装phpredis-php7"><span class="nav-number">6.</span> <span class="nav-text">安装phpredis-php7</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改php-ini"><span class="nav-number">7.</span> <span class="nav-text">修改php.ini</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#php指令简介"><span class="nav-number">8.</span> <span class="nav-text">php指令简介</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

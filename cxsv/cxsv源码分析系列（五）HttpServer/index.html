@@ -1,0 +1,529 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Nuxseme">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="概述 HttpServer是框架的核心文件，对swoole_http_server的实现。实现了各个注册的回调函数，监听端口并解析请求报文，然后将请求回调到AppServer-&amp;gt;start()，在wrok_start中实现了插件的挂载，在onTask回调函数中实现了任务的投递。定时器不能加载任务，进程中不能加载异步任务。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cxsv源码分析系列（五）HttpServer">
+<meta property="og:url" content="http://nuxseme.github.io/cxsv/cxsv源码分析系列（五）HttpServer/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="概述 HttpServer是框架的核心文件，对swoole_http_server的实现。实现了各个注册的回调函数，监听端口并解析请求报文，然后将请求回调到AppServer-&amp;gt;start()，在wrok_start中实现了插件的挂载，在onTask回调函数中实现了任务的投递。定时器不能加载任务，进程中不能加载异步任务。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-06-23T07:49:36.373Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cxsv源码分析系列（五）HttpServer">
+<meta name="twitter:description" content="概述 HttpServer是框架的核心文件，对swoole_http_server的实现。实现了各个注册的回调函数，监听端口并解析请求报文，然后将请求回调到AppServer-&amp;gt;start()，在wrok_start中实现了插件的挂载，在onTask回调函数中实现了任务的投递。定时器不能加载任务，进程中不能加载异步任务。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/cxsv/cxsv源码分析系列（五）HttpServer/">
+
+  <title> cxsv源码分析系列（五）HttpServer | Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                cxsv源码分析系列（五）HttpServer
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-27T23:49:28+00:00" content="2016-06-27">
+              2016-06-27
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
+<p>HttpServer是框架的核心文件，对swoole_http_server的实现。实现了各个注册的回调函数，监听端口并解析请求报文，然后将请求回调到AppServer-&gt;start()，在wrok_start中实现了插件的挂载，在onTask回调函数中实现了任务的投递。定时器不能加载任务，进程中不能加载异步任务。<br><a id="more"></a></p>
+</blockquote>
+<h3 id="HttpServer源码"><a href="#HttpServer源码" class="headerlink" title="HttpServer源码"></a>HttpServer源码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br></pre></td><td class="code"><pre><span class="line">class HttpServer&#123;</span><br><span class="line"></span><br><span class="line">       public function __construct($config)&#123;</span><br><span class="line">        $this-&gt;config = $config;</span><br><span class="line">        $this-&gt;loger = new EchoLog(&apos;&apos;);</span><br><span class="line">        //注册致命错误句柄</span><br><span class="line">        register_shutdown_function(array($this, &apos;handleFatal&apos;));</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    public function run()&#123;</span><br><span class="line">        $server = new \swoole_http_server($this-&gt;c(&apos;server.host&apos;), $this-&gt;c(&apos;server.port&apos;));</span><br><span class="line">        $this-&gt;serv = $server;</span><br><span class="line">        $server-&gt;set($swcfg);</span><br><span class="line">        $this-&gt;config = array_merge($this-&gt;config,$server-&gt;setting);</span><br><span class="line">        </span><br><span class="line">        //注册回调函数</span><br><span class="line">        </span><br><span class="line">        $server-&gt;on(&apos;Start&apos;,array($this,&apos;onStart&apos;));</span><br><span class="line">        $server-&gt;on(&apos;ManagerStart&apos;, array($this,&apos;onManagerStart&apos;));</span><br><span class="line">        $server-&gt;on(&apos;ManagerStop&apos;, array($this,&apos;onManagerStop&apos;));</span><br><span class="line">        $server-&gt;on(&apos;WorkerStart&apos;,array($this,&apos;onWorkerStart&apos;));</span><br><span class="line">        $server-&gt;on(&apos;Request&apos;, array($this, &apos;onRequest&apos;));</span><br><span class="line">        $server-&gt;on(&apos;Close&apos;, array($this, &apos;onClose&apos;));</span><br><span class="line">        $server-&gt;on(&apos;Shutdown&apos;, array($this, &apos;onShutdown&apos;));</span><br><span class="line">        $server-&gt;on(&apos;Task&apos;, array($this, &apos;onTask&apos;));</span><br><span class="line">        $server-&gt;on(&apos;Finish&apos;, array($this, &apos;onFinish&apos;));</span><br><span class="line">        $server-&gt;on(&apos;WorkerStop&apos;,[$this,&apos;onWorkerStop&apos;]);</span><br><span class="line">        $server-&gt;on(&apos;WorkerError&apos;,[$this,&apos;onWorkerError&apos;]);</span><br><span class="line">        // $server-&gt;on(&apos;Timeout&apos;,[$this,&apos;onTimeout&apos;]);</span><br><span class="line">        $server-&gt;start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">    * 主进程启动时回调函数</span><br><span class="line">    * @access public</span><br><span class="line">    * @param \swoole_server $serv</span><br><span class="line">    * @return void</span><br><span class="line">    */</span><br><span class="line">    public function onMasterStart($serv)&#123;</span><br><span class="line">        $this-&gt;log(SERVER_NAME.&quot;[#master] start&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">    * 管理进程启动时回调函数</span><br><span class="line">    * @access public</span><br><span class="line">    * @param \swoole_server $serv</span><br><span class="line">    * @return void</span><br><span class="line">    */</span><br><span class="line">    public function onManagerStart($serv)&#123;</span><br><span class="line">        global $config_file;</span><br><span class="line">        //设定manager进程的名称</span><br><span class="line">        $this-&gt;setProcessName(&apos;php-manager: &apos;.APP_NAME.&apos; (&apos;.$config_file.&apos;)&apos;);</span><br><span class="line">        $this-&gt;log(SERVER_NAME.&quot;[#manager] start&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">    * 管理进程结束时回调函数</span><br><span class="line">    * @access public</span><br><span class="line">    * @param \swoole_server $serv</span><br><span class="line">    * @return void</span><br><span class="line">    */</span><br><span class="line">    public function onManagerStop($serv)&#123;</span><br><span class="line">        $this-&gt;log(SERVER_NAME.&quot;[#manager] stop&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">    * 服务器关闭时回调函数</span><br><span class="line">    * @access public</span><br><span class="line">    * @param \swoole_server $serv</span><br><span class="line">    * @return void</span><br><span class="line">    */</span><br><span class="line">    public function onShutdown($serv)&#123;</span><br><span class="line">        exec(&apos;rm -rf &apos;.SHM_PATH);</span><br><span class="line">        $this-&gt;log(SERVER_NAME.&quot; shutdown&quot;);</span><br><span class="line">        apply_action(&apos;on_shutdown&apos;,$this,$serv);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">    * 服务器启动时回调函数</span><br><span class="line">    * @access public</span><br><span class="line">    * @param \swoole_server $serv</span><br><span class="line">    * @return void</span><br><span class="line">    */</span><br><span class="line">    public function onStart($serv)&#123;</span><br><span class="line">    </span><br><span class="line">    //设定master进程名称</span><br><span class="line">    </span><br><span class="line">         $this-&gt;setProcessName(&apos;php-master: &apos; . APP_NAME . &apos; host=&apos; . $this-&gt;config[&apos;server&apos;][&apos;host&apos;] . &apos; port=&apos; . $this-&gt;config[&apos;server&apos;][&apos;port&apos;]);</span><br><span class="line">        apply_action(&apos;server_start&apos;,$serv);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">    * work进程启动时回调函数</span><br><span class="line">    * @access public</span><br><span class="line">    * @param \swoole_server $server</span><br><span class="line">    * @param int $worker_id</span><br><span class="line">    * @return void</span><br><span class="line">    */</span><br><span class="line">    public function onWorkerStart($server,$worker_id)&#123;</span><br><span class="line">        $this-&gt;worker_id = $worker_id;</span><br><span class="line">        </span><br><span class="line">        $this-&gt;loadPlugin();</span><br><span class="line">        //初始化加载插件</span><br><span class="line">        </span><br><span class="line">        if ($worker_id &gt;= $this-&gt;c(&apos;global.worker_num&apos;))&#123;</span><br><span class="line">      	    //如果work_id大于设定的work数量 则是task进程</span><br><span class="line">            $this-&gt;setProcessName(&apos;php-task: &apos;.APP_NAME.&apos; #&apos;.$worker_id);</span><br><span class="line">            $this-&gt;log(&quot;php-task[#&#123;$worker_id&#125;] running on &quot;.$this-&gt;c(&apos;server.host&apos;).&quot;:&quot;.$this-&gt;c(&apos;server.port&apos;));</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            $this-&gt;worker_id = $worker_id;</span><br><span class="line">            //设定work进程名称</span><br><span class="line">            $this-&gt;setProcessName(&apos;php-worker: &apos;.APP_NAME.&apos; #&apos;.$worker_id);</span><br><span class="line">            $this-&gt;log(&quot;php-worker[#&#123;$worker_id&#125;] running on &quot;.$this-&gt;c(&apos;server.host&apos;).&quot;:&quot;.$this-&gt;c(&apos;server.port&apos;));</span><br><span class="line">            apply_action(&apos;on_worker_start&apos;,$server,$worker_id);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">    * work进程退出时执行</span><br><span class="line">    * @access public</span><br><span class="line">    * @param string $var</span><br><span class="line">    * @return void</span><br><span class="line">    */</span><br><span class="line">    public function onWorkerStop($serv,$worker_id)&#123;</span><br><span class="line">        $this-&gt;log(&quot;php-worker[#&#123;$worker_id&#125;] Stoped&quot;);</span><br><span class="line">        exec(&apos;rm -rf &apos;.SHM_PATH);</span><br><span class="line">        while(\swoole_process::wait());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">    * 当work遇到错误时</span><br><span class="line">    * @access public</span><br><span class="line">    * @param swoole_server $serv</span><br><span class="line">    * @return void</span><br><span class="line">    */</span><br><span class="line">    public function onWorkerError($serv,$worker_id,$worker_pid,$exit_code)&#123;</span><br><span class="line">        em_log(&quot;php-worker[#&#123;$worker_id&#125;] Exit! pid:&#123;$worker_pid&#125; code:&#123;$exit_code&#125;, app_name:&quot;.APP_NAME.&quot;,traces: &quot;.\Lib\Error::trace());</span><br><span class="line">        $this-&gt;log(&quot;php-worker[#&#123;$worker_id&#125;] Exit! code:&#123;$exit_code&#125;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">    * 异步任务回调函数</span><br><span class="line">    * @access public</span><br><span class="line">    * @param \swoole_server $serv</span><br><span class="line">    * @param int $task_id</span><br><span class="line">    * @param int $from_id</span><br><span class="line">    * @param string $data</span><br><span class="line">    * @return void</span><br><span class="line">    */</span><br><span class="line">    public function onTask($serv, $task_id, $from_id, $data)&#123;</span><br><span class="line">        try&#123;</span><br><span class="line">            $task_data = @json_decode(gzuncompress($data),true);</span><br><span class="line">            if(empty($task_data))&#123;</span><br><span class="line">                return;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            //将data解包 解析出task_name 和参数</span><br><span class="line">            //根据task_name在命名空间Task中实例化对应的类</span><br><span class="line">            //在定时器中无法使用add_task()异步任务</span><br><span class="line">            </span><br><span class="line">            $task_name = $task_data[&apos;name&apos;];</span><br><span class="line">            $data = $task_data[&apos;data&apos;];</span><br><span class="line">            $params = &apos;&apos;;</span><br><span class="line">            $task = &apos;\\Task\\&apos;.ucwords($task_name);</span><br><span class="line">            $task::run($data);</span><br><span class="line">        &#125;catch(\Exception $e)&#123;</span><br><span class="line">            $this-&gt;log($e-&gt;getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">        // $serv-&gt;finish();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">    * 异步任务结束时回调函数</span><br><span class="line">    * @access public</span><br><span class="line">    * @param \swoole_server $var</span><br><span class="line">    * @param int $task_id</span><br><span class="line">    * @param string $data</span><br><span class="line">    * @return void</span><br><span class="line">    */</span><br><span class="line">    public function onFinish($serv, $task_id, $data)&#123;</span><br><span class="line">        echo &apos;task data:&apos;.$data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">    * 请求处理函数</span><br><span class="line">    * @access public</span><br><span class="line">    * @param swoole_request $rq</span><br><span class="line">    * @param swoole_response $rs</span><br><span class="line">    * @return void</span><br><span class="line">    */</span><br><span class="line">    public function onRequest(\swoole_http_request $rq,\swoole_http_response $rs)&#123;</span><br><span class="line">        $this-&gt;rs = $rs;</span><br><span class="line">        </span><br><span class="line">        //初始化全局参数</span><br><span class="line">        </span><br><span class="line">        $_GET = $_POST = $_FILES = $_COOKIE = $_SERVER = $_REQUEST = $GLOBALS = [];</span><br><span class="line">        if(!isset($rq-&gt;fd) || empty($rq-&gt;fd))&#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        $this-&gt;fd = $rq-&gt;fd;</span><br><span class="line">        $connection_info = $this-&gt;serv-&gt;connection_info($rq-&gt;fd);</span><br><span class="line">        if($connection_info==false)&#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        try&#123;</span><br><span class="line">            isset($rq-&gt;cookie) &amp;&amp; $_COOKIE = $rq-&gt;cookie;</span><br><span class="line">            isset($rq-&gt;files) &amp;&amp; $_FILES = $rq-&gt;files;</span><br><span class="line">            isset($rq-&gt;get) &amp;&amp; $_GET = $rq-&gt;get;</span><br><span class="line">            isset($rq-&gt;post) &amp;&amp; $_POST = $rq-&gt;post;</span><br><span class="line">            if($this-&gt;isMulFormData(val($rq,&apos;header&apos;)) &amp;&amp; $this-&gt;isArrayPost($_POST))&#123;</span><br><span class="line">                $_POST = $this-&gt;post2Array($_POST);</span><br><span class="line">            &#125;</span><br><span class="line">            $_REQUEST = array_merge($_GET,$_POST);</span><br><span class="line">            $GLOBALS[&apos;rawContent&apos;] = &apos;&apos;;</span><br><span class="line">            $connection_info &amp;&amp; $GLOBALS[&apos;rawContent&apos;] = $rq-&gt;rawContent();</span><br><span class="line">            $header = $server = [];</span><br><span class="line">            if(isset($rq-&gt;header))&#123;</span><br><span class="line">                foreach($rq-&gt;header as $key=&gt;$val)&#123;</span><br><span class="line">                    $header[&apos;HTTP_&apos;.strtoupper(str_replace(&apos;-&apos;,&apos;_&apos;,$key))] = $val;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            if(isset($rq-&gt;server))&#123;</span><br><span class="line">                $server = array_change_key_case($rq-&gt;server,CASE_UPPER);</span><br><span class="line">            &#125;</span><br><span class="line">            $_SERVER = array_merge($header,$server);</span><br><span class="line">            unset($server,$header);</span><br><span class="line">            $_SERVER[&apos;REMOTE_ADDR&apos;] = val($_SERVER,&apos;HTTP_X_FORWARDED_FOR&apos;,$_SERVER[&apos;REMOTE_ADDR&apos;]);</span><br><span class="line">            $_SERVER[&apos;SERVER_SOFTWARE&apos;] = SERVER_NAME;</span><br><span class="line">            if(defined(&apos;DEBUG&apos;))&#123;</span><br><span class="line">                $query_str = val($_SERVER,&apos;QUERY_STRING&apos;);</span><br><span class="line">                $query_str &amp;&amp; $query_str = &apos;?&apos;.$query_str;</span><br><span class="line">                $this-&gt;log(&quot;new request from [#&#123;$rs-&gt;fd&#125;]:\&quot;&quot;.$_SERVER[&apos;REQUEST_METHOD&apos;].&apos; &apos;.$_SERVER[&apos;REQUEST_URI&apos;].$query_str);</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            //将报文解析成数组</span><br><span class="line">            </span><br><span class="line">            apply_action(&apos;on_request&apos;);</span><br><span class="line">            //实现请求响应的插件</span><br><span class="line">            //回调到AppServer-&gt;start()</span><br><span class="line">            call_user_func($this-&gt;_onRequest,$rq,$rs);</span><br><span class="line">        &#125;catch(\Expectation $e)&#123;</span><br><span class="line">            $rs-&gt;status(400);</span><br><span class="line">            $rs-&gt;end($e-&gt;getMessage());</span><br><span class="line">        &#125;finally&#123;</span><br><span class="line">        </span><br><span class="line">            //资源回收</span><br><span class="line">            $this-&gt;rs = null;</span><br><span class="line">            $this-&gt;fs = null;</span><br><span class="line">            $rq = null;</span><br><span class="line">            $rs = null;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">    * 处理请求回调函数</span><br><span class="line">    * @access public</span><br><span class="line">    * @param function $callback</span><br><span class="line">    * @return void</span><br><span class="line">    */</span><br><span class="line">    public function setProcReqFun($callback)&#123;</span><br><span class="line">        $this-&gt;_onRequest = $callback;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 连接关闭时回调函数</span><br><span class="line">     * @param \swoole_server $serv</span><br><span class="line">     * @param int $fd</span><br><span class="line">     * @param int $from_id</span><br><span class="line">     * @return void</span><br><span class="line">     */</span><br><span class="line">    public function onClose($serv, $fd, $from_id)&#123;</span><br><span class="line">        $this-&gt;clear();</span><br><span class="line">        if(defined(&apos;DEBUG&apos;)) $this-&gt;log(&quot;client[#$fd@$from_id] close&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">    * 加载插件</span><br><span class="line">    * @access private</span><br><span class="line">    * @return void</span><br><span class="line">    */</span><br><span class="line">    private function loadPlugin()&#123;</span><br><span class="line">        $paths = array(&apos;global&apos;=&gt;FRAME_ROOT.&apos;plugin/&apos;,&apos;app&apos;=&gt;DOCUMENT_ROOT.&apos;Plugin/&apos;);</span><br><span class="line">        foreach($paths as $type =&gt; $plugin_path)&#123;</span><br><span class="line">            if(!is_dir($plugin_path))&#123;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">            $odir = opendir($plugin_path);</span><br><span class="line">            while($file = readdir($odir))&#123;</span><br><span class="line">                if($file&#123;0&#125;!=&apos;.&apos; &amp;&amp; ($path=$plugin_path.$file.&apos;/&apos;) &amp;&amp; ($plugin_file=$path.$file.&apos;.php&apos;) &amp;&amp; is_file($plugin_file) &amp;&amp; (is_file($path.&apos;enabled&apos;) || $type == &apos;global&apos;))&#123;</span><br><span class="line">                 	//加载框架和应用下的插件</span><br><span class="line">                    include $plugin_file;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            closedir($odir);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line">    </span><br><span class="line">    /**</span><br><span class="line">    * 发送内容</span><br><span class="line">    * @access public</span><br><span class="line">    * @param \swoole_server $serv</span><br><span class="line">    * @param int $fd</span><br><span class="line">    * @param string $respData</span><br><span class="line">    * @param int $code</span><br><span class="line">    * @return void</span><br><span class="line">    */</span><br><span class="line">    public function response($respData, $code = 200)&#123;</span><br><span class="line">        if(empty($this-&gt;rs))&#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        $connection_info = $this-&gt;serv-&gt;connection_info($this-&gt;fd);</span><br><span class="line">        if($connection_info==false)&#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        try&#123;</span><br><span class="line">            $this-&gt;c(&apos;gzip_level&apos;) &amp;&amp; $this-&gt;rs-&gt;gzip($this-&gt;c(&apos;gzip_level&apos;));</span><br><span class="line">            $this-&gt;rs-&gt;status($code);</span><br><span class="line">            $this-&gt;c(&apos;server.keepalive&apos;) &amp;&amp; $this-&gt;setHeader(&apos;Connection&apos;,&apos;keep-alive&apos;);</span><br><span class="line">            $strlen = strlen($respData);</span><br><span class="line">            if($strlen &gt; 1024*1024*2)&#123;</span><br><span class="line">                $this-&gt;setHeader(&apos;Content-Length&apos;,$strlen);</span><br><span class="line">                $p=0;</span><br><span class="line">                $s=2000000;</span><br><span class="line">                while($data = substr($respData, $p++*$s,$s))&#123;</span><br><span class="line">                    $this-&gt;rs-&gt;write($data);</span><br><span class="line">                &#125;</span><br><span class="line">                $this-&gt;rs-&gt;end();</span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                $this-&gt;rs-&gt;end((string)$respData);</span><br><span class="line">            &#125;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;catch(\Exception $e)&#123;</span><br><span class="line">            $this-&gt;rs-&gt;status(500);</span><br><span class="line">            $rs-&gt;end($e-&gt;getMessage());</span><br><span class="line">            return true;</span><br><span class="line">        &#125;finally&#123;</span><br><span class="line">            $this-&gt;rs = null;</span><br><span class="line">        &#125;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       /**</span><br><span class="line">     * Fatal Error的捕获</span><br><span class="line">     * @access public</span><br><span class="line">     * @return void</span><br><span class="line">     */</span><br><span class="line">    public function handleFatal()&#123;</span><br><span class="line">        $error = error_get_last();</span><br><span class="line">        $data = &apos;&apos;;</span><br><span class="line">        if(($data = ob_get_contents())!==false)&#123;</span><br><span class="line">            ob_end_clean();</span><br><span class="line">        &#125;</span><br><span class="line">        /**</span><br><span class="line">        * 如果脚本退出时，检测到has_process为true，说明是子进程退出</span><br><span class="line">        * 此时直接写到日志，而不是向客户端发送数据</span><br><span class="line">        */</span><br><span class="line">        if($this-&gt;has_process)&#123;</span><br><span class="line">            if(!empty($data) || !empty($error))&#123;</span><br><span class="line">                $msg = $data.$error[&apos;message&apos;];</span><br><span class="line">                $errorMsg = &quot;&#123;$error[&apos;message&apos;]&#125; (&#123;$error[&apos;file&apos;]&#125;:&#123;$error[&apos;line&apos;]&#125;)&quot;;</span><br><span class="line">                global $php;</span><br><span class="line">                $sql = $php-&gt;db-&gt;getLastSql();</span><br><span class="line">                em_log(&apos;child process fatal error : &apos;.$errorMsg.\Lib\Error::trace().($sql ? &apos; [SQL]:&apos;.$sql : &apos;&apos;));</span><br><span class="line">            &#125;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        if (empty($error) || !isset($error[&apos;type&apos;]))&#123;</span><br><span class="line">            $new_data = json_decode($data,true);</span><br><span class="line">            if(gettype($new_data)==&apos;array&apos;)&#123;</span><br><span class="line">                $new_data[&apos;_worker_info&apos;] = &apos;worker restarted&apos;;</span><br><span class="line">                $data = json_encode($new_data,JSON_UNESCAPED_UNICODE);</span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                $data .= &apos;&lt;font color=&quot;red&quot;&gt;worker restarted&lt;/font&gt;&apos;;</span><br><span class="line">            &#125;</span><br><span class="line">            $this-&gt;response($data);</span><br><span class="line">            return;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            $error[&apos;file&apos;] = str_replace(&apos;.php&apos;,&apos;&apos;,$error[&apos;file&apos;]);</span><br><span class="line">            $errorMsg = &quot;&#123;$error[&apos;message&apos;]&#125; (&quot;.str_replace([SHM_PATH.&apos;tpls/&apos;,SHM_PATH.&apos;widget/tpl/&apos;,APP_PATH,FRAME_ROOT,DOCUMENT_ROOT],[&apos;tpl:&apos;,&apos;widget_tpl:&apos;,&apos;app:&apos;,&apos;root:&apos;,&apos;app:&apos;],$error[&apos;file&apos;]).&quot;:&#123;$error[&apos;line&apos;]&#125;)&quot;;</span><br><span class="line">            $message = \Lib\Error::info(&quot;Server fatal error&quot;, $errorMsg);</span><br><span class="line">            em_log(&apos;Server fatal error : &apos;.$errorMsg.\Lib\Error::trace().&apos; URL:&apos;.cur_url());</span><br><span class="line">            if(defined(&apos;DEBUG&apos;))&#123;</span><br><span class="line">                $this-&gt;response($message);</span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                $this-&gt;response(\Lib\Error::info(&quot;&quot;, &apos;页面发生错误&apos;),200);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/cxsv/cxsv源码分析系列（四）AppServer/" rel="next" title="cxsv源码分析系列（四）AppServer">
+                <i class="fa fa-chevron-left"></i> cxsv源码分析系列（四）AppServer
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/cxsv/cxsv源码分析系列（六）请求处理/" rel="prev" title="cxsv源码分析系列（六）请求处理">
+                cxsv源码分析系列（六）请求处理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/avatar.png" alt="Nuxseme">
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HttpServer源码"><span class="nav-number">2.</span> <span class="nav-text">HttpServer源码</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

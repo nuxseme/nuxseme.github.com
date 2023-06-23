@@ -1,0 +1,616 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Nuxseme">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="概述 官网：https://pngquant.orggit:https://github.com/pornel/pngquant.git源码安装流程https://pngquant.org/install.htmlpngquant 开源优秀的png压缩方案  安装$git clone --recursive https://github.com/pornel/pngquant.git $cd pn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pngquant">
+<meta property="og:url" content="http://nuxseme.github.io/php/pngquant/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="概述 官网：https://pngquant.orggit:https://github.com/pornel/pngquant.git源码安装流程https://pngquant.org/install.htmlpngquant 开源优秀的png压缩方案  安装$git clone --recursive https://github.com/pornel/pngquant.git $cd pn">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-06-23T07:49:36.373Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="pngquant">
+<meta name="twitter:description" content="概述 官网：https://pngquant.orggit:https://github.com/pornel/pngquant.git源码安装流程https://pngquant.org/install.htmlpngquant 开源优秀的png压缩方案  安装$git clone --recursive https://github.com/pornel/pngquant.git $cd pn">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/php/pngquant/">
+
+  <title> pngquant | Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                pngquant
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-17T12:04:03+00:00" content="2017-03-17">
+              2017-03-17
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
+<p>官网：<a href="https://pngquant.org" target="_blank" rel="noopener">https://pngquant.org</a><br>git:<a href="https://github.com/pornel/pngquant.git" target="_blank" rel="noopener">https://github.com/pornel/pngquant.git</a><br>源码安装流程<a href="https://pngquant.org/install.html" target="_blank" rel="noopener">https://pngquant.org/install.html</a><br>pngquant 开源优秀的png压缩方案</p>
+</blockquote>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><pre><code>$git clone --recursive https://github.com/pornel/pngquant.git
+$cd pngquant
+$./configure --prefix=dir //指定安装目录  默认 /usr/local/bin
+$make &amp;&amp; make install
+$./pngquant --version
+2.9.0 (March 2017)
+$./pngquant -h
+pngquant, 2.9.0 (March 2017), by Kornel Lesinski, Greg Roelofs.
+   Compiled with no support for color profiles. Using libpng 1.5.13.
+
+WARNING: Your version of libpng is old and has buggy support for custom chunks.
+Please recompile pngquant with the current version of libpng (1.6 or later).
+
+usage:  pngquant [options] [ncolors] -- pngfile [pngfile ...]
+        pngquant [options] [ncolors] - &gt;stdout &lt;stdin
+
+options:
+  --force           overwrite existing output files (synonym: -f)
+  --skip-if-larger  only save converted files if they&apos;re smaller than original
+  --output file     destination file path to use instead of --ext (synonym: -o)
+  --ext new.png     set custom suffix/extension for output filenames
+  --quality min-max don&apos;t save below min, use fewer colors below max (0-100)
+  --speed N         speed/quality trade-off. 1=slow, 3=default, 11=fast &amp; rough
+  --nofs            disable Floyd-Steinberg dithering
+  --posterize N     output lower-precision color (e.g. for ARGB4444 output)
+  --strip           remove optional metadata (default on Mac)
+  --verbose         print status messages (synonym: -v)
+
+Quantizes one or more 32-bit RGBA PNGs to 8-bit (or smaller) RGBA-palette.
+The output filename is the same as the input name except that
+it ends in &quot;-fs8.png&quot;, &quot;-or8.png&quot; or your custom extension (unless the
+input is stdin, in which case the quantized image will go to stdout).
+If you pass the special output path &quot;-&quot; and a single input file, that file
+will be processed and the quantized image will go to stdout.
+The default behavior if the output file exists is to skip the conversion;
+use --force to overwrite. See man page for full list of options.
+</code></pre><a id="more"></a>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><pre><code>$pngquant --quality=50-90  -&lt;cat.png &gt;cat1.png //215K 压缩到 57K 
+$ll
+total 340
+drwxr-xr-x.  2 root root     50 Mar 17 14:38 .
+drwxr-xr-x. 10 root root   4096 Mar 17 12:45 ..  
+-rw-r--r--.  1 root root  57K Mar 17 12:21 cat1.png
+-rw-r--r--.  1 root root 215K Mar 17 12:14 cat.png
+</code></pre><h3 id="Using-pngquant-in-PHP"><a href="#Using-pngquant-in-PHP" class="headerlink" title="Using pngquant in PHP"></a>Using pngquant in PHP</h3><blockquote>
+<p>php 采用shell_exec()调用pngquant来压缩 能否将pngquant写入扩展？？</p>
+</blockquote>
+<pre><code>&lt;?php
+
+/**
+ * Optimizes PNG file with pngquant 1.8 or later (reduces file size of 24-bit/32-bit PNG images).
+ *
+ * You need to install pngquant 1.8 on the server (ancient version 1.0 won&apos;t work).
+ * There&apos;s package for Debian/Ubuntu and RPM for other distributions on http://pngquant.org
+ *
+ * @param $path_to_png_file string - path to any PNG file, e.g. $_FILE[&apos;file&apos;][&apos;tmp_name&apos;]
+ * @param $max_quality int - conversion quality, useful values from 60 to 100 (smaller number = smaller file)
+ * @return string - content of PNG file after conversion
+ */
+function compress_png($path_to_png_file, $max_quality = 90)
+{
+if (!file_exists($path_to_png_file)) {
+    throw new Exception(&quot;File does not exist: $path_to_png_file&quot;);
+}
+
+// guarantee that quality won&apos;t be worse than that.
+$min_quality = 60;
+
+// &apos;-&apos; makes it use stdout, required to save to $compressed_png_content variable
+// &apos;&lt;&apos; makes it read from the given file path
+// escapeshellarg() makes this safe to use with any path
+$compressed_png_content = shell_exec(&quot;pngquant --quality=$min_quality-$max_quality - &lt; &quot;.escapeshellarg(    $path_to_png_file));
+
+if (!$compressed_png_content) {
+    throw new Exception(&quot;Conversion to compressed PNG failed. Is pngquant 1.8+ installed on the server?&quot;);
+}
+
+return $compressed_png_content;
+}
+
+//example
+$read_from_path = $_FILE[&apos;file&apos;][&apos;tmp_name&apos;];
+$save_to_path = &quot;uploads/compressed_file.png&quot;;
+
+$compressed_png_content = compress_png($read_from_path);
+file_put_contents($save_to_path, $compressed_png_content);
+
+// you don&apos;t need move_uploaded_file(). file_put_contents() will do that instead.
+</code></pre>
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/php/phing/" rel="next" title="phing">
+                <i class="fa fa-chevron-left"></i> phing
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/gitlab/gitlab-install/" rel="prev" title="gitlab-install">
+                gitlab-install <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/avatar.png" alt="Nuxseme">
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-number">3.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Using-pngquant-in-PHP"><span class="nav-number">4.</span> <span class="nav-text">Using pngquant in PHP</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

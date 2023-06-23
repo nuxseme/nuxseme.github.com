@@ -1,0 +1,548 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Nuxseme">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="线程12345状态：就绪  等待 运行   多线程共享数据区，加锁加锁策略  资源的hascode 大小比较 TCP1234567893次握手   最终目的使双方确认对方和自己的数据传输能力正常第一次  发送方发送报文给收件方   收件方确认发件方发件能力和自己的收件能力第二次  收件方发送确认报文给发件方  发件方确认收件方的收件能力和发件能力  发件方确认自己的发件和收件能力第三次 发件方发送">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用故事给技术加点料读书笔记">
+<meta property="og:url" content="http://nuxseme.github.io/读书笔记/用故事给技术加点料读书笔记/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="线程12345状态：就绪  等待 运行   多线程共享数据区，加锁加锁策略  资源的hascode 大小比较 TCP1234567893次握手   最终目的使双方确认对方和自己的数据传输能力正常第一次  发送方发送报文给收件方   收件方确认发件方发件能力和自己的收件能力第二次  收件方发送确认报文给发件方  发件方确认收件方的收件能力和发件能力  发件方确认自己的发件和收件能力第三次 发件方发送">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://nuxseme.github.io/读书笔记/img/慢启动拥塞控制.png">
+<meta property="og:image" content="http://nuxseme.github.io/读书笔记/img/事务最终一致性.png">
+<meta property="og:image" content="http://nuxseme.github.io/读书笔记/img/最终一致性事件表.png">
+<meta property="og:updated_time" content="2023-06-23T07:49:36.377Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用故事给技术加点料读书笔记">
+<meta name="twitter:description" content="线程12345状态：就绪  等待 运行   多线程共享数据区，加锁加锁策略  资源的hascode 大小比较 TCP1234567893次握手   最终目的使双方确认对方和自己的数据传输能力正常第一次  发送方发送报文给收件方   收件方确认发件方发件能力和自己的收件能力第二次  收件方发送确认报文给发件方  发件方确认收件方的收件能力和发件能力  发件方确认自己的发件和收件能力第三次 发件方发送">
+<meta name="twitter:image" content="http://nuxseme.github.io/读书笔记/img/慢启动拥塞控制.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/读书笔记/用故事给技术加点料读书笔记/">
+
+  <title> 用故事给技术加点料读书笔记 | Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                用故事给技术加点料读书笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2021-08-18T10:08:59+00:00" content="2021-08-18">
+              2021-08-18
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h5 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">状态：就绪  等待 运行   </span><br><span class="line"></span><br><span class="line">多线程共享数据区，加锁</span><br><span class="line"></span><br><span class="line">加锁策略  资源的hascode 大小比较</span><br></pre></td></tr></table></figure>
+<h5 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">3次握手   最终目的使双方确认对方和自己的数据传输能力正常</span><br><span class="line"></span><br><span class="line">第一次  发送方发送报文给收件方   收件方确认发件方发件能力和自己的收件能力</span><br><span class="line"></span><br><span class="line">第二次  收件方发送确认报文给发件方  发件方确认收件方的收件能力和发件能力  发件方确认自己的发件和收件能力</span><br><span class="line"></span><br><span class="line">第三次 发件方发送确认报文到收件方  收件方确认发件方的收件能力和自己的发件能力</span><br><span class="line"></span><br><span class="line">发件方开始数据传输</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ack  确认顺序</span><br><span class="line"></span><br><span class="line">发：收到最大的ack 表明之前的数据包都正常收到</span><br><span class="line">收：只发送当前序列最大的ack确认码</span><br><span class="line"></span><br><span class="line">滑动窗口协议  确保批量发送数据包对方能接收</span><br><span class="line">超时重传  多次确认</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p><img src="../img/慢启动拥塞控制.png" alt="740952-20161107142031405-1083966408" style="zoom:75%;"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">快速重传和恢复</span><br><span class="line">收件方收到失序报文马上发送失序之前的最大报文的ack</span><br><span class="line">发件方收到3次重复的ack 立即减半  但是不执行慢启动</span><br><span class="line">减半之后采用拥塞避免算法</span><br></pre></td></tr></table></figure>
+<h5 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">开机</span><br><span class="line">bios 引导</span><br><span class="line">设备检查  中断向量表</span><br><span class="line">加载硬盘操作系统扇区</span><br><span class="line">操作系统接管资源</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">DMA</span><br><span class="line">数据搬运到内存用不经过cpu机械的复制，cpu解放出来执行其他指令，硬盘数据直接通过总线写入到内存，然后发送中断信号给cpu,避免浪费cpu</span><br><span class="line"></span><br><span class="line">缓存</span><br><span class="line">时间局部性  最近被用到的东西可能会再次被用到</span><br><span class="line">空间局部性  附近被用到的东西可能会被再次用到</span><br><span class="line"></span><br><span class="line">流水指令</span><br></pre></td></tr></table></figure>
+<h5 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">对一个正在运行的程序的抽象</span><br><span class="line"></span><br><span class="line">批处理系统  每次独立使用资源，直到结束 不用进程切换。好处：独立使用资源，不用考虑切换带来的开销，内存分配管理。缺点：遇到IO，cpu会空闲</span><br><span class="line"></span><br><span class="line">多道程序 </span><br><span class="line">PCB 进程管理控制快  进程切换 还原指令 寄存器</span><br><span class="line">MMU 内存管理单元 地址重定位  动态重定位</span><br><span class="line"></span><br><span class="line">分时系统  </span><br><span class="line">根据进程权重分配时间片</span><br><span class="line"></span><br><span class="line">内存管理</span><br><span class="line">分块装入 虚拟内存分页管理  局部性原理  缺页处理  4k对齐</span><br></pre></td></tr></table></figure>
+<h5 id="线程-1"><a href="#线程-1" class="headerlink" title="线程"></a>线程</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">单核实质还是单条流水线处理</span><br><span class="line">跟进程的区别 </span><br><span class="line">进程都是对资源的抽象描述，进程之间数据不共享，线程之间共享地址空间，全局变量，文件源等。所以在对共享区的数据操作时，线程可以避免io带来的顿卡。线程会带来上下文切换消耗</span><br></pre></td></tr></table></figure>
+<h5 id="硬盘"><a href="#硬盘" class="headerlink" title="硬盘"></a>硬盘</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">速度慢  断电不影响  容量大</span><br><span class="line">受限于基础材料，多级缓存</span><br></pre></td></tr></table></figure>
+<h5 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">分散存储  </span><br><span class="line">索引查询</span><br><span class="line">数据块 直接存放数据</span><br><span class="line">间接块 存放其他数据块的盘号</span><br><span class="line">日志文件系统   undo日志确保日志可重复操作 </span><br><span class="line">bitmap 管理磁盘块</span><br></pre></td></tr></table></figure>
+<h5 id="设备"><a href="#设备" class="headerlink" title="设备"></a>设备</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">总线</span><br><span class="line">内存映射IO</span><br><span class="line">轮询  主动询问  浪费资源cpu算力，占用总线</span><br><span class="line">中断信号  中断控制器</span><br></pre></td></tr></table></figure>
+<h5 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">并发操作  行锁</span><br><span class="line">原子性问题  事务   undo日志  幂等性</span><br></pre></td></tr></table></figure>
+<h5 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">源文件  词法分析  语法分析 语义分析  中间代码  代码优化 代码生成</span><br></pre></td></tr></table></figure>
+<h5 id="分布式事务"><a href="#分布式事务" class="headerlink" title="分布式事务"></a>分布式事务</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">两段提交  强一致性  只要有网络就会遇到延迟丢失的情况</span><br><span class="line">最终一致性</span><br><span class="line">base模型</span><br><span class="line">柔性事务TCC</span><br></pre></td></tr></table></figure>
+<p><img src="../img/事务最终一致性.png" style="zoom:50%;"></p>
+<p>不能确保扣除操作和写入消息队列操作原子性</p>
+<p><img src="../img/最终一致性事件表.png" style="zoom:80%;"></p>
+<p>定时程序在扫描消息 写入队列 修改消息状态  这里不需要确保事务</p>
+<p>消费端需要记录当前消息是否被消费  确保幂等性</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">正交性 变化被封装在一个维度上，可以把这些概念任意组合</span><br></pre></td></tr></table></figure>
+<h5 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">互斥锁  </span><br><span class="line">compare and swap  cas  无锁编程</span><br><span class="line">阻塞后激活开销很大</span><br><span class="line">version</span><br></pre></td></tr></table></figure>
+<h5 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">切面编程</span><br><span class="line">编译植入</span><br><span class="line">动态代理</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/ci/travis-ci-ssh/" rel="next" title="travis-ci-ssh">
+                <i class="fa fa-chevron-left"></i> travis-ci-ssh
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/avatar.png" alt="Nuxseme">
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#线程"><span class="nav-number">1.</span> <span class="nav-text">线程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#TCP"><span class="nav-number">2.</span> <span class="nav-text">TCP</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#CPU"><span class="nav-number">3.</span> <span class="nav-text">CPU</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#进程"><span class="nav-number">4.</span> <span class="nav-text">进程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#线程-1"><span class="nav-number">5.</span> <span class="nav-text">线程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#硬盘"><span class="nav-number">6.</span> <span class="nav-text">硬盘</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#文件"><span class="nav-number">7.</span> <span class="nav-text">文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#设备"><span class="nav-number">8.</span> <span class="nav-text">设备</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数据库"><span class="nav-number">9.</span> <span class="nav-text">数据库</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#编译"><span class="nav-number">10.</span> <span class="nav-text">编译</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#分布式事务"><span class="nav-number">11.</span> <span class="nav-text">分布式事务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#锁"><span class="nav-number">12.</span> <span class="nav-text">锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AOP"><span class="nav-number">13.</span> <span class="nav-text">AOP</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

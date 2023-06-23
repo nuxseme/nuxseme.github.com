@@ -1,0 +1,571 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Nuxseme">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="MongoDB 综合mongodb 安装 mongodb 下载地址http://www.mongodb.org/downloads    wget url/mongodb.tgz    # 下载 tar -zxvf mongodb.tgz   # 解压 mv  mongodb/ /path/mongodb   # 将解压包拷贝到指定目录  将mongodb bin目录加入path mongodb/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mongodb综合">
+<meta property="og:url" content="http://nuxseme.github.io/mongodb/mongodb综合/index.html">
+<meta property="og:site_name" content="Nuxseme">
+<meta property="og:description" content="MongoDB 综合mongodb 安装 mongodb 下载地址http://www.mongodb.org/downloads    wget url/mongodb.tgz    # 下载 tar -zxvf mongodb.tgz   # 解压 mv  mongodb/ /path/mongodb   # 将解压包拷贝到指定目录  将mongodb bin目录加入path mongodb/">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-06-23T07:49:36.373Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mongodb综合">
+<meta name="twitter:description" content="MongoDB 综合mongodb 安装 mongodb 下载地址http://www.mongodb.org/downloads    wget url/mongodb.tgz    # 下载 tar -zxvf mongodb.tgz   # 解压 mv  mongodb/ /path/mongodb   # 将解压包拷贝到指定目录  将mongodb bin目录加入path mongodb/">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://nuxseme.github.io/mongodb/mongodb综合/">
+
+  <title> mongodb综合 | Nuxseme </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nuxseme</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">subtitle</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                mongodb综合
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-24T14:37:14+00:00" content="2016-09-24">
+              2016-09-24
+            </time>
+          </span>
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="MongoDB-综合"><a href="#MongoDB-综合" class="headerlink" title="MongoDB 综合"></a>MongoDB 综合</h3><h4 id="mongodb-安装"><a href="#mongodb-安装" class="headerlink" title="mongodb 安装"></a>mongodb 安装</h4><blockquote>
+<p>mongodb 下载地址<a href="http://www.mongodb.org/downloads" target="_blank" rel="noopener">http://www.mongodb.org/downloads</a>  </p>
+</blockquote>
+<pre><code>wget url/mongodb.tgz    # 下载
+tar -zxvf mongodb.tgz   # 解压
+mv  mongodb/ /path/mongodb   # 将解压包拷贝到指定目录
+</code></pre><blockquote>
+<p>将mongodb bin目录加入path mongodb/bin下常用二进制文件 mongo  mongod 可以自建软连接mongodb源码解压没有mongodb.conf文件,可以自己手动建立，建议mongodb.conf文件不要放在mongodb目录(升级可能会被覆盖)可以放到自定义的配置目录下,手动建立logpath dbpath 目录,可能因为没有这两个目录导致无法启动   </p>
+</blockquote>
+<pre><code>$mongod -f|--config /path/mongodb.conf
+</code></pre><a id="more"></a>
+<h3 id="mongodb-conf"><a href="#mongodb-conf" class="headerlink" title="mongodb.conf"></a>mongodb.conf</h3><blockquote>
+<p>mongodb 查看配置可以ps aux|grep mongodb 会显示mongodb启动的命令<br>   或者进入mongodb.conf查看</p>
+</blockquote>
+<pre><code>#configuration Options for MongoDB 
+# 
+# For More Information, Consider: 
+# - Configuration Parameters: http://www.mongodb.org/display/DOCS/Command+Line+Parameters 
+# - File Based Configuration: http://www.mongodb.org/display/DOCS/File+Based+Configuration 
+dbpath = /var/mongodb/db1/ 
+logpath = /var/mongodb/log1/mongodb.log 
+logappend = true 
+#绑定监听地址 
+#需要远程连接 修改为0.0.0.0 
+#默认为127.0.0.1 
+bind_ip = 0.0.0.0 
+port = 27017 
+fork = true 
+#是否需要认证
+#auth = true 
+noauth = true 
+directoryperdb = true 
+journal = true
+#存储引擎 mmapv1|WiredTiger
+#mongoVUE  nosql manager for mongodb 无法识别WirdTiger引擎
+#不同的引擎生成的数据格式不一样 可在dbpath下查看
+#生成以wt结尾的文件就表明使用的是WiredTiger引擎
+storageEngine = mmapv1
+</code></pre><h3 id="mongo"><a href="#mongo" class="headerlink" title="mongo"></a>mongo</h3><blockquote>
+<p>mongo是mongodb自带的shell客户端</p>
+</blockquote>
+<pre><code>$./mongo db #可选择数据集合名称 通常进去会链接到test数据库
+$help #进入之后 help查看指令
+</code></pre><h3 id="mongo-php-driver-与-mongodb-php-driver"><a href="#mongo-php-driver-与-mongodb-php-driver" class="headerlink" title="mongo-php-driver 与 mongodb-php-driver"></a>mongo-php-driver 与 mongodb-php-driver</h3><blockquote>
+<p>mongodb-php-driver 是 mongo-php-driver的升级版本使用方式跟mongo-php-driver有别差<br>  mongo-php-driver   MongoClient<br>  mongodb-php-driver MongoDB\Driver\Manager…</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/linux/Linux常用命令集合/" rel="next" title="Linux常用命令集合">
+                <i class="fa fa-chevron-left"></i> Linux常用命令集合
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/apache/apache编译安装/" rel="prev" title="apache编译安装">
+                apache编译安装 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/avatar.png" alt="Nuxseme">
+          <p class="site-author-name" itemprop="name">Nuxseme</p>
+          <p class="site-description motion-element" itemprop="description">Coding ...</p>
+        </div>
+        
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/nuxseme" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#MongoDB-综合"><span class="nav-number">1.</span> <span class="nav-text">MongoDB 综合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mongodb-安装"><span class="nav-number">1.1.</span> <span class="nav-text">mongodb 安装</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mongodb-conf"><span class="nav-number">2.</span> <span class="nav-text">mongodb.conf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mongo"><span class="nav-number">3.</span> <span class="nav-text">mongo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mongo-php-driver-与-mongodb-php-driver"><span class="nav-number">4.</span> <span class="nav-text">mongo-php-driver 与 mongodb-php-driver</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nuxseme</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
